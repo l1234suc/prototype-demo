@@ -1,792 +1,897 @@
 <!DOCTYPE html>
-<!--
-╔══════════════════════════════════════════════════════════════╗
-║  TULY WEBSITE — Anleitung / Guide                           ║
-╠══════════════════════════════════════════════════════════════╣
-║  PREISE & PRODUKTE ÄNDERN:                                  ║
-║  → Suche "PRODUCTS CONFIG" weiter unten im <script>         ║
-║    Ändere name, price, image, badge direkt dort             ║
-║                                                             ║
-║  FOTOS HINZUFÜGEN:                                          ║
-║  1. Erstelle Ordner "images/" neben dieser Datei            ║
-║  2. Lade deine Fotos dort hoch (z.B. bag-grande.jpg)        ║
-║  3. Trage image: "images/bag-grande.jpg" im Produkt ein     ║
-║                                                             ║
-║  KOSTENLOS VERÖFFENTLICHEN:                                 ║
-║  A) GitHub Pages (gratis):                                  ║
-║     1. Repo auf github.com erstellen                        ║
-║     2. index.html + images/ hochladen                       ║
-║     3. Settings → Pages → Branch: main → Save               ║
-║     → URL: deinname.github.io/repo-name                    ║
-║  B) Vercel (gratis, eigene Domain möglich):                 ║
-║     1. github.com → Repo pushen                             ║
-║     2. vercel.com/new → Repo importieren → Deploy           ║
-║  C) Netlify (gratis, einfachste Option):                    ║
-║     1. netlify.com/drop aufrufen                            ║
-║     2. Ordner mit index.html + images/ reinziehen           ║
-║                                                             ║
-║  KONTAKTFORMULAR AKTIVIEREN:                                ║
-║  1. Konto auf formspree.io erstellen (gratis)               ║
-║  2. Neues Formular anlegen → Form-ID kopieren               ║
-║  3. FORMSPREE_ID unten durch deine ID ersetzen              ║
-╚══════════════════════════════════════════════════════════════╝
--->
-<html lang="en">
+<html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TULY — Conscious Artisan Luxury · Guatemala</title>
-<meta name="description" content="Handcrafted luxury from Guatemala. Fashion, home décor and bespoke objects made by master women artisans from native natural fibers.">
-<meta property="og:title" content="TULY — Conscious Artisan Luxury">
-<meta property="og:description" content="Handcrafted in Guatemala by master women artisans. Natural fibers. Fashion & Home.">
-<meta property="og:type" content="website">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>flowly — Prototyp Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300&family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ivory:#FAF7F2;--sand:#E8DDD0;--oat:#EDE3D6;--camel:#C4A882;
-  --gold:#B89B6A;--sage:#8A9E8C;--terra:#C47A5A;--cacao:#3D2B1F;
-  --dark:#2A1A10;--white:#FFFFFF;
-  --serif:'Playfair Display',Georgia,serif;
-  --sans:'Inter',system-ui,sans-serif;
+  --bg:#0C0B09;--s0:#0F0E0C;--s1:#141210;--s2:#1C1A16;--s3:#252320;--s4:#2E2B27;
+  --t1:#EDE5CF;--t2:#8A8070;--t3:#4A4538;
+  --am:#C8861E;--aml:rgba(200,134,30,.14);--amh:#E8A840;--amb:rgba(200,134,30,.3);
+  --sg:#4E8858;--sgl:rgba(78,136,88,.13);--sgh:#72B87C;
+  --lv:#7060A8;--lvl:rgba(112,96,168,.13);
+  --rd:#B84040;--rdl:rgba(184,64,64,.13);
+  --bd:rgba(237,229,207,.06);--bd2:rgba(237,229,207,.11);--bd3:rgba(237,229,207,.2);
+  --ff:'Fraunces',serif;--fb:'Figtree',sans-serif;
 }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:var(--sans);background:var(--ivory);color:var(--dark);line-height:1.7;overflow-x:hidden}
-img{max-width:100%;display:block}
-a{text-decoration:none;color:inherit}
-
-/* ── NAV ── */
-nav{position:fixed;top:0;left:0;right:0;z-index:999;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 2.5rem;transition:all .35s}
-nav.solid{background:rgba(250,247,242,.97);backdrop-filter:blur(10px);box-shadow:0 1px 0 var(--sand)}
-.nav-logo{font-family:var(--serif);font-size:1.5rem;letter-spacing:.18em;color:var(--dark)}
-.nav-menu{display:flex;align-items:center;gap:2rem}
-.nav-menu a{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dark);opacity:.6;transition:opacity .2s}
-.nav-menu a:hover{opacity:1}
-.nav-lang{background:none;border:1px solid var(--camel);color:var(--gold);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;padding:.35rem .8rem;cursor:pointer;font-family:var(--sans);transition:all .2s}
-.nav-lang:hover{background:var(--gold);color:var(--white)}
-.nav-burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:.25rem;background:none;border:none}
-.nav-burger span{display:block;width:22px;height:1.5px;background:var(--dark);transition:all .3s}
-.mobile-menu{display:none;position:fixed;inset:0;background:var(--ivory);z-index:998;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem}
-.mobile-menu.open{display:flex}
-.mobile-menu a{font-family:var(--serif);font-size:2rem;color:var(--dark);opacity:.8}
-.mobile-menu a:hover{opacity:1;color:var(--gold)}
-
-/* ── HERO ── */
-.hero{min-height:100vh;background:var(--cacao);display:flex;align-items:flex-end;position:relative;overflow:hidden}
-.hero-bg{position:absolute;inset:0;background:linear-gradient(150deg,#2A1810 0%,#3D2B1F 50%,#4A3228 100%)}
-.hero-fibers{position:absolute;right:0;top:0;width:50%;height:100%;opacity:.12}
-.hero-fibers svg{width:100%;height:100%}
-.hero-content{position:relative;z-index:2;padding:2rem 2.5rem 5rem;max-width:680px}
-.hero-eyebrow{font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem}
-.hero-title{font-family:var(--serif);font-size:clamp(2.6rem,7vw,5.5rem);line-height:1.02;color:var(--ivory);font-weight:400;margin-bottom:1.5rem}
-.hero-title em{font-style:italic;color:var(--camel)}
-.hero-sub{font-size:.95rem;color:rgba(250,247,242,.55);line-height:1.9;max-width:440px;font-weight:300;margin-bottom:2.5rem}
-.hero-btns{display:flex;flex-wrap:wrap;gap:.9rem}
-.btn{display:inline-block;padding:.85rem 2rem;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;font-family:var(--sans);cursor:pointer;border:none;transition:all .25s}
-.btn-primary{background:var(--gold);color:var(--dark)}
-.btn-primary:hover{background:var(--camel)}
-.btn-outline{background:transparent;border:1px solid rgba(250,247,242,.35);color:rgba(250,247,242,.8)}
-.btn-outline:hover{border-color:rgba(250,247,242,.7);color:var(--ivory)}
-.hero-scroll-hint{position:absolute;bottom:2.5rem;right:2.5rem;display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:.3}
-.hero-scroll-hint span{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ivory);writing-mode:vertical-rl}
-.scroll-bar{width:1px;height:45px;background:linear-gradient(to bottom,var(--ivory),transparent);animation:scrollFade 2s ease infinite}
-@keyframes scrollFade{0%{opacity:0;transform:scaleY(0);transform-origin:top}40%{opacity:1}100%{opacity:0;transform:scaleY(1);transform-origin:top}}
-
-/* ── TICKER ── */
-.ticker{background:var(--gold);overflow:hidden;padding:.65rem 0;white-space:nowrap}
-.ticker-inner{display:inline-block;animation:ticker 25s linear infinite}
-.ticker-inner span{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--dark);padding:0 1.8rem}
-.ticker-inner .sep{opacity:.45}
-@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-
-/* ── SECTIONS ── */
-.section{padding:5.5rem 2.5rem}
-.section-inner{max-width:1160px;margin:0 auto}
-.eyebrow{font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:.9rem}
-.heading{font-family:var(--serif);font-size:clamp(1.9rem,4vw,3rem);line-height:1.1;font-weight:400;margin-bottom:1.5rem}
-.heading em{font-style:italic}
-.body-text{font-size:.92rem;line-height:1.95;color:rgba(42,26,16,.65);font-weight:300;max-width:540px}
-
-/* ── SHOP ── */
-.shop{background:var(--ivory)}
-.shop-tabs{display:flex;gap:0;border-bottom:1px solid var(--sand);margin:2rem 0 3rem}
-.tab{padding:.7rem 1.8rem;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;font-family:var(--sans);color:rgba(42,26,16,.4);transition:all .2s}
-.tab.active{color:var(--dark);border-bottom-color:var(--gold)}
-.tab:hover{color:var(--dark)}
-.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:2rem}
-.product-card{cursor:pointer}
-.product-thumb{position:relative;aspect-ratio:4/5;background:var(--oat);overflow:hidden}
-.product-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
-.product-card:hover .product-thumb img{transform:scale(1.04)}
-.product-thumb .placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.5rem;background:linear-gradient(135deg,var(--oat),var(--sand))}
-.placeholder-icon{opacity:.2}
-.placeholder-label{font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--dark);opacity:.3}
-.product-badge{position:absolute;top:.85rem;left:.85rem;padding:.3rem .7rem;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;background:var(--gold);color:var(--dark)}
-.product-info{padding:1.1rem 0 .5rem}
-.product-name{font-family:var(--serif);font-size:1.05rem;margin-bottom:.3rem}
-.product-material{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(42,26,16,.4)}
-.product-price{font-size:.88rem;color:var(--gold);margin-top:.4rem;font-weight:500}
-.product-price span{font-size:.72rem;font-weight:300;color:rgba(42,26,16,.4);margin-left:.3rem}
-
-/* ── LIGHTBOX ── */
-.lightbox{display:none;position:fixed;inset:0;z-index:9999;background:rgba(42,26,16,.92);align-items:center;justify-content:center;padding:1.5rem}
-.lightbox.open{display:flex}
-.lightbox-inner{background:var(--ivory);max-width:820px;width:100%;display:grid;grid-template-columns:1fr 1fr;max-height:90vh;overflow:auto}
-.lightbox-img{aspect-ratio:1;background:var(--oat);display:flex;align-items:center;justify-content:center;overflow:hidden}
-.lightbox-img img{width:100%;height:100%;object-fit:cover}
-.lightbox-info{padding:2.5rem 2rem;display:flex;flex-direction:column;justify-content:center}
-.lightbox-name{font-family:var(--serif);font-size:1.5rem;margin-bottom:.5rem}
-.lightbox-material{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(42,26,16,.45);margin-bottom:1.25rem}
-.lightbox-desc{font-size:.88rem;line-height:1.85;color:rgba(42,26,16,.65);font-weight:300;margin-bottom:1.5rem}
-.lightbox-price{font-size:1.4rem;font-family:var(--serif);color:var(--gold);margin-bottom:1.5rem}
-.lightbox-close{position:absolute;top:1.25rem;right:1.5rem;background:none;border:none;color:var(--ivory);font-size:1.8rem;cursor:pointer;line-height:1;opacity:.7;transition:opacity .2s}
-.lightbox-close:hover{opacity:1}
-
-/* ── STORY ── */
-.story{background:#F2EDE5}
-.story-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
-.story-visual{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:.75rem;height:420px}
-.story-block{border-radius:2px;overflow:hidden;display:flex;align-items:center;justify-content:center}
-.story-block-1{background:linear-gradient(135deg,var(--camel),var(--gold));grid-row:1/3}
-.story-block-2{background:linear-gradient(135deg,var(--terra),#A0624A)}
-.story-block-3{background:var(--sage)}
-.story-block p{font-family:var(--serif);font-style:italic;font-size:.85rem;color:rgba(250,247,242,.7);text-align:center;padding:1rem}
-.story-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2.5rem;padding-top:2.5rem;border-top:1px solid var(--sand)}
-.stat-num{font-family:var(--serif);font-size:2.2rem;color:var(--gold);display:block;line-height:1}
-.stat-label{font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(42,26,16,.45);margin-top:.35rem;display:block}
-
-/* ── BESPOKE FORM ── */
-.bespoke{background:var(--cacao)}
-.bespoke-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
-.bespoke .eyebrow{color:var(--gold)}
-.bespoke .heading{color:var(--ivory)}
-.bespoke .body-text{color:rgba(250,247,242,.5)}
-.bespoke-list{margin-top:2rem;display:flex;flex-direction:column;gap:.9rem}
-.bespoke-item{display:flex;gap:.9rem;align-items:flex-start;padding:1.1rem;border:1px solid rgba(255,255,255,.07);transition:border-color .25s}
-.bespoke-item:hover{border-color:rgba(196,168,130,.3)}
-.bespoke-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);margin-top:.55rem;flex-shrink:0}
-.bespoke-item-title{font-size:.82rem;color:var(--ivory);margin-bottom:.2rem;letter-spacing:.04em}
-.bespoke-item-desc{font-size:.76rem;color:rgba(250,247,242,.38);line-height:1.6;font-weight:300}
-.form-box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:2.25rem}
-.form-box h3{font-family:var(--serif);font-size:1.25rem;color:var(--ivory);margin-bottom:1.75rem;font-weight:400}
-.form-group{margin-bottom:1.1rem}
-.form-group label{display:block;font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(250,247,242,.35);margin-bottom:.45rem}
-.form-group input,.form-group select,.form-group textarea{
-  width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
-  color:var(--ivory);padding:.75rem 1rem;font-family:var(--sans);font-size:.85rem;
-  outline:none;transition:border-color .2s;border-radius:0;appearance:none;-webkit-appearance:none
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;margin:0;padding:0}
+#scale-root{
+  width:1920px;height:1080px;
+  position:absolute;top:0;left:0;
+  transform-origin:top left;
+  font-family:var(--fb);background:var(--bg);color:var(--t1);
+  display:flex;flex-direction:column;
+  overflow:hidden;
 }
-.form-group input::placeholder,.form-group textarea::placeholder{color:rgba(250,247,242,.22)}
-.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:rgba(196,168,130,.5)}
-.form-group select option{background:var(--cacao)}
-.form-group textarea{resize:vertical;min-height:90px}
-.btn-submit{width:100%;padding:1rem;background:var(--gold);color:var(--dark);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;border:none;cursor:pointer;font-family:var(--sans);margin-top:.5rem;transition:background .2s}
-.btn-submit:hover{background:var(--camel)}
-.form-success{display:none;text-align:center;padding:2rem;color:var(--camel);font-family:var(--serif);font-style:italic}
 
-/* ── IMPACT ── */
-.impact{background:var(--dark)}
-.impact .heading{color:var(--ivory)}
-.impact .body-text{color:rgba(250,247,242,.45)}
-.impact-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;margin-top:3rem}
-.impact-card{padding:2rem 1.5rem;border:1px solid rgba(255,255,255,.07)}
-.impact-num{font-family:var(--serif);font-size:2.8rem;color:var(--gold);line-height:1;margin-bottom:.5rem}
-.impact-label{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(250,247,242,.35);line-height:1.5}
-.bilingual-quote{margin-top:3rem;padding:2.25rem;border:1px solid rgba(255,255,255,.07);display:grid;grid-template-columns:1fr 1fr;gap:2rem}
-.bilingual-quote p{font-family:var(--serif);font-style:italic;font-size:1rem;line-height:1.75;color:rgba(250,247,242,.45)}
-.bilingual-quote p.es{color:rgba(196,168,130,.65)}
-
-/* ── FOOTER ── */
-footer{background:#1A100A;padding:4rem 2.5rem 2rem}
-.footer-inner{max-width:1160px;margin:0 auto}
-.footer-top{display:grid;grid-template-columns:2.5fr 1fr 1fr 1fr;gap:3rem;padding-bottom:3rem;border-bottom:1px solid rgba(255,255,255,.05)}
-.footer-logo{font-family:var(--serif);font-size:1.7rem;letter-spacing:.15em;color:var(--ivory);margin-bottom:.9rem}
-.footer-tagline{font-size:.8rem;line-height:1.75;color:rgba(250,247,242,.28);max-width:240px;font-weight:300}
-.footer-col h4{font-size:.63rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem}
-.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.7rem}
-.footer-col a{font-size:.8rem;color:rgba(250,247,242,.38);transition:color .2s}
-.footer-col a:hover{color:rgba(250,247,242,.75)}
-.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:2rem;flex-wrap:wrap;gap:1rem}
-.footer-copy{font-size:.68rem;color:rgba(250,247,242,.2);letter-spacing:.06em}
-.footer-social{display:flex;gap:1.5rem}
-.footer-social a{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(250,247,242,.28);transition:color .2s}
-.footer-social a:hover{color:var(--gold)}
-
-/* ── REVEAL ── */
-.reveal{opacity:0;transform:translateY(28px);transition:opacity .75s ease,transform .75s ease}
-.reveal.in{opacity:1;transform:none}
-.reveal-delay-1{transition-delay:.1s}
-.reveal-delay-2{transition-delay:.2s}
-.reveal-delay-3{transition-delay:.3s}
-
-/* ── RESPONSIVE ── */
-@media(max-width:900px){
-  nav{padding:1rem 1.5rem}
-  .nav-menu{display:none}
-  .nav-burger{display:flex}
-  .section{padding:4rem 1.5rem}
-  .hero-content{padding:2rem 1.5rem 4.5rem}
-  .story-grid,.bespoke-grid{grid-template-columns:1fr;gap:3rem}
-  .story-visual{height:280px}
-  .impact-grid{grid-template-columns:1fr 1fr}
-  .bilingual-quote{grid-template-columns:1fr}
-  .footer-top{grid-template-columns:1fr 1fr;gap:2rem}
-  .lightbox-inner{grid-template-columns:1fr;max-height:95vh}
-  .lightbox-img{aspect-ratio:4/3}
+/* ── GRAIN OVERLAY ── */
+body::before{
+  content:'';position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:9000;opacity:.6;
 }
-@media(max-width:600px){
-  .products-grid{grid-template-columns:1fr 1fr}
-  .impact-grid{grid-template-columns:1fr 1fr}
-  .footer-top{grid-template-columns:1fr}
-  .hero-btns{flex-direction:column}
-  .hero-btns .btn{text-align:center}
-}
+
+/* ── AMBIENT GLOW ── */
+#glow{position:absolute;inset:0;pointer-events:none;z-index:0;transition:all 1s ease}
+#glow::before{content:'';position:absolute;width:900px;height:700px;border-radius:50%;background:radial-gradient(ellipse, rgba(200,134,30,.09),transparent 70%);top:-200px;right:-100px;transition:all 1.2s ease}
+#glow::after{content:'';position:absolute;width:700px;height:500px;border-radius:50%;background:radial-gradient(ellipse, rgba(78,136,88,.07),transparent 70%);bottom:-100px;left:-100px;transition:all 1.2s ease}
+
+/* ── MAIN LAYOUT ── */
+#stage{flex:1;display:flex;align-items:center;justify-content:center;position:relative;z-index:10;gap:0;padding:0 80px}
+
+/* ── LEFT PANEL ── */
+#left{width:420px;flex-shrink:0;display:flex;flex-direction:column;justify-content:center;padding-right:60px;position:relative}
+.part-tag{display:inline-flex;align-items:center;gap:10px;margin-bottom:20px;opacity:0;animation:fadeUp .5s .1s ease forwards}
+.part-dot{width:8px;height:8px;border-radius:50%;background:var(--am)}
+.part-lbl{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--amh);font-weight:700}
+#left h1{font-family:var(--ff);font-size:42px;font-weight:300;line-height:1.18;letter-spacing:-.01em;margin-bottom:20px;color:var(--t1)}
+#left h1 em{font-style:italic;color:var(--amh)}
+#left .sub{font-size:16.5px;line-height:1.68;color:var(--t2);margin-bottom:28px}
+#left .sub strong{color:var(--t1);font-weight:600}
+
+.callout{background:var(--s1);border:1px solid var(--bd2);border-left:3px solid var(--am);border-radius:0 12px 12px 0;padding:16px 20px;margin-bottom:14px;opacity:0;transform:translateX(-12px);transition:all .5s ease}
+.callout.show{opacity:1;transform:none}
+.callout .cl{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--amh);font-weight:700;margin-bottom:6px}
+.callout p{font-size:14px;line-height:1.62;color:var(--t2)}
+.callout p strong{color:var(--t1)}
+
+.evidence{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;background:var(--sgl);border-radius:10px;border:1px solid rgba(78,136,88,.2);margin-top:6px;opacity:0;transform:translateY(8px);transition:all .5s .3s ease}
+.evidence.show{opacity:1;transform:none}
+.evidence-ico{width:28px;height:28px;border-radius:50%;background:var(--sg);color:#0D1A0F;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;margin-top:1px;font-weight:700}
+.evidence p{font-size:12.5px;color:var(--sgh);line-height:1.55}
+
+/* ── RIGHT: BROWSER MOCKUP ── */
+#right{flex:1;display:flex;align-items:center;justify-content:center;position:relative}
+.browser{width:1200px;height:800px;background:var(--s1);border:1px solid var(--bd2);border-radius:16px;overflow:hidden;box-shadow:0 40px 120px rgba(0,0,0,.7),0 0 0 1px rgba(237,229,207,.04);display:flex;flex-direction:column;position:relative}
+
+.bbar{height:40px;background:var(--s2);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 18px;gap:10px;flex-shrink:0}
+.bdot{width:11px;height:11px;border-radius:50%}
+.bdot.r{background:#D86B5A}.bdot.y{background:#D8B25A}.bdot.g{background:#6BB87A}
+.burl{flex:1;height:24px;background:var(--s3);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11.5px;color:var(--t3);margin:0 12px;font-family:var(--fb)}
+
+/* App Nav */
+.anav{height:52px;background:var(--bg);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 24px;gap:16px;flex-shrink:0;z-index:10}
+.abrand{font-family:var(--ff);font-size:18px;color:var(--amh);display:flex;align-items:center;gap:9px;font-weight:300}
+.alogo{width:26px;height:26px;background:linear-gradient(135deg,var(--am),var(--amh));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px}
+.atabs{display:flex;gap:4px}
+.atab{font-size:11.5px;font-weight:600;padding:5px 12px;border-radius:7px;color:var(--t3);letter-spacing:.04em;text-transform:uppercase}
+.atab.on{color:var(--amh);background:var(--aml)}
+.aright{margin-left:auto;display:flex;align-items:center;gap:8px}
+.pill{background:var(--s2);border:1px solid var(--bd2);border-radius:16px;padding:4px 12px;font-size:11.5px;color:var(--t2);font-weight:500}
+.pill.gold{background:var(--aml);color:var(--amh);border-color:var(--amb)}
+.pill.orange{background:var(--am);color:#1A0E00;border-color:var(--am)}
+
+/* App Content Area */
+.acontent{flex:1;overflow:hidden;position:relative}
+
+/* ── SCENES ── */
+.scene{position:absolute;inset:0;opacity:0;transition:opacity .6s ease;pointer-events:none;display:flex;flex-direction:column}
+.scene.active{opacity:1;pointer-events:auto}
+
+/* SCENE 1 — Dashboard */
+#s1 .dash-w{padding:24px 30px;overflow-y:auto;height:100%}
+.hero-band{background:linear-gradient(140deg,var(--s2),var(--s3));border:1px solid var(--bd2);border-radius:16px;padding:24px 32px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden}
+.hero-band::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(rgba(200,134,30,.1),transparent 70%)}
+.hero-band h2{font-family:var(--ff);font-size:28px;font-weight:300;margin-bottom:4px}
+.hero-band h2 em{font-style:italic;color:var(--amh)}
+.hero-band p{font-size:12.5px;color:var(--t2)}
+.hero-xp{min-width:220px;text-align:right}
+.xp-row{display:flex;justify-content:space-between;font-size:11px;color:var(--t2);margin-bottom:8px}
+.xp-row strong{color:var(--amh)}
+.xp-track{height:7px;background:var(--s1);border-radius:4px;overflow:hidden;margin-bottom:10px}
+.xp-fill{height:100%;width:92%;background:linear-gradient(90deg,var(--am),var(--amh));border-radius:4px;animation:fillBar 1.2s .3s ease both}
+@keyframes fillBar{from{width:0}to{width:92%}}
+.badges{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.badge{padding:4px 10px;border-radius:12px;font-size:10.5px;font-weight:600}
+.badge.gold{background:var(--aml);color:var(--amh);border:1px solid var(--amb)}
+.badge.green{background:var(--sgl);color:var(--sgh);border:1px solid rgba(78,136,88,.25)}
+.badge.gray{background:var(--s3);color:var(--t3);border:1px solid var(--bd)}
+
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.stat-box{background:var(--s1);border:1px solid var(--bd);border-radius:13px;padding:16px 18px}
+.stat-n{font-family:var(--ff);font-size:30px;font-weight:300;line-height:1;margin-bottom:4px;color:var(--amh)}
+.stat-l{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--t3)}
+
+.live-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.live-chip{background:var(--s2);border:1px solid var(--bd);border-radius:20px;padding:6px 14px;display:flex;align-items:center;gap:8px;font-size:11.5px}
+.ldot{width:7px;height:7px;border-radius:50%;background:#52B868;box-shadow:0 0 5px #52B868;animation:lp 2s infinite}
+@keyframes lp{0%,100%{opacity:1}50%{opacity:.35}}
+
+.subj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.scard{background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:16px;cursor:pointer;position:relative;overflow:hidden;transition:all .2s}
+.scard::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px}
+.scard.am::after{background:linear-gradient(90deg,var(--am),var(--amh))}
+.scard.sg::after{background:linear-gradient(90deg,var(--sg),var(--sgh))}
+.scard-ico{font-size:22px;margin-bottom:8px;display:block}
+.scard-t{font-family:var(--ff);font-size:14px;font-weight:400;margin-bottom:2px}
+.scard-s{font-size:10.5px;color:var(--t3);margin-bottom:12px}
+.scard-bar{width:100%;height:3px;background:var(--s3);border-radius:2px;overflow:hidden}
+.scard-fill{height:100%;border-radius:2px}
+.scard.am .scard-fill{background:var(--am)}
+.scard.sg .scard-fill{background:var(--sg)}
+.scard-info{display:flex;justify-content:space-between;font-size:10.5px;color:var(--t2);margin-top:5px}
+
+/* SCENE 2 — Material Hub */
+#s2 .app-hd{height:52px;background:var(--s1);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 24px;gap:14px}
+.cico{width:34px;height:34px;border-radius:9px;background:var(--rdl);color:var(--rd);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px}
+.cico.ok{background:var(--sgl);color:var(--sgh)}
+.ctit{font-family:var(--ff);font-size:17px}
+.csub{font-size:11px;color:var(--t3);margin-top:2px}
+.ctabs-row{display:flex;border-bottom:1px solid var(--bd);background:var(--s1);padding:0 24px;flex-shrink:0}
+.ctab{font-size:12px;font-weight:600;color:var(--t3);padding:11px 15px;border-bottom:2px solid transparent;cursor:pointer;transition:all .2s}
+.ctab.on{color:var(--amh);border-bottom-color:var(--am)}
+.ctab:hover:not(.on){color:var(--t2)}
+.body-area{flex:1;padding:28px 30px;overflow-y:auto;background:var(--bg)}
+
+.dz{border:1.5px dashed var(--amb);border-radius:12px;background:var(--aml);padding:32px;text-align:center;margin-bottom:18px;position:relative;overflow:hidden}
+.dz-shine{position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(200,134,30,.07),transparent);transform:translateX(-100%);animation:shine 2.5s 1s infinite}
+@keyframes shine{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.dz-ico{font-size:28px;opacity:.8;margin-bottom:8px}
+.dz-t{font-size:14px;color:var(--amh);font-weight:600;margin-bottom:4px}
+.dz-s{font-size:11px;color:var(--t3)}
+
+/* SCENE 3 — KI Extraction */
+#s3 .ki-wrap{flex:1;display:flex;align-items:center;justify-content:center;background:var(--bg);position:relative}
+.ki-flow{display:flex;align-items:center;gap:30px}
+.ki-box{background:var(--s2);border:1px solid var(--bd2);border-radius:16px;padding:24px 30px;text-align:center;min-width:180px}
+.ki-box .ico{font-size:36px;margin-bottom:10px}
+.ki-box .lbl{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:4px}
+.ki-box .sub{font-size:11px;color:var(--t3)}
+.ki-arrow{font-size:24px;color:var(--amh);animation:arrowPulse 1s infinite}
+@keyframes arrowPulse{0%,100%{opacity:.4;transform:translateX(0)}50%{opacity:1;transform:translateX(4px)}}
+.ki-box.active{border-color:var(--am);background:var(--aml);animation:boxPulse .8s ease infinite alternate}
+@keyframes boxPulse{from{box-shadow:0 0 0 rgba(200,134,30,0)}to{box-shadow:0 0 20px rgba(200,134,30,.25)}}
+.ki-concepts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:20px;min-width:320px}
+.ki-concept{background:var(--s1);border:1px solid var(--bd2);border-radius:9px;padding:10px 14px;display:flex;align-items:center;gap:10px;animation:conceptPop .4s ease both}
+@keyframes conceptPop{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+.ki-concept:nth-child(1){animation-delay:.1s}.ki-concept:nth-child(2){animation-delay:.3s}
+.ki-concept:nth-child(3){animation-delay:.5s}.ki-concept:nth-child(4){animation-delay:.7s}
+.ki-concept:nth-child(5){animation-delay:.9s}.ki-concept:nth-child(6){animation-delay:1.1s}
+.kc-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.kc-t{font-size:12.5px;font-weight:500;color:var(--t1)}
+.kc-s{font-size:10.5px;color:var(--t3)}
+
+/* SCENE 4 — Mindmap */
+#s4 .map-wrap{flex:1;display:flex;align-items:center;justify-content:center;background:var(--bg);position:relative}
+.map-svg-container{position:relative;width:700px;height:620px}
+.map-label{position:absolute;text-align:center;transform:translate(-50%,-50%);pointer-events:none}
+.map-label .mlt{font-size:12px;font-weight:600;fill:var(--t1)}
+.map-label .mlp{font-size:10.5px;fill:var(--t2)}
+.node-callout{position:absolute;background:var(--s2);border:1px solid var(--bd3);border-radius:9px;padding:6px 12px;font-size:11px;white-space:nowrap;animation:fadeUp .4s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* SCENE 5 — Learning Modes */
+#s5 .mode-grid{flex:1;background:var(--bg);display:grid;grid-template-columns:1fr 1fr;gap:0}
+.mode-left{padding:28px 30px;border-right:1px solid var(--bd)}
+.mode-right{padding:28px 30px;background:var(--s1);display:flex;flex-direction:column}
+.mode-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.mode-tab{padding:7px 14px;border-radius:9px;font-size:12px;font-weight:600;border:1px solid var(--bd2);color:var(--t3);cursor:pointer;transition:all .2s}
+.mode-tab.on{background:var(--am);color:#1A0E00;border-color:var(--am)}
+.mode-tab:hover:not(.on){border-color:var(--amh);color:var(--amh)}
+.mode-content{flex:1}
+.fc-card{background:var(--s2);border:1px solid var(--bd2);border-radius:14px;padding:32px;text-align:center;margin-bottom:16px;min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.fc-card .fc-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:12px;font-weight:700}
+.fc-card .fc-q{font-size:17px;color:var(--t1);line-height:1.5;font-weight:500}
+.fc-card .fc-hint{font-size:11.5px;color:var(--t3);margin-top:10px}
+.fc-actions{display:flex;gap:12px;justify-content:center}
+.fc-no{flex:1;max-width:180px;padding:10px;border-radius:10px;background:var(--rdl);border:none;color:var(--rd);font-family:var(--fb);font-size:13px;font-weight:600;cursor:pointer}
+.fc-yes{flex:1;max-width:180px;padding:10px;border-radius:10px;background:var(--sgl);border:none;color:var(--sgh);font-family:var(--fb);font-size:13px;font-weight:600;cursor:pointer}
+.pomo-circle{width:180px;height:180px;margin:0 auto 20px;position:relative}
+.pomo-circle svg{transform:rotate(-90deg)}
+.pomo-cen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.pomo-time{font-family:var(--ff);font-size:32px;font-weight:300;color:var(--t1)}
+.pomo-ph{font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--t3);margin-top:4px}
+.pomo-start{background:var(--am);color:#1A0E00;border:none;border-radius:10px;padding:10px 30px;font-family:var(--fb);font-size:13px;font-weight:600;cursor:pointer;display:block;margin:0 auto}
+
+.chat-side{padding:20px;display:flex;flex-direction:column;height:100%}
+.chat-hd{display:flex;align-items:center;gap:8px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--bd)}
+.chat-online{width:8px;height:8px;border-radius:50%;background:#52B868;box-shadow:0 0 6px #52B868}
+.chat-hd span{font-size:13px;font-weight:600}
+.chat-msgs{flex:1;display:flex;flex-direction:column;gap:10px;overflow-y:auto}
+.chat-msg{max-width:90%}
+.chat-msg.u{align-self:flex-end}
+.chat-bbl{padding:10px 14px;border-radius:11px;font-size:12.5px;line-height:1.6}
+.chat-msg.u .chat-bbl{background:var(--am);color:#1A0800;border-bottom-right-radius:3px}
+.chat-msg.a .chat-bbl{background:var(--s2);border:1px solid var(--bd);color:var(--t1);border-bottom-left-radius:3px}
+
+/* SCENE 6 — Gamification */
+#s6 .gami-wrap{flex:1;padding:28px 30px;background:var(--bg);overflow-y:auto}
+.gami-hero{background:linear-gradient(140deg,var(--s2),var(--s3));border:1px solid var(--bd2);border-radius:18px;padding:30px 36px;margin-bottom:22px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden}
+.gami-hero::after{content:'';position:absolute;top:-40px;right:-40px;width:220px;height:220px;background:radial-gradient(rgba(200,134,30,.12),transparent 70%)}
+.gami-hero h2{font-family:var(--ff);font-size:32px;font-weight:300}
+.gami-hero h2 em{font-style:italic;color:var(--amh)}
+.gami-hero p{font-size:13px;color:var(--t2);margin-top:4px}
+.lvl-badge{background:var(--am);color:#1A0E00;padding:8px 16px;border-radius:8px;font-size:14px;font-weight:700;font-family:var(--ff)}
+.xp-big{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--t2)}
+.xp-big strong{color:var(--amh);font-size:22px}
+.xp-bigbar{width:200px;height:8px;background:var(--s1);border-radius:4px;overflow:hidden}
+.xp-bigfill{height:100%;width:92%;background:linear-gradient(90deg,var(--am),var(--amh));border-radius:4px;animation:fillBar 1.4s ease both}
+
+.gami-badges{display:flex;gap:10px;margin-bottom:22px}
+.gbadge{background:var(--s1);border:1px solid var(--bd2);border-radius:12px;padding:14px 20px;display:flex;flex-direction:column;align-items:center;gap:5px;flex:1}
+.gbadge .gico{font-size:22px}
+.gbadge .gtitle{font-size:12px;font-weight:600;color:var(--t1)}
+.gbadge .gsub{font-size:10.5px;color:var(--t3)}
+
+.live-full{background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:20px 24px}
+.live-full-hd{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.live-full-hd h4{font-family:var(--ff);font-size:16px;font-weight:300}
+.live-full-hd span{font-size:12px;color:var(--t3)}
+.avatars{display:flex;flex-wrap:wrap;gap:8px}
+.avatar{width:42px;height:42px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;position:relative}
+.avatar::after{content:'';position:absolute;width:9px;height:9px;background:#52B868;border-radius:50%;bottom:-2px;right:-2px;border:2px solid var(--bg);box-shadow:0 0 5px #52B868}
+
+/* SCENE 7 — Panic Mode */
+#s7 .panic-wrap{flex:1;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;position:relative}
+#s7 .panic-wrap::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 600px 400px at center,rgba(184,64,64,.07),transparent 70%)}
+.panic-timer{font-family:var(--ff);font-size:90px;font-weight:300;line-height:1;color:var(--rd);animation:timerPulse 1s infinite}
+@keyframes timerPulse{0%,100%{text-shadow:0 0 0 rgba(184,64,64,0)}50%{text-shadow:0 0 30px rgba(184,64,64,.5)}}
+.panic-sub{font-size:13px;color:var(--t3);margin-bottom:24px;letter-spacing:.04em}
+.panic-card{width:560px;background:var(--s2);border:2px solid var(--rd);border-radius:18px;padding:36px;text-align:center;animation:cardGlow 1s infinite alternate;margin-bottom:20px}
+@keyframes cardGlow{from{box-shadow:0 0 0 rgba(184,64,64,0)}to{box-shadow:0 0 25px rgba(184,64,64,.3)}}
+.panic-card .pk-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:14px;font-weight:700}
+.panic-card .pk-q{font-size:20px;font-weight:600;color:var(--t1);line-height:1.4}
+.panic-acts{display:flex;gap:14px}
+.pk-no{flex:1;max-width:200px;padding:12px;border-radius:11px;background:var(--rdl);border:1.5px solid var(--rd);color:var(--rd);font-family:var(--fb);font-size:14px;font-weight:600;cursor:pointer}
+.pk-yes{flex:1;max-width:200px;padding:12px;border-radius:11px;background:var(--sgl);border:1.5px solid var(--sg);color:var(--sgh);font-family:var(--fb);font-size:14px;font-weight:600;cursor:pointer}
+.panic-hint{font-size:12px;color:var(--t3);margin-top:12px}
+
+/* ── CALLOUT ANNOTATIONS ── */
+.annotation{position:absolute;z-index:100;animation:annotate .5s ease both;pointer-events:none}
+@keyframes annotate{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
+.ann-card{background:rgba(14,13,10,.92);border:1px solid var(--amh);border-radius:11px;padding:10px 16px;display:flex;align-items:center;gap:10px;backdrop-filter:blur(10px)}
+.ann-dot{width:10px;height:10px;border-radius:50%;background:var(--amh);box-shadow:0 0 10px rgba(232,168,64,.7);flex-shrink:0}
+.ann-t{font-size:13px;font-weight:600;color:var(--t1);white-space:nowrap}
+.ann-s{font-size:11px;color:var(--t3);margin-top:1px}
+.ann-line{position:absolute;pointer-events:none}
+
+/* ── BOTTOM BAR ── */
+#bottom{height:64px;display:flex;align-items:center;padding:0 80px;position:relative;z-index:20;justify-content:space-between;flex-shrink:0;border-top:1px solid var(--bd)}
+.progress{display:flex;align-items:center;gap:12px}
+.prog-dots{display:flex;gap:8px}
+.prog-dot{width:8px;height:8px;border-radius:50%;background:var(--s3);transition:all .3s}
+.prog-dot.active{width:24px;border-radius:4px;background:var(--am)}
+.prog-dot.done{background:var(--t3)}
+.prog-label{font-size:11.5px;color:var(--t3);letter-spacing:.04em}
+.nav-hint{font-size:12px;color:var(--t3);display:flex;align-items:center;gap:18px}
+.hint-key{background:var(--s2);border:1px solid var(--bd2);border-radius:6px;padding:3px 10px;font-size:11px;color:var(--t2);font-family:monospace}
+.flowly-mark{font-family:var(--ff);font-size:16px;color:var(--t3);font-weight:300;display:flex;align-items:center;gap:8px}
+.flowly-mark .lgo{width:20px;height:20px;background:linear-gradient(135deg,var(--am),var(--amh));border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px}
+
+/* ── SPEAKER NOTES ── */
+#notes{position:fixed;bottom:0;left:0;right:0;background:rgba(10,9,7,.96);border-top:1px solid var(--am);padding:20px 80px;z-index:9999;transform:translateY(100%);transition:transform .35s ease;max-height:240px;overflow-y:auto}
+#notes.show{transform:none}
+#notes h3{font-family:var(--ff);font-size:15px;color:var(--amh);margin-bottom:8px;font-weight:300}
+#notes p{font-size:13.5px;color:var(--t2);line-height:1.72}
+#notes p strong{color:var(--t1)}
+
+/* ── TRANSITIONS ── */
+.scene-enter{animation:sceneIn .6s ease both}
+.scene-exit{animation:sceneOut .4s ease both}
+@keyframes sceneIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes sceneOut{from{opacity:1}to{opacity:0}}
 </style>
 </head>
 <body>
 
-<!-- ══════════════════════════ NAV ══════════════════════════ -->
-<nav id="nav">
-  <a href="#" class="nav-logo" data-en="TULY" data-es="TULY">TULY</a>
-  <div class="nav-menu" id="nav-menu">
-    <a href="#shop" data-en="Shop" data-es="Tienda">Shop</a>
-    <a href="#story" data-en="Story" data-es="Historia">Story</a>
-    <a href="#bespoke" data-en="Bespoke" data-es="A Medida">Bespoke</a>
-    <a href="#impact" data-en="Impact" data-es="Impacto">Impact</a>
-    <a href="#contact" data-en="Contact" data-es="Contacto">Contact</a>
-    <button class="nav-lang" id="lang-btn" onclick="toggleLang()">ES</button>
-  </div>
-  <button class="nav-burger" id="burger" onclick="toggleMobile()" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
+<div id="scale-root">
+<!-- AMBIENT -->
+<div id="glow"></div>
 
-<!-- Mobile Menu -->
-<div class="mobile-menu" id="mobile-menu">
-  <a href="#shop" onclick="closeMobile()" data-en="Shop" data-es="Tienda">Shop</a>
-  <a href="#story" onclick="closeMobile()" data-en="Story" data-es="Historia">Story</a>
-  <a href="#bespoke" onclick="closeMobile()" data-en="Bespoke" data-es="A Medida">Bespoke</a>
-  <a href="#impact" onclick="closeMobile()" data-en="Impact" data-es="Impacto">Impact</a>
-  <a href="#contact" onclick="closeMobile()" data-en="Contact" data-es="Contacto">Contact</a>
-</div>
+<!-- STAGE -->
+<div id="stage">
 
-<!-- ══════════════════════════ HERO ══════════════════════════ -->
-<section class="hero" id="top">
-  <div class="hero-bg"></div>
-  <div class="hero-fibers" aria-hidden="true">
-    <svg viewBox="0 0 500 800" xmlns="http://www.w3.org/2000/svg">
-      <path d="M60 0 Q140 200 60 400 Q-20 600 60 800" stroke="#C4A882" stroke-width="1.5" fill="none"/>
-      <path d="M130 0 Q210 200 130 400 Q50 600 130 800" stroke="#B89B6A" stroke-width="1" fill="none"/>
-      <path d="M200 0 Q280 200 200 400 Q120 600 200 800" stroke="#C4A882" stroke-width="2" fill="none"/>
-      <path d="M270 0 Q350 200 270 400 Q190 600 270 800" stroke="#8A9E8C" stroke-width="1" fill="none"/>
-      <path d="M340 0 Q420 200 340 400 Q260 600 340 800" stroke="#C47A5A" stroke-width="1.5" fill="none"/>
-      <path d="M410 0 Q490 200 410 400 Q330 600 410 800" stroke="#B89B6A" stroke-width="1" fill="none"/>
-      <path d="M480 0 Q560 200 480 400 Q400 600 480 800" stroke="#C4A882" stroke-width="1" fill="none"/>
-      <path d="M0 120 Q250 80 500 120" stroke="#FAF7F2" stroke-width=".7" fill="none" opacity=".35"/>
-      <path d="M0 240 Q250 280 500 240" stroke="#FAF7F2" stroke-width=".7" fill="none" opacity=".25"/>
-      <path d="M0 360 Q250 320 500 360" stroke="#C4A882" stroke-width=".7" fill="none" opacity=".35"/>
-      <path d="M0 480 Q250 520 500 480" stroke="#FAF7F2" stroke-width=".7" fill="none" opacity=".2"/>
-      <path d="M0 600 Q250 560 500 600" stroke="#C4A882" stroke-width=".7" fill="none" opacity=".3"/>
-      <path d="M0 720 Q250 760 500 720" stroke="#FAF7F2" stroke-width=".7" fill="none" opacity=".2"/>
-    </svg>
-  </div>
-  <div class="hero-content">
-    <p class="hero-eyebrow" data-en="Guatemala · Handcrafted Luxury" data-es="Guatemala · Lujo Artesanal">Guatemala · Handcrafted Luxury</p>
-    <h1 class="hero-title" data-en="Conscious<br><em>Artisan</em><br>Luxury" data-es="Lujo<br><em>Artesanal</em><br>Consciente">Conscious<br><em>Artisan</em><br>Luxury</h1>
-    <p class="hero-sub" data-en="Natural Fibers · Fashion · Home. Handcrafted by master women artisans from rural Guatemala — carrying heritage, culture, and story into contemporary luxury." data-es="Fibras naturales · Moda · Hogar. Hecho a mano por maestras artesanas de Guatemala rural — llevando herencia, cultura e historia al lujo contemporáneo.">Natural Fibers · Fashion · Home. Handcrafted by master women artisans from rural Guatemala — carrying heritage, culture, and story into contemporary luxury.</p>
-    <div class="hero-btns">
-      <a href="#shop" class="btn btn-primary" data-en="Discover Collections" data-es="Ver Colecciones">Discover Collections</a>
-      <a href="#bespoke" class="btn btn-outline" data-en="Bespoke Projects" data-es="Proyectos a Medida">Bespoke Projects</a>
-      <a href="#story" class="btn btn-outline" data-en="Our Story" data-es="Nuestra Historia">Our Story</a>
-    </div>
-  </div>
-  <div class="hero-scroll-hint" aria-hidden="true">
-    <span>Scroll</span>
-    <div class="scroll-bar"></div>
-  </div>
-</section>
+  <!-- LEFT PANEL (changes per scene) -->
+  <div id="left"></div>
 
-<!-- TICKER -->
-<div class="ticker" aria-hidden="true">
-  <div class="ticker-inner">
-    <span>Banana Fiber</span><span class="sep">✦</span><span>Pineapple Fiber</span><span class="sep">✦</span>
-    <span>Tule</span><span class="sep">✦</span><span>Maguey</span><span class="sep">✦</span>
-    <span data-en="Women-Led" data-es="Liderado por Mujeres">Women-Led</span><span class="sep">✦</span>
-    <span>Guatemala</span><span class="sep">✦</span>
-    <span data-en="Heritage Luxury" data-es="Lujo Patrimonial">Heritage Luxury</span><span class="sep">✦</span>
-    <span>Bespoke</span><span class="sep">✦</span>
-    <span data-en="Ethical · Sustainable" data-es="Ético · Sostenible">Ethical · Sustainable</span><span class="sep">✦</span>
-    <span>Banana Fiber</span><span class="sep">✦</span><span>Pineapple Fiber</span><span class="sep">✦</span>
-    <span>Tule</span><span class="sep">✦</span><span>Maguey</span><span class="sep">✦</span>
-    <span>Women-Led</span><span class="sep">✦</span><span>Guatemala</span><span class="sep">✦</span>
-    <span>Heritage Luxury</span><span class="sep">✦</span><span>Bespoke</span><span class="sep">✦</span>
-    <span>Ethical · Sustainable</span><span class="sep">✦</span>
-  </div>
-</div>
-
-<!-- ══════════════════════════ SHOP ══════════════════════════ -->
-<section class="section shop" id="shop">
-  <div class="section-inner">
-    <span class="eyebrow reveal" data-en="Collections" data-es="Colecciones">Collections</span>
-    <h2 class="heading reveal" data-en="Crafted to be<br><em>collected</em>" data-es="Hecho para ser<br><em>coleccionado</em>">Crafted to be<br><em>collected</em></h2>
-    <div class="shop-tabs reveal">
-      <button class="tab active" onclick="filterProducts('all',this)" data-en="All" data-es="Todo">All</button>
-      <button class="tab" onclick="filterProducts('fashion',this)" data-en="Fashion" data-es="Moda">Fashion</button>
-      <button class="tab" onclick="filterProducts('home',this)" data-en="Home" data-es="Hogar">Home</button>
-      <button class="tab" onclick="filterProducts('bespoke',this)" data-en="Bespoke" data-es="A Medida">Bespoke</button>
-    </div>
-    <div class="products-grid" id="products-grid"></div>
-  </div>
-</section>
-
-<!-- ══════════════════════════ STORY ══════════════════════════ -->
-<section class="section story" id="story">
-  <div class="section-inner">
-    <div class="story-grid">
-      <div>
-        <span class="eyebrow reveal" data-en="Brand Heritage" data-es="Herencia de Marca">Brand Heritage</span>
-        <h2 class="heading reveal" data-en="Where ancient<br><em>hands</em> meet<br>contemporary vision" data-es="Donde las manos<br><em>ancestrales</em><br>se encuentran con la visión contemporánea">Where ancient<br><em>hands</em> meet<br>contemporary vision</h2>
-        <p class="body-text reveal" data-en="TULY was born in Guatemala, where women from rural communities transform native fibers into extraordinary objects of luxury. Each piece is woven with generations of ancestral knowledge — creating something that cannot be replicated by machines, only by hands that carry memory." data-es="TULY nació en Guatemala, donde mujeres de comunidades rurales transforman fibras nativas en extraordinarios objetos de lujo. Cada pieza está tejida con generaciones de conocimiento ancestral, creando algo que las máquinas no pueden replicar, solo las manos que portan la memoria.">TULY was born in Guatemala, where women from rural communities transform native fibers into extraordinary objects of luxury. Each piece is woven with generations of ancestral knowledge — creating something that cannot be replicated by machines, only by hands that carry memory.</p>
-        <div class="story-stats reveal">
-          <div>
-            <span class="stat-num" data-count="85">85+</span>
-            <span class="stat-label" data-en="Women Artisans" data-es="Artesanas">Women Artisans</span>
-          </div>
-          <div>
-            <span class="stat-num" data-count="12">12</span>
-            <span class="stat-label" data-en="Communities" data-es="Comunidades">Communities</span>
-          </div>
-          <div>
-            <span class="stat-num" data-count="5">5</span>
-            <span class="stat-label" data-en="Native Fibers" data-es="Fibras Nativas">Native Fibers</span>
-          </div>
+  <!-- RIGHT: BROWSER -->
+  <div id="right">
+    <div class="browser">
+      <!-- Browser chrome -->
+      <div class="bbar">
+        <div class="bdot r"></div><div class="bdot y"></div><div class="bdot g"></div>
+        <div class="burl" id="burl">flowly-projekt.vercel.app</div>
+      </div>
+      <!-- App Nav (always visible) -->
+      <div class="anav">
+        <div class="abrand" style="gap:10px"><div class="alogo" style="background:none;padding:0"><svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" stop-color="#C8921A"/>
+<stop offset="45%" stop-color="#F0CC5A"/>
+<stop offset="100%" stop-color="#B07814"/>
+</linearGradient>
+</defs>
+<rect width="28" height="28" rx="6" fill="#0C0B09"/>
+<path d="M5 18 C5 14 8 10 12 10 C14 10 15 11.5 14.5 13 C14 14.5 12 15 11 16 C9.5 17.5 9.5 20 12 20 C14.5 20 16 18 17 16" stroke="url(#lg)" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+<path d="M13 13 C15 10.5 18 9.5 20 10.5 C22 11.5 22.5 14 21 15.5" stroke="url(#lg)" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+<path d="M17 15 L19.5 17.5 L24 12" stroke="url(#lg)" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div>flowly</div>
+        <div class="atabs">
+          <div class="atab" id="nav-dash">DASHBOARD</div>
+          <div class="atab" id="nav-plan">LERNPLAN</div>
+        </div>
+        <div class="aright">
+          <div class="pill gold">🔥 3 Tage</div>
+          <div class="pill" id="nav-xp">Lv 1 · 460 XP</div>
+          <div class="pill orange">+ Fach</div>
         </div>
       </div>
-      <div class="story-visual reveal reveal-delay-2">
-        <div class="story-block story-block-1"><p data-en="Fashion" data-es="Moda">Fashion</p></div>
-        <div class="story-block story-block-2"><p data-en="Home" data-es="Hogar">Home</p></div>
-        <div class="story-block story-block-3"><p data-en="Bespoke" data-es="A Medida">Bespoke</p></div>
-      </div>
-    </div>
-  </div>
-</section>
+      <!-- App Content -->
+      <div class="acontent" id="acontent">
 
-<!-- ══════════════════════════ BESPOKE ══════════════════════════ -->
-<section class="section bespoke" id="bespoke">
-  <div class="section-inner">
-    <div class="bespoke-grid">
-      <div>
-        <span class="eyebrow reveal" data-en="Bespoke Studio" data-es="Estudio a Medida">Bespoke Studio</span>
-        <h2 class="heading reveal" data-en="Design your<br><em>vision</em>" data-es="Diseña tu<br><em>visión</em>">Design your<br><em>vision</em></h2>
-        <p class="body-text reveal" data-en="TULY operates as a design house for collectors, interior designers, hotels, and fashion houses seeking rare, one-of-a-kind objects that cannot be purchased — only commissioned." data-es="TULY opera como una maison de diseño para coleccionistas, diseñadores de interiores, hoteles y casas de moda que buscan objetos únicos que no se compran, solo se encargan.">TULY operates as a design house for collectors, interior designers, hotels, and fashion houses seeking rare, one-of-a-kind objects that cannot be purchased — only commissioned.</p>
-        <div class="bespoke-list reveal">
-          <div class="bespoke-item">
-            <div class="bespoke-dot"></div>
-            <div>
-              <div class="bespoke-item-title" data-en="Custom Colors & Materials" data-es="Colores y Materiales Personalizados">Custom Colors & Materials</div>
-              <div class="bespoke-item-desc" data-en="Select from our fiber archive or propose your own palette. Every thread is dyed by hand." data-es="Elige de nuestro archivo de fibras o propón tu propia paleta. Cada hilo se tiñe a mano.">Select from our fiber archive or propose your own palette. Every thread is dyed by hand.</div>
+        <!-- S1: Dashboard -->
+        <div class="scene" id="s1">
+          <div class="dash-w">
+            <div class="hero-band">
+              <div>
+                <h2>Guten Morgen, <em>Lernende.</em></h2>
+                <p>Heute schon 172 Minuten gelernt.</p>
+              </div>
+              <div class="hero-xp">
+                <div class="xp-row"><span>Level <strong>1</strong></span><span><strong>460</strong> / 500 XP</span></div>
+                <div class="xp-track"><div class="xp-fill"></div></div>
+                <div class="badges">
+                  <div class="badge gold">🔥 3d Streak</div>
+                  <div class="badge green">🃏 50 Karten</div>
+                  <div class="badge green">⏱ 100 Min</div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="bespoke-item">
-            <div class="bespoke-dot"></div>
-            <div>
-              <div class="bespoke-item-title" data-en="One-of-One Commissions" data-es="Encargos Únicos">One-of-One Commissions</div>
-              <div class="bespoke-item-desc" data-en="Heirloom accessories, sculptural lamps, woven chandeliers — designed once, forever yours." data-es="Accesorios de herencia, lámparas escultóricas, candelabros tejidos — diseñados una vez, tuyos para siempre.">Heirloom accessories, sculptural lamps, woven chandeliers — designed once, forever yours.</div>
+            <div class="stat-grid">
+              <div class="stat-box"><div class="stat-n" style="color:var(--amh)">172</div><div class="stat-l">Lernminuten</div></div>
+              <div class="stat-box"><div class="stat-n">89</div><div class="stat-l">Karten geübt</div></div>
+              <div class="stat-box"><div class="stat-n">7</div><div class="stat-l">Konzepte</div></div>
+              <div class="stat-box"><div class="stat-n">2</div><div class="stat-l">Fächer</div></div>
             </div>
-          </div>
-          <div class="bespoke-item">
-            <div class="bespoke-dot"></div>
-            <div>
-              <div class="bespoke-item-title" data-en="Interior & Hotel Projects" data-es="Proyectos de Interiores y Hoteles">Interior & Hotel Projects</div>
-              <div class="bespoke-item-desc" data-en="Large-scale installations for hospitality, residential, and commercial spaces worldwide." data-es="Instalaciones a gran escala para hostelería, espacios residenciales y comerciales en todo el mundo.">Large-scale installations for hospitality, residential, and commercial spaces worldwide.</div>
+            <div style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-weight:700">🟢 Online — 23 Kommilitonen lernen gerade</div>
+            <div class="live-row">
+              <div class="live-chip"><div class="ldot"></div><div><div style="font-weight:600;font-size:11.5px">Jan I.</div><div style="font-size:10px;color:var(--t3)">KuL</div></div></div>
+              <div class="live-chip"><div class="ldot"></div><div><div style="font-weight:600;font-size:11.5px">Emily E.</div><div style="font-size:10px;color:var(--t3)">WINF</div></div></div>
+              <div class="live-chip"><div class="ldot"></div><div><div style="font-weight:600;font-size:11.5px">Matteo J.</div><div style="font-size:10px;color:var(--t3)">Statistik</div></div></div>
+              <div class="live-chip"><div class="ldot"></div><div><div style="font-weight:600;font-size:11.5px">Julia I.</div><div style="font-size:10px;color:var(--t3)">WiMa</div></div></div>
             </div>
-          </div>
-          <div class="bespoke-item">
-            <div class="bespoke-dot"></div>
-            <div>
-              <div class="bespoke-item-title" data-en="Fashion Collaborations" data-es="Colaboraciones de Moda">Fashion Collaborations</div>
-              <div class="bespoke-item-desc" data-en="Co-creation with designers and fashion houses seeking authentic artisan craftsmanship." data-es="Co-creación con diseñadores y casas de moda que buscan artesanía auténtica.">Co-creation with designers and fashion houses seeking authentic artisan craftsmanship.</div>
+            <div style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-weight:700">⚠ Dringend wiederholen</div>
+            <div style="background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:12px 18px;margin-bottom:16px;display:flex;align-items:center;gap:12px">
+              <div style="width:8px;height:8px;border-radius:50%;background:var(--rd)"></div>
+              <div style="flex:1;font-size:12.5px;font-weight:500">Digitale Transformation</div>
+              <div style="font-size:11px;color:var(--t3)">Wirtschaftsinformatik</div>
+              <div style="width:60px;height:3px;background:var(--s3);border-radius:2px;overflow:hidden"><div style="width:18%;height:100%;background:var(--rd);border-radius:2px"></div></div>
+            </div>
+            <div style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-weight:700">Meine Fächer</div>
+            <div class="subj-grid">
+              <div class="scard am"><span class="scard-ico">💻</span><div class="scard-t">Wirtschaftsinformatik</div><div class="scard-s">Informatik · 5 Konzepte</div><div class="scard-bar"><div class="scard-fill" style="width:49%"></div></div><div class="scard-info"><span>127 Min</span><span>49%</span></div></div>
+              <div class="scard sg"><span class="scard-ico">📊</span><div class="scard-t">Kosten- & Leistungsrechnung</div><div class="scard-s">BWL · 2 Konzepte</div><div class="scard-bar"><div class="scard-fill" style="width:56%"></div></div><div class="scard-info"><span>45 Min</span><span>56%</span></div></div>
+              <div class="scard" style="border-style:dashed;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--t3);font-size:12px;cursor:pointer"><span style="font-size:28px">+</span>Neues Fach</div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- FORM — replace YOUR_FORM_ID with your Formspree ID -->
-      <div class="reveal reveal-delay-1">
-        <form class="form-box" id="bespoke-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-          <h3 data-en="Begin Your Commission" data-es="Comienza Tu Encargo">Begin Your Commission</h3>
-          <div class="form-group">
-            <label data-en="Your Name" data-es="Tu Nombre">Your Name</label>
-            <input type="text" name="name" placeholder="Full name" required>
+        <!-- S2: Material Hub -->
+        <div class="scene" id="s2" style="flex-direction:column">
+          <div class="app-hd">
+            <div class="cico">!</div>
+            <div><div class="ctit">ERP-Systeme</div><div class="csub">Systeme · ●●●○○ · ← Zurück zur Mindmap</div></div>
           </div>
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" name="email" placeholder="your@email.com" required>
+          <div class="ctabs-row">
+            <div class="ctab on">📁 Dateien</div>
+            <div class="ctab">📄 Zusammenfassung</div>
+            <div class="ctab">🃏 Karteikarten</div>
+            <div class="ctab">⚡ Panik-Modus</div>
+            <div class="ctab">⏱ Pomodoro</div>
           </div>
-          <div class="form-group">
-            <label data-en="Project Type" data-es="Tipo de Proyecto">Project Type</label>
-            <select name="project_type" required>
-              <option value="" data-en="Select…" data-es="Selecciona…">Select…</option>
-              <option data-en="Fashion — Bag or Accessory" data-es="Moda — Bolso o Accesorio">Fashion — Bag or Accessory</option>
-              <option data-en="Home — Lamp or Object" data-es="Hogar — Lámpara u Objeto">Home — Lamp or Object</option>
-              <option data-en="Interior Installation" data-es="Instalación Interior">Interior Installation</option>
-              <option data-en="Hotel or Hospitality" data-es="Hotel u Hostelería">Hotel or Hospitality</option>
-              <option data-en="Fashion Collaboration" data-es="Colaboración de Moda">Fashion Collaboration</option>
-              <option data-en="Other" data-es="Otro">Other</option>
-            </select>
+          <div class="body-area" style="display:flex;gap:20px;flex:1">
+            <div style="flex:1">
+              <div class="dz">
+                <div class="dz-shine"></div>
+                <div class="dz-ico">📁</div>
+                <div class="dz-t">PDF, TXT, MD hochladen oder hierhin ziehen</div>
+                <div class="dz-s">Direkt im KI-Tutor nutzbar</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="background:var(--s2);border:1px solid var(--bd2);border-radius:9px;padding:11px 16px;display:flex;align-items:center;gap:12px">
+                  <span style="font-size:18px">📄</span>
+                  <div style="flex:1"><div style="font-size:12.5px;font-weight:500">ERP_Skript_WiSe24.pdf</div><div style="font-size:10.5px;color:var(--t3)">245 KB · gerade hochgeladen</div></div>
+                  <button style="background:var(--aml);border:none;border-radius:6px;padding:5px 12px;font-family:var(--fb);font-size:11.5px;color:var(--amh);cursor:pointer;font-weight:600">Im Chat nutzen</button>
+                </div>
+              </div>
+            </div>
+            <div style="width:300px;background:var(--s1);border-left:1px solid var(--bd);padding:20px;display:flex;flex-direction:column">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--bd)"><div style="width:8px;height:8px;border-radius:50%;background:#52B868;box-shadow:0 0 6px #52B868"></div><span style="font-size:12.5px;font-weight:600">KI-Tutor</span><small style="margin-left:auto;font-size:10.5px;color:var(--t3)">ERP-Systeme</small></div>
+              <div style="flex:1;font-size:12.5px;color:var(--t3);line-height:1.7">Ich bin immer hier.<br>Stell mir eine Frage zu <strong style="color:var(--t1)">ERP-Systeme</strong>. 🤖</div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
+                <button style="background:var(--s2);border:none;border-radius:7px;padding:4px 9px;font-family:var(--fb);font-size:11px;color:var(--t2);cursor:pointer">Erkläre ERP einfach</button>
+                <button style="background:var(--s2);border:none;border-radius:7px;padding:4px 9px;font-family:var(--fb);font-size:11px;color:var(--t2);cursor:pointer">🚨 Klausurfragen</button>
+              </div>
+              <div style="display:flex;gap:8px"><input style="flex:1;background:var(--s2);border:1px solid var(--bd2);border-radius:8px;padding:8px 12px;font-family:var(--fb);font-size:12px;color:var(--t1);outline:none" placeholder="Frage stellen…"/><button style="background:var(--am);color:#1A0800;border:none;border-radius:8px;padding:8px 14px;font-family:var(--fb);font-size:12px;cursor:pointer;font-weight:600">→</button></div>
+            </div>
           </div>
-          <div class="form-group">
-            <label data-en="Your Vision" data-es="Tu Visión">Your Vision</label>
-            <textarea name="message" placeholder="Describe your project, scale, inspiration…" required></textarea>
+        </div>
+
+        <!-- S3: KI Extraction -->
+        <div class="scene" id="s3" style="flex-direction:column">
+          <div style="padding:20px 30px;background:var(--s1);border-bottom:1px solid var(--bd);font-size:12px;color:var(--t3)">KI-Strukturierung · Automatische Konzept-Extraktion</div>
+          <div class="ki-wrap">
+            <div style="text-align:center">
+              <div style="font-family:var(--ff);font-size:22px;font-weight:300;color:var(--t1);margin-bottom:6px">KI analysiert Inhalt <span style="color:var(--amh)">ERP_Skript.pdf</span></div>
+              <div style="font-size:13px;color:var(--t2);margin-bottom:36px">Extrahiere 6–12 Schlüsselkonzepte · Generiere Zusammenfassungen &amp; Karteikarten</div>
+              <div class="ki-flow">
+                <div class="ki-box">
+                  <div class="ico">📄</div>
+                  <div class="lbl">PDF-Upload</div>
+                  <div class="sub">245 KB · 48 Seiten</div>
+                </div>
+                <div class="ki-arrow">→</div>
+                <div class="ki-box active">
+                  <div class="ico" style="animation:spin 1s linear infinite">⚙️</div>
+                  <div class="lbl">KI verarbeitet</div>
+                  <div class="sub">claude-sonnet-4</div>
+                </div>
+                <div class="ki-arrow">→</div>
+                <div>
+                  <div style="font-size:12px;color:var(--amh);font-weight:600;margin-bottom:12px;text-align:center">8 Konzepte erkannt</div>
+                  <div class="ki-concepts">
+                    <div class="ki-concept"><div class="kc-dot" style="background:var(--am)"></div><div><div class="kc-t">ERP-Systeme</div><div class="kc-s">+ Zusammenfassung + 3 Karten</div></div></div>
+                    <div class="ki-concept"><div class="kc-dot" style="background:var(--sg)"></div><div><div class="kc-t">CRM-Integration</div><div class="kc-s">+ Zusammenfassung + 3 Karten</div></div></div>
+                    <div class="ki-concept"><div class="kc-dot" style="background:var(--rd)"></div><div><div class="kc-t">Supply Chain</div><div class="kc-s">+ Zusammenfassung + 3 Karten</div></div></div>
+                    <div class="ki-concept"><div class="kc-dot" style="background:var(--lv)"></div><div><div class="kc-t">BPMN &amp; Prozesse</div><div class="kc-s">+ Zusammenfassung + 3 Karten</div></div></div>
+                    <div class="ki-concept"><div class="kc-dot" style="background:var(--am)"></div><div><div class="kc-t">Digitale Transf.</div><div class="kc-s">+ Zusammenfassung + 3 Karten</div></div></div>
+                    <div class="ki-concept"><div class="kc-dot" style="background:var(--sg)"></div><div><div class="kc-t">SAP S/4HANA</div><div class="kc-s">+ Zusammenfassung + 3 Karten</div></div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <button type="submit" class="btn-submit" data-en="Design Your Vision →" data-es="Diseña Tu Visión →">Design Your Vision →</button>
-          <div class="form-success" id="form-success">
-            <p data-en="Thank you. We'll be in touch within 48 hours." data-es="Gracias. Te contactaremos en 48 horas.">Thank you. We'll be in touch within 48 hours.</p>
+        </div>
+
+        <!-- S4: Mindmap -->
+        <div class="scene" id="s4" style="flex-direction:column">
+          <div style="padding:14px 24px;background:var(--s1);border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:14px">
+            <span style="font-size:20px">💻</span>
+            <div><div style="font-family:var(--ff);font-size:17px">Wirtschaftsinformatik</div><div style="font-size:11px;color:var(--t3)">Informatik · 5 Konzepte — Konzept anklicken</div></div>
+            <div style="margin-left:auto;background:var(--s2);border:1px solid var(--bd2);border-radius:8px;padding:5px 12px;font-size:11px;color:var(--t2)">← Dashboard</div>
           </div>
-        </form>
-      </div>
-    </div>
+          <div class="ki-wrap" style="position:relative">
+            <svg width="700" height="540" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 540">
+              <defs>
+                <filter id="glow-sg"><feGaussianBlur stdDeviation="3" result="blur"/><feComposite in="SourceGraphic" in2="blur" operator="over"/></filter>
+                <filter id="glow-rd"><feGaussianBlur stdDeviation="4" result="blur"/><feComposite in="SourceGraphic" in2="blur" operator="over"/></filter>
+              </defs>
+              <!-- Lines -->
+              <line x1="350" y1="270" x2="350" y2="100" stroke="rgba(237,229,207,.15)" stroke-width="1.5"/>
+              <line x1="350" y1="270" x2="560" y2="170" stroke="rgba(237,229,207,.15)" stroke-width="1.5"/>
+              <line x1="350" y1="270" x2="560" y2="380" stroke="rgba(237,229,207,.15)" stroke-width="1.5"/>
+              <line x1="350" y1="270" x2="140" y2="380" stroke="rgba(237,229,207,.15)" stroke-width="1.5"/>
+              <line x1="350" y1="270" x2="250" y2="430" stroke="rgba(237,229,207,.15)" stroke-width="1.5"/>
+              <!-- Center -->
+              <ellipse cx="350" cy="270" rx="72" ry="32" fill="#1C1A16" stroke="rgba(232,168,64,.5)" stroke-width="1.5"/>
+              <text x="350" y="274" text-anchor="middle" font-family="Fraunces,serif" font-size="13" fill="#E8A840" font-weight="300">Wirtschafts-</text>
+              <text x="350" y="288" text-anchor="middle" font-family="Fraunces,serif" font-size="13" fill="#E8A840" font-weight="300">informatik</text>
+              <!-- ERP 100% green ring -->
+              <circle cx="350" cy="100" r="48" fill="#131210" stroke="rgba(114,184,124,.2)" stroke-width="2"/>
+              <circle cx="350" cy="100" r="44" fill="none" stroke="#72B87C" stroke-width="4" stroke-linecap="round" stroke-dasharray="276.5 0" transform="rotate(-90 350 100)" filter="url(#glow-sg)"/>
+              <text x="350" y="97" text-anchor="middle" font-family="Figtree,sans-serif" font-size="13" fill="#EDE5CF" font-weight="600">ERP</text>
+              <text x="350" y="112" text-anchor="middle" font-family="Figtree,sans-serif" font-size="11" fill="#72B87C">100%</text>
+              <!-- CRM 85% -->
+              <circle cx="560" cy="170" r="48" fill="#131210" stroke="rgba(114,184,124,.2)" stroke-width="2"/>
+              <circle cx="560" cy="170" r="44" fill="none" stroke="#72B87C" stroke-width="4" stroke-linecap="round" stroke-dasharray="234.4 41.9" transform="rotate(-90 560 170)"/>
+              <text x="560" y="167" text-anchor="middle" font-family="Figtree,sans-serif" font-size="12" fill="#EDE5CF" font-weight="600">CRM</text>
+              <text x="560" y="182" text-anchor="middle" font-family="Figtree,sans-serif" font-size="11" fill="#72B87C">85%</text>
+              <!-- BPMN 52% amber -->
+              <circle cx="560" cy="380" r="48" fill="#131210" stroke="rgba(200,134,30,.2)" stroke-width="2"/>
+              <circle cx="560" cy="380" r="44" fill="none" stroke="#E8A840" stroke-width="4" stroke-linecap="round" stroke-dasharray="143.8 132.5" transform="rotate(-90 560 380)"/>
+              <text x="560" y="377" text-anchor="middle" font-family="Figtree,sans-serif" font-size="12" fill="#EDE5CF" font-weight="600">BPMN</text>
+              <text x="560" y="392" text-anchor="middle" font-family="Figtree,sans-serif" font-size="11" fill="#E8A840">52%</text>
+              <!-- Digitale Transf 18% red -->
+              <circle cx="140" cy="380" r="48" fill="#131210" stroke="rgba(184,64,64,.25)" stroke-width="2"/>
+              <circle cx="140" cy="380" r="44" fill="none" stroke="#B84040" stroke-width="4" stroke-linecap="round" stroke-dasharray="49.7 226.6" transform="rotate(-90 140 380)" filter="url(#glow-rd)"/>
+              <text x="140" y="374" text-anchor="middle" font-family="Figtree,sans-serif" font-size="11" fill="#EDE5CF" font-weight="600">Digitale</text>
+              <text x="140" y="387" text-anchor="middle" font-family="Figtree,sans-serif" font-size="11" fill="#EDE5CF" font-weight="600">Transf.</text>
+              <text x="140" y="400" text-anchor="middle" font-family="Figtree,sans-serif" font-size="11" fill="#B84040">18%</text>
+              <!-- SCM 29% red -->
+              <circle cx="250" cy="430" r="48" fill="#131210" stroke="rgba(184,64,64,.2)" stroke-width="2"/>
+              <circle cx="250" cy="430" r="44" fill="none" stroke="#B84040" stroke-width="4" stroke-linecap="round" stroke-dasharray="80.1 196.2" transform="rotate(-90 250 430)"/>
+              <text x="250" y="425" text-anchor="middle" font-family="Figtree,sans-serif" font-size="12" fill="#EDE5CF" font-weight="600">Supply</text>
+              <text x="250" y="438" text-anchor="middle" font-family="Figtree,sans-serif" font-size="11" fill="#EDE5CF" font-weight="600">Chain</text>
+              <text x="250" y="453" text-anchor="middle" font-family="Figtree,sans-serif" font-size="11" fill="#B84040">29%</text>
+            </svg>
+            <!-- Legend -->
+            <div style="position:absolute;bottom:20px;left:30px;display:flex;gap:16px">
+              <div style="display:flex;align-items:center;gap:6px"><div style="width:10px;height:10px;border-radius:50%;background:#72B87C"></div><span style="font-size:11.5px;color:var(--t3)">Sicher &gt;70%</span></div>
+              <div style="display:flex;align-items:center;gap:6px"><div style="width:10px;height:10px;border-radius:50%;background:#E8A840"></div><span style="font-size:11.5px;color:var(--t3)">Üben 40–70%</span></div>
+              <div style="display:flex;align-items:center;gap:6px"><div style="width:10px;height:10px;border-radius:50%;background:#B84040"></div><span style="font-size:11.5px;color:var(--t3)">Kritisch &lt;40%</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- S5: Learning Modes / Karteikarten -->
+        <div class="scene" id="s5" style="flex-direction:column">
+          <div class="app-hd">
+            <div class="cico ok">✓</div>
+            <div><div class="ctit">ERP-Systeme</div><div class="csub">Systeme · ●●●○○</div></div>
+          </div>
+          <div class="ctabs-row">
+            <div class="ctab">📁 Dateien</div>
+            <div class="ctab">📄 Zusammenfassung</div>
+            <div class="ctab on">🃏 Karteikarten</div>
+            <div class="ctab">⚡ Panik-Modus</div>
+            <div class="ctab">⏱ Pomodoro</div>
+          </div>
+          <div style="flex:1;display:flex">
+            <div style="flex:1;padding:28px 30px;border-right:1px solid var(--bd)">
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;font-size:12px;color:var(--t2)">
+                <span style="font-weight:600;color:var(--t1)">1 / 3</span>
+                <div style="flex:1;height:4px;background:var(--s3);border-radius:2px;overflow:hidden"><div style="width:0%;height:100%;background:linear-gradient(90deg,var(--am),var(--amh));border-radius:2px"></div></div>
+                <span>—</span>
+              </div>
+              <div class="fc-card">
+                <div class="fc-lbl">Frage</div>
+                <div class="fc-q">Was bedeutet ERP?</div>
+                <div class="fc-hint">Tippen zum Aufdecken</div>
+              </div>
+              <div class="fc-actions">
+                <button class="fc-no">✗ Nicht gewusst</button>
+                <button class="fc-yes">✓ Gewusst</button>
+              </div>
+            </div>
+            <!-- Pomo preview -->
+            <div style="width:320px;padding:28px 24px;background:var(--s1);display:flex;flex-direction:column;align-items:center;border-right:1px solid var(--bd)">
+              <div style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--t3);font-weight:700;margin-bottom:18px">⏱ Pomodoro</div>
+              <div class="pomo-circle">
+                <svg width="180" height="180" viewBox="0 0 180 180">
+                  <circle cx="90" cy="90" r="72" stroke-width="7" stroke="#252320" fill="none"/>
+                  <circle cx="90" cy="90" r="72" stroke-width="7" stroke="#C8861E" fill="none" stroke-linecap="round" stroke-dasharray="452.4" stroke-dashoffset="0" style="transition:stroke-dashoffset .8s linear"/>
+                </svg>
+                <div class="pomo-cen"><div class="pomo-time">25:00</div><div class="pomo-ph">Fokus</div></div>
+              </div>
+              <div style="display:flex;gap:8px;margin-bottom:14px">
+                <button style="background:var(--s2);border:1px solid var(--bd2);border-radius:8px;padding:5px 12px;font-family:var(--fb);font-size:11.5px;color:var(--amh);cursor:pointer;background:var(--aml)">25 Min</button>
+                <button style="background:var(--s2);border:1px solid var(--bd2);border-radius:8px;padding:5px 12px;font-family:var(--fb);font-size:11.5px;color:var(--t2);cursor:pointer">45 Min</button>
+                <button style="background:var(--s2);border:1px solid var(--bd2);border-radius:8px;padding:5px 12px;font-family:var(--fb);font-size:11.5px;color:var(--t2);cursor:pointer">50 Min</button>
+              </div>
+              <button class="pomo-start">▶ Start</button>
+            </div>
+            <!-- Chat -->
+            <div style="width:280px;padding:18px 20px;display:flex;flex-direction:column;background:var(--bg)">
+              <div class="chat-hd"><div class="chat-online"></div><span>KI-Tutor</span></div>
+              <div class="chat-msgs" style="flex:1;gap:10px;display:flex;flex-direction:column">
+                <div class="chat-msg u"><div class="chat-bbl">Erkläre ERP einfach</div></div>
+                <div class="chat-msg a"><div class="chat-bbl">⭐ <strong>ERP</strong> = dein Unternehmens-Betriebssystem.<br>Statt 5 Insellösungen: ein System für Finanzen, HR, Logistik &amp; Vertrieb. Alles in einer Datenbank.</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- S6: Gamification -->
+        <div class="scene" id="s6" style="flex-direction:column">
+          <div class="gami-wrap">
+            <div class="gami-hero">
+              <div>
+                <h2 style="font-family:var(--ff);font-size:26px;font-weight:300;margin-bottom:4px">Guten Morgen, <em style="color:var(--amh)">Lernende.</em></h2>
+                <p style="font-size:13px;color:var(--t2)">Heute schon 172 Minuten gelernt.</p>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:10px">
+                <div style="display:flex;align-items:center;gap:12px">
+                  <div class="lvl-badge">Lv 1</div>
+                  <div class="xp-big">
+                    <div class="xp-bigbar"><div class="xp-bigfill"></div></div>
+                    <strong>460</strong> / 500 XP
+                  </div>
+                </div>
+                <div class="badges" style="gap:8px;display:flex">
+                  <div class="badge gold">🔥 3d Streak</div>
+                  <div class="badge green">🃏 50 Karten</div>
+                  <div class="badge green">⏱ 100 Min</div>
+                </div>
+              </div>
+            </div>
+            <div class="stat-grid" style="margin-bottom:18px">
+              <div class="stat-box"><div class="stat-n" style="color:var(--amh)">172</div><div class="stat-l">Lernminuten</div></div>
+              <div class="stat-box"><div class="stat-n">89</div><div class="stat-l">Karten geübt</div></div>
+              <div class="stat-box"><div class="stat-n">7</div><div class="stat-l">Konzepte</div></div>
+              <div class="stat-box"><div class="stat-n" style="color:var(--rd)">2</div><div class="stat-l">Dringend üben</div></div>
+            </div>
+            <div class="gami-badges" style="gap:12px;margin-bottom:20px">
+              <div class="gbadge"><div class="gico">🏆</div><div class="gtitle">Top-Learner</div><div class="gsub">3 Tage in Folge</div></div>
+              <div class="gbadge"><div class="gico">🃏</div><div class="gtitle">Card Master</div><div class="gsub">50+ Karten gelernt</div></div>
+              <div class="gbadge"><div class="gico">⏱</div><div class="gtitle">100-Min Club</div><div class="gsub">100 Minuten gesamt</div></div>
+              <div class="gbadge" style="border-color:var(--am);background:var(--aml)"><div class="gico">⭐</div><div class="gtitle" style="color:var(--amh)">Level 2</div><div class="gsub" style="color:var(--amh)">40 XP bis dahin</div></div>
+            </div>
+            <div class="live-full">
+              <div class="live-full-hd"><div class="ldot"></div><h4>Live-Lernraum</h4><span>23 gerade online</span></div>
+              <div class="avatars">
+                <div class="avatar" style="background:#4B7BE5">JV</div>
+                <div class="avatar" style="background:#4CAF50">JI</div>
+                <div class="avatar" style="background:#E8543A">JF</div>
+                <div class="avatar" style="background:#9C27B0">EE</div>
+                <div class="avatar" style="background:#FF9800">MJ</div>
+                <div class="avatar" style="background:#00BCD4">KS</div>
+                <div class="avatar" style="background:#E91E63">NV</div>
+                <div class="avatar" style="background:#795548">EA</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- S7: Panik Mode -->
+        <div class="scene" id="s7" style="flex-direction:column">
+          <div class="app-hd">
+            <div class="cico">!</div>
+            <div><div class="ctit">ERP-Systeme — Panik-Modus</div><div class="csub">30 Sek. pro Karte · Echter Klausur-Stress-Test</div></div>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--t3)">Score: <strong style="color:var(--amh);font-size:16px">2</strong> / 3</div>
+          </div>
+          <div class="panic-wrap">
+            <div class="panic-timer" id="panicTimer">00:12</div>
+            <div class="panic-sub">KARTE 3 VON 3 · Restzeit</div>
+            <div class="panic-card">
+              <div class="pk-lbl">Frage</div>
+              <div class="pk-q">Was ist der Unterschied zwischen ERP und CRM?</div>
+            </div>
+            <div class="panic-acts">
+              <button class="pk-no">✗ Falsch</button>
+              <button class="pk-yes">✓ Richtig</button>
+            </div>
+            <div class="panic-hint">Tippen zum Aufdecken</div>
+          </div>
+        </div>
+
+      </div><!-- /acontent -->
+    </div><!-- /browser -->
+  </div><!-- /right -->
+</div><!-- /stage -->
+
+<!-- BOTTOM BAR -->
+<div id="bottom">
+  <div class="progress">
+    <div class="prog-dots" id="progDots"></div>
+    <div class="prog-label" id="progLabel">1 / 7</div>
   </div>
-</section>
-
-<!-- ══════════════════════════ IMPACT ══════════════════════════ -->
-<section class="section impact" id="impact">
-  <div class="section-inner">
-    <span class="eyebrow reveal" data-en="Community Impact" data-es="Impacto Comunitario">Community Impact</span>
-    <h2 class="heading reveal" data-en="Every weave is<br><em>economic freedom</em>" data-es="Cada tejido es<br><em>libertad económica</em>">Every weave is<br><em>economic freedom</em></h2>
-    <p class="body-text reveal" data-en="TULY is not a charity. It is a dignity economy — where ancestral skill is treated as the luxury expertise it has always been. Women weave from their homes, on their own schedules, for global markets." data-es="TULY no es una ONG. Es una economía de dignidad, donde la habilidad ancestral se trata como la experiencia de lujo que siempre ha sido. Las mujeres tejen desde sus hogares, en sus propios horarios, para mercados globales.">TULY is not a charity. It is a dignity economy — where ancestral skill is treated as the luxury expertise it has always been. Women weave from their homes, on their own schedules, for global markets.</p>
-    <div class="impact-grid reveal">
-      <div class="impact-card">
-        <div class="impact-num" data-count="85">85+</div>
-        <div class="impact-label" data-en="Women artisans employed" data-es="Artesanas empleadas">Women artisans employed</div>
-      </div>
-      <div class="impact-card">
-        <div class="impact-num" data-count="12">12</div>
-        <div class="impact-label" data-en="Rural communities reached" data-es="Comunidades rurales alcanzadas">Rural communities reached</div>
-      </div>
-      <div class="impact-card">
-        <div class="impact-num">100%</div>
-        <div class="impact-label" data-en="Fair trade commitment" data-es="Compromiso de comercio justo">Fair trade commitment</div>
-      </div>
-      <div class="impact-card">
-        <div class="impact-num">0</div>
-        <div class="impact-label" data-en="Chemical dyes used" data-es="Tintes químicos usados">Chemical dyes used</div>
-      </div>
-    </div>
-    <div class="bilingual-quote reveal">
-      <p class="es" data-es="En 2025, TULY creció donde más importa: en la conexión.">En 2025, TULY creció donde más importa: en la conexión.</p>
-      <p data-en="In 2025, TULY grew where it matters most: in connection, in community, in the dignity of ancestral craft meeting global demand.">In 2025, TULY grew where it matters most: in connection, in community, in the dignity of ancestral craft meeting global demand.</p>
-    </div>
+  <div class="flowly-mark"><div class="lgo" style="background:none;padding:0;width:22px;height:22px"><svg width="22" height="22" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="lg2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#C8921A"/><stop offset="45%" stop-color="#F0CC5A"/><stop offset="100%" stop-color="#B07814"/></linearGradient></defs><rect width="28" height="28" rx="6" fill="#141210"/><path d="M5 18 C5 14 8 10 12 10 C14 10 15 11.5 14.5 13 C14 14.5 12 15 11 16 C9.5 17.5 9.5 20 12 20 C14.5 20 16 18 17 16" stroke="url(#lg2)" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M13 13 C15 10.5 18 9.5 20 10.5 C22 11.5 22.5 14 21 15.5" stroke="url(#lg2)" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M17 15 L19.5 17.5 L24 12" stroke="url(#lg2)" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>flowly Prototyp Demo</div>
+  <div class="nav-hint">
+    <span><span class="hint-key">Space</span> oder <span class="hint-key">→</span> weiter</span>
+    <span><span class="hint-key">←</span> zurück</span>
+    <span><span class="hint-key">N</span> Sprechernotizen</span>
+    <span><span class="hint-key">F</span> Vollbild</span>
   </div>
-</section>
+</div>
 
-<!-- ══════════════════════════ FOOTER ══════════════════════════ -->
-<footer id="contact">
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div>
-        <div class="footer-logo">TULY</div>
-        <p class="footer-tagline" data-en="Conscious artisan luxury from Guatemala. Handcrafted by master women artisans from native natural fibers." data-es="Lujo artesanal consciente de Guatemala. Hecho a mano por maestras artesanas con fibras naturales nativas.">Conscious artisan luxury from Guatemala. Handcrafted by master women artisans from native natural fibers.</p>
-      </div>
-      <div class="footer-col">
-        <h4 data-en="Shop" data-es="Tienda">Shop</h4>
-        <ul>
-          <li><a href="#shop" data-en="Fashion" data-es="Moda">Fashion</a></li>
-          <li><a href="#shop" data-en="Home & Décor" data-es="Hogar y Decoración">Home & Décor</a></li>
-          <li><a href="#bespoke" data-en="Bespoke" data-es="A Medida">Bespoke</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4 data-en="Brand" data-es="Marca">Brand</h4>
-        <ul>
-          <li><a href="#story" data-en="Our Story" data-es="Nuestra Historia">Our Story</a></li>
-          <li><a href="#impact" data-en="Artisans" data-es="Artesanas">Artisans</a></li>
-          <li><a href="#impact" data-en="Sustainability" data-es="Sostenibilidad">Sustainability</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4 data-en="Connect" data-es="Conectar">Connect</h4>
-        <ul>
-          <!-- ← Replace # with your actual links -->
-          <li><a href="https://instagram.com/YOURHANDLE" target="_blank" rel="noopener">Instagram</a></li>
-          <li><a href="https://pinterest.com/YOURHANDLE" target="_blank" rel="noopener">Pinterest</a></li>
-          <li><a href="mailto:hello@tuly.com" data-en="Email Us" data-es="Escríbenos">Email Us</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span class="footer-copy" data-en="© 2025 TULY. All rights reserved. Handcrafted in Guatemala." data-es="© 2025 TULY. Todos los derechos reservados. Hecho a mano en Guatemala.">© 2025 TULY. All rights reserved. Handcrafted in Guatemala.</span>
-      <div class="footer-social">
-        <a href="https://instagram.com/YOURHANDLE" target="_blank" rel="noopener">Instagram</a>
-        <a href="https://pinterest.com/YOURHANDLE" target="_blank" rel="noopener">Pinterest</a>
-      </div>
-    </div>
-  </div>
-</footer>
-
-<!-- LIGHTBOX -->
-<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
-  <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
-  <div class="lightbox-inner" id="lightbox-inner"></div>
+<!-- SPEAKER NOTES -->
+<div id="notes">
+  <h3 id="notes-title">Sprechernotizen</h3>
+  <p id="notes-text"></p>
 </div>
 
 <script>
-/* ═══════════════════════════════════════════════════════════════
-   PRODUCTS CONFIG
-   ── Edit prices, names, descriptions, and image paths here ──
-   To add a photo: put it in images/ folder, e.g. images/my-bag.jpg
-   Then set  image: "images/my-bag.jpg"  in the product below.
-   ═══════════════════════════════════════════════════════════════ */
-const PRODUCTS = [
+const SCENES = [
   {
-    id: "tejido-grande",
-    category: "fashion",
-    name: "Tejido Bag — Grande",
-    nameEs: "Bolso Tejido — Grande",
-    material: "Banana Fiber · Natural Dye",
-    materialEs: "Fibra de Banana · Tinte Natural",
-    price: 380,          // ← change price here
-    currency: "USD",
-    badge: "New",        // set to "" for no badge
-    desc: "A statement woven bag crafted from sun-dried banana fiber by master artisans in Sololá. Each pattern is unique, each piece one-of-a-kind.",
-    descEs: "Un bolso tejido icónico hecho de fibra de banana secada al sol por maestras artesanas en Sololá. Cada patrón es único, cada pieza irrepetible.",
-    image: "images/tejido-grande.jpg"   // ← put your photo here
+    id:'s1',
+    navDash:'on',
+    burl:'flowly-projekt.vercel.app — Dashboard',
+    title:'Überblick: Das flowly-Dashboard',
+    sub:'Alles auf einen Blick — Lernstand, Live-Community, Fächer und was dringend wartet.',
+    callouts:[
+      {cl:'Startpunkt',text:'Das Dashboard begrüßt mit dem Lernstand — <strong>172 Minuten heute</strong>, 89 Karten, 7 Konzepte.'},
+      {cl:'Gamification',text:'XP-Balken, Level und Streak — sichtbares Feedback, das das Belohnungssystem aktiviert.'},
+    ],
+    evidence:'Live-Lernraum: 23 Kommilitonen gerade online — das reale Social-Feature, das exekutives Initiieren unterstützt.',
+    notes:'Vicky sagt: "Das ist unsere App — flowly. Alles startet hier, im Dashboard. Du siehst sofort: wie lange du schon gelernt hast, wie viele Karten du geübt hast, wer gerade mit dir lernt. Und was du dringend wiederholen musst. Kein Suchen mehr, kein Wechseln zwischen fünf Tabs."',
   },
   {
-    id: "tejido-mini",
-    category: "fashion",
-    name: "Tejido Bag — Mini",
-    nameEs: "Bolso Tejido — Mini",
-    material: "Banana Fiber · Natural Dye",
-    materialEs: "Fibra de Banana · Tinte Natural",
-    price: 220,
-    currency: "USD",
-    badge: "",
-    desc: "The compact version of our signature bag — wearable as a crossbody or clutch. Same quality, same story, perfectly scaled.",
-    descEs: "La versión compacta de nuestro bolso insignia. Se usa como bandolera o clutch. La misma calidad, la misma historia, perfectamente proporcional.",
-    image: "images/tejido-mini.jpg"
+    id:'s2',
+    navDash:'on',
+    burl:'flowly-projekt.vercel.app — Material Hub',
+    title:'Material-Hub & KI-Strukturierung',
+    sub:'Alles zu einem Konzept an einem Ort. PDF hochladen — KI übernimmt den Rest.',
+    callouts:[
+      {cl:'Ein Ort, null Kontextwechsel',text:'Dateien, Zusammenfassung, Karteikarten, Panik-Modus und Pomodoro — <strong>alles in einer Ansicht</strong>.'},
+      {cl:'Split-Attention eliminiert',text:'Wenn Lerninhalt und Hilfsmittel räumlich getrennt sind, bindet das Gehirn Kapazität allein fürs Suchen.'},
+    ],
+    evidence:'Split-Attention-Effekt: kognitionspsychologisch belegtes Lernhindernis (Sweller, Cognitive Load Theory, 1988).',
+    notes:'Vicky sagt: "Schauen wir rein. Ich klicke auf ERP-Systeme — und lande direkt im Material-Hub. Hier liegt alles. Ich kann mein PDF hochladen, es einfach reinziehen. Im nächsten Schritt sieht ihr was dann passiert."',
   },
   {
-    id: "cargador",
-    category: "fashion",
-    name: "Cargador — Baby Carrier",
-    nameEs: "Cargador — Portabebé",
-    material: "Maguey & Cotton Blend",
-    materialEs: "Mezcla de Maguey y Algodón",
-    price: 290,
-    currency: "USD",
-    badge: "",
-    desc: "Handwoven with maguey and cotton in the Guatemalan highlands tradition. Ergonomic, breathable, and utterly beautiful.",
-    descEs: "Tejido a mano con maguey y algodón en la tradición del altiplano guatemalteco. Ergonómico, transpirable y absolutamente hermoso.",
-    image: "images/cargador.jpg"
+    id:'s3',
+    navDash:'on',
+    burl:'flowly-projekt.vercel.app — KI-Analyse',
+    title:'Automatische Konzept-Extraktion',
+    sub:'Sobald das PDF hochgeladen ist, extrahiert die KI 6–12 Schlüsselkonzepte und generiert Zusammenfassungen und Karteikarten.',
+    callouts:[
+      {cl:'KI-Strukturierung',text:'<strong>Keine Handarbeit mehr</strong>: Zusammenfassungen, Erklärungen und Karteikarten werden automatisch generiert.'},
+      {cl:'Vollständig im Hintergrund',text:'In unter 30 Sekunden ist alles bereit — Konzepte, Karten, Zusammenfassungen.'},
+    ],
+    evidence:'Working Memory Entlastung: Das Exzerpieren von PDFs bindet 30–40% der kognitiven Kapazität — flowly eliminiert diesen Aufwand.',
+    notes:'Vicky sagt: "Das ist die Magie. Sobald ich das PDF hochlade, arbeitet die KI sofort. Sie extrahiert automatisch die 6 bis 12 wichtigsten Schlüsselkonzepte und generiert dazu Zusammenfassungen und Karteikarten. Ich muss nichts tippen, nichts strukturieren."',
   },
   {
-    id: "amuleto",
-    category: "fashion",
-    name: "Amuleto Charm Collection",
-    nameEs: "Colección Amuleto",
-    material: "Pineapple Fiber · Gold Detail",
-    materialEs: "Fibra de Piña · Detalle Dorado",
-    price: 120,
-    currency: "USD",
-    badge: "Bestseller",
-    desc: "Wearable objects of intention. Each charm is handwoven in pineapple fiber with gold metallic thread accents.",
-    descEs: "Objetos portables de intención. Cada amuleto está tejido a mano en fibra de piña con detalles en hilo metálico dorado.",
-    image: "images/amuleto.jpg"
+    id:'s4',
+    burl:'flowly-projekt.vercel.app — Synaptic Map',
+    title:'Navigation via Synaptic Map',
+    sub:'Die radiale Mindmap visualisiert Gedächtnisstärke pro Konzept. Grün = sicher. Rot = kritisch.',
+    callouts:[
+      {cl:'Gedächtnisstärke sichtbar',text:'Jeder Ring zeigt wie gut ein Konzept sitzt — <strong>rot signalisiert sofort</strong> was dringend ist.'},
+      {cl:'Visuelles Lernen',text:'Gerade neurodivergente Gehirne profitieren massiv von dieser Vernetzung impliziter Zusammenhänge.'},
+    ],
+    evidence:'Visuelle Kognition: Räumliche Darstellungen von Wissensstruktur verbessern Retrieval-Leistung um bis zu 25% (Mayer, 2009).',
+    notes:'Vicky sagt: "Die Navigation erfolgt visuell — über diese radiale Synapsen-Map. Die Ringe zeigen die Gedächtnisstärke. Grün heißt: sitzt. Rot heißt: kritisch, dringend üben. Man sieht in einer Sekunde wo man steht — ohne eine einzige Statistik lesen zu müssen."',
   },
   {
-    id: "lampara",
-    category: "home",
-    name: "Lámpara Escultural",
-    nameEs: "Lámpara Escultural",
-    material: "Tule & Banana Fiber",
-    materialEs: "Tule y Fibra de Banana",
-    price: 680,
-    currency: "USD",
-    badge: "",
-    desc: "A sculptural lamp woven from tule reeds of Lake Atitlán. Casts a warm, patterned light that transforms any interior.",
-    descEs: "Lámpara escultórica tejida con juncos de tule del Lago Atitlán. Proyecta una luz cálida y con patrones que transforma cualquier interior.",
-    image: "images/lampara.jpg"
+    id:'s5',
+    burl:'flowly-projekt.vercel.app — Lernmodi',
+    title:'5 integrierte Lernmodi',
+    sub:'Karteikarten, Zusammenfassung, Panik-Modus, Pomodoro, Dateien — alles in einem Tab, kein Systemwechsel.',
+    callouts:[
+      {cl:'3D-Flip Karteikarten',text:'Mit sofortigem Feedback: <strong>Gewusst oder nicht</strong>. Gedächtnisstärke passt sich automatisch an.'},
+      {cl:'Pomodoro integriert',text:'Zeitstrukturierung für Time Blindness — direkt neben den Inhalten, kein extra Tool nötig.'},
+    ],
+    evidence:'Spacing-Effekt: Interleaved Practice mit sofortigem Feedback erhöht die Langzeit-Retention um bis zu 50% (Kornell & Bjork, 2008).',
+    notes:'Vicky sagt: "Wenn ich ein Konzept anklicke, lande ich im Split-View. Links die 5 Lernmodi — Karteikarten, Zusammenfassung, Panik-Modus, Pomodoro — rechts immer der KI-Tutor. Kein Tab-Wechsel, kein Kontextverlust."',
   },
   {
-    id: "cesto-bicicleta",
-    category: "home",
-    name: "Cesto Bicicleta",
-    nameEs: "Cesto Bicicleta",
-    material: "Maguey — Handwoven",
-    materialEs: "Maguey — Tejido a Mano",
-    price: 220,
-    currency: "USD",
-    badge: "Bestseller",
-    desc: "A handwoven bicycle basket in raw maguey fiber. Designed to be functional, durable, and beautiful for everyday use.",
-    descEs: "Cesto de bicicleta tejido a mano en fibra de maguey cruda. Diseñado para ser funcional, duradero y bello para el uso diario.",
-    image: "images/cesto-bicicleta.jpg"
+    id:'s6',
+    navDash:'on',
+    burl:'flowly-projekt.vercel.app — Gamification',
+    title:'Gamification & Live-Lernraum',
+    sub:'XP, Level, Streaks und Achievements aktivieren das Belohnungssystem direkt. 23 Kommilitonen lernen gerade parallel.',
+    callouts:[
+      {cl:'Dopamin-Loop',text:'Sofortiges XP-Feedback nach jeder Karte — <strong>externe Konsequenz</strong> ersetzt fehlende interne Motivation.'},
+      {cl:'Body Doubling',text:'23 Personen sichtbar online — belegter ADHS-Effekt: Anwesenheit anderer aktiviert exekutive Funktionen.'},
+    ],
+    evidence:'Body Doubling (Accountability): Paralleles Lernen mit sichtbaren Anderen erhöht Fokus-Dauer signifikant (Pera, 2008).',
+    notes:'Vicky sagt: "Gamification ist kein Nice-to-Have. Sofortiges XP-Feedback nach jeder Karte, Streak-Counter, Level-Aufstieg — das sind externe Konsequenzen die das Belohnungssystem aktivieren. Und der Live-Lernraum ist unser Social-Feature: man sieht wer gerade lernt. Das ist Body Doubling, digital."',
   },
   {
-    id: "instalacion",
-    category: "bespoke",
-    name: "Interior Installation",
-    nameEs: "Instalación Interior",
-    material: "Custom Fiber Blend",
-    materialEs: "Mezcla de Fibra Personalizada",
-    price: 0,   // 0 = shows "Bespoke Inquiry"
-    currency: "USD",
-    badge: "Commission",
-    desc: "Large-scale woven installations for hotels, residences, and commercial spaces. Each project is unique, conceived in close dialogue with the client.",
-    descEs: "Instalaciones tejidas a gran escala para hoteles, residencias y espacios comerciales. Cada proyecto es único, concebido en estrecho diálogo con el cliente.",
-    image: "images/instalacion.jpg"
+    id:'s7',
+    burl:'flowly-projekt.vercel.app — Panik-Modus',
+    title:'⚡ Der Panik-Modus',
+    sub:'30 Sekunden pro Karte. Externer Zeitdruck erzeugt Dopamin-Ausschüttung und ermöglicht Hyperfokus on demand.',
+    callouts:[
+      {cl:'Highlight aus dem User-Testing',text:'Im Testing war Panik-Modus das <strong>stärkste Feature</strong>. Alle 4 Testpersonen wollten es wieder nutzen.'},
+      {cl:'Wissenschaftlich validiert',text:'Zeitdruck aktiviert exekutive Funktionen genau dann wenn es zählt — reduziert subjektiven Stress.'},
+    ],
+    evidence:'External urgency & executive function: Kurzfristiger Zeitdruck mit klarem Outcome aktiviert das dorsale Aufmerksamkeitsnetzwerk (Barkley, 2012).',
+    notes:'Vicky sagt: "Und jetzt mein absolutes Highlight aus dem User-Testing: der Panik-Modus. 30 Sekunden pro Karte, der Timer läuft, die Uhr tickt rot runter. Was kontraintuitiv klingt war im Testing das stärkste Feature. Warum? Externe Dringlichkeit setzt Dopamin frei und ermöglicht Hyperfokus genau dann, wenn es zählt. Alle vier Testpersonen wollten es wieder nutzen."',
   },
-  {
-    id: "accesorio-bespoke",
-    category: "bespoke",
-    name: "Bespoke Accessory",
-    nameEs: "Accesorio a Medida",
-    material: "Your choice of fiber & color",
-    materialEs: "Tu elección de fibra y color",
-    price: 0,
-    currency: "USD",
-    badge: "One of One",
-    desc: "A completely personalized bag or accessory — your choice of fiber, color, size, and pattern. A heirloom made just for you.",
-    descEs: "Un bolso o accesorio completamente personalizado: tu elección de fibra, color, tamaño y patrón. Una reliquia hecha solo para ti.",
-    image: "images/accesorio-bespoke.jpg"
-  }
 ];
-/* ═══════════════════════════════════════════════════════════════ */
 
-/* ─ Language ─ */
-let lang = 'en';
+let current = 0;
 
-function toggleLang() {
-  lang = lang === 'en' ? 'es' : 'en';
-  document.getElementById('lang-btn').textContent = lang === 'en' ? 'ES' : 'EN';
-  applyLang();
-  renderProducts(currentFilter);
-}
+function render(idx, dir=1) {
+  const scene = SCENES[idx];
 
-function applyLang() {
-  document.querySelectorAll(`[data-${lang}]`).forEach(el => {
-    const txt = el.getAttribute(`data-${lang}`);
-    if (txt) el.innerHTML = txt;
+  // Left panel
+  const left = document.getElementById('left');
+  left.style.opacity = '0';
+  left.style.transform = 'translateX(-16px)';
+  setTimeout(() => {
+    left.innerHTML = `
+      <div class="part-tag" style="animation:fadeUp .5s .05s ease both">
+        <div class="part-dot"></div>
+        <div class="part-lbl">Demo · ${idx+1} / ${SCENES.length}</div>
+      </div>
+      <h1 style="opacity:0;animation:fadeUp .5s .15s ease both">${scene.title.replace(/\n/g,'<br>')}</h1>
+      <p class="sub" style="opacity:0;animation:fadeUp .5s .22s ease both">${scene.sub}</p>
+      ${(scene.callouts||[]).map((c,i)=>`
+        <div class="callout" style="animation:fadeUp .5s ${.28+i*.1}s ease both;opacity:0">
+          <div class="cl">${c.cl}</div>
+          <p>${c.text}</p>
+        </div>
+      `).join('')}
+      ${scene.evidence ? `
+        <div class="evidence" style="animation:fadeUp .5s .48s ease both;opacity:0">
+          <div class="evidence-ico">⚡</div>
+          <p>${scene.evidence}</p>
+        </div>
+      ` : ''}
+    `;
+    left.style.transition = 'all .5s ease';
+    left.style.opacity = '1';
+    left.style.transform = 'none';
+  }, 220);
+
+  // Scenes
+  document.querySelectorAll('.scene').forEach(el => {
+    if (el.id === scene.id) {
+      el.classList.add('active');
+      el.style.animation = 'sceneIn .6s ease both';
+    } else {
+      el.classList.remove('active');
+      el.style.animation = '';
+    }
   });
-}
 
-/* ─ Nav ─ */
-window.addEventListener('scroll', () => {
-  document.getElementById('nav').classList.toggle('solid', window.scrollY > 60);
-});
+  // Nav state
+  document.getElementById('nav-dash').className = 'atab' + (scene.navDash === 'on' ? ' on' : '');
+  document.getElementById('burl').textContent = scene.burl || 'flowly-projekt.vercel.app';
 
-function toggleMobile() {
-  document.getElementById('mobile-menu').classList.toggle('open');
-}
-function closeMobile() {
-  document.getElementById('mobile-menu').classList.remove('open');
-}
+  // Progress dots
+  const dots = document.getElementById('progDots');
+  dots.innerHTML = SCENES.map((_,i) => `<div class="prog-dot ${i===idx?'active':i<idx?'done':''}"></div>`).join('');
+  document.getElementById('progLabel').textContent = `${idx+1} / ${SCENES.length}`;
 
-/* ─ Products ─ */
-let currentFilter = 'all';
+  // Notes
+  document.getElementById('notes-title').textContent = `Sprechernotizen — ${scene.title}`;
+  document.getElementById('notes-text').innerHTML = scene.notes || '';
 
-function filterProducts(filter, btn) {
-  currentFilter = filter;
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  renderProducts(filter);
-}
-
-// Placeholder SVG shown when image is missing
-const PLACEHOLDER = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23EDE3D6'/%3E%3Ctext x='50%25' y='44%25' font-family='Georgia,serif' font-style='italic' font-size='18' fill='%23C4A882' text-anchor='middle' dominant-baseline='middle'%3ETULY%3C/text%3E%3Ctext x='50%25' y='56%25' font-family='system-ui,sans-serif' font-size='11' fill='%23C4A882' text-anchor='middle' dominant-baseline='middle' letter-spacing='2'%3EAdd photo%3C/text%3E%3C/svg%3E`;
-
-function renderProducts(filter) {
-  const grid = document.getElementById('products-grid');
-  const items = filter === 'all' ? PRODUCTS : PRODUCTS.filter(p => p.category === filter);
-  grid.innerHTML = items.map(p => {
-    const n = lang === 'es' ? p.nameEs : p.name;
-    const m = lang === 'es' ? p.materialEs : p.material;
-    const priceLabel = p.price === 0
-      ? (lang === 'es' ? 'Consulta Bespoke' : 'Bespoke Inquiry')
-      : `from $${p.price} <span>USD</span>`;
-    return `
-      <div class="product-card" onclick="openLightbox('${p.id}')">
-        <div class="product-thumb">
-          ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
-          <img src="${p.image}" alt="${n}" onerror="this.src='${PLACEHOLDER}'">
-        </div>
-        <div class="product-info">
-          <div class="product-name">${n}</div>
-          <div class="product-material">${m}</div>
-          <div class="product-price">${priceLabel}</div>
-        </div>
-      </div>`;
-  }).join('');
-}
-
-/* ─ Lightbox ─ */
-function openLightbox(id) {
-  const p = PRODUCTS.find(x => x.id === id);
-  if (!p) return;
-  const n = lang === 'es' ? p.nameEs : p.name;
-  const m = lang === 'es' ? p.materialEs : p.material;
-  const d = lang === 'es' ? p.descEs : p.desc;
-  const priceLabel = p.price === 0
-    ? (lang === 'es' ? 'Consulta Bespoke →' : 'Bespoke Inquiry →')
-    : `from $${p.price} USD`;
-  document.getElementById('lightbox-inner').innerHTML = `
-    <div class="lightbox-img">
-      <img src="${p.image}" alt="${n}" onerror="this.src='${PLACEHOLDER}'" style="width:100%;height:100%;object-fit:cover">
-    </div>
-    <div class="lightbox-info">
-      ${p.badge ? `<span style="font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;background:var(--gold);color:var(--dark);padding:.3rem .7rem;display:inline-block;margin-bottom:1rem">${p.badge}</span>` : ''}
-      <h2 class="lightbox-name">${n}</h2>
-      <p class="lightbox-material">${m}</p>
-      <p class="lightbox-desc">${d}</p>
-      <p class="lightbox-price">${priceLabel}</p>
-      <a href="#bespoke" onclick="closeLightbox()" style="display:inline-block;padding:.8rem 1.8rem;background:var(--gold);color:var(--dark);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;transition:background .2s"
-        onmouseover="this.style.background='var(--camel)'" onmouseout="this.style.background='var(--gold)'">
-        ${p.price === 0 ? (lang === 'es' ? 'Hacer Encargo →' : 'Commission This →') : (lang === 'es' ? 'Consultar →' : 'Enquire →')}
-      </a>
-    </div>`;
-  document.getElementById('lightbox').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeLightbox(e) {
-  if (e && e.target !== document.getElementById('lightbox') && !e.target.classList.contains('lightbox-close')) return;
-  if (!e) {
-    document.getElementById('lightbox').classList.remove('open');
-    document.body.style.overflow = '';
+  // Panic timer animation
+  if (scene.id === 's7') {
+    let t = 12;
+    clearInterval(window._panicInterval);
+    window._panicInterval = setInterval(() => {
+      if (t <= 0) { t = 12; }
+      t--;
+      const el = document.getElementById('panicTimer');
+      if (el) {
+        el.textContent = '00:' + String(t).padStart(2,'0');
+        el.style.color = t <= 10 ? 'var(--rd)' : t <= 20 ? 'var(--amh)' : 'var(--sgh)';
+      }
+    }, 1000);
   } else {
-    document.getElementById('lightbox').classList.remove('open');
-    document.body.style.overflow = '';
+    clearInterval(window._panicInterval);
   }
 }
 
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+function goTo(idx) {
+  if (idx < 0 || idx >= SCENES.length) return;
+  current = idx;
+  render(idx);
+}
 
-/* ─ Reveal on scroll ─ */
-const revealObs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); revealObs.unobserve(e.target); } });
-}, { threshold: 0.12 });
-document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
-
-/* ─ Formspree AJAX ─ */
-document.getElementById('bespoke-form').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  const btn = this.querySelector('.btn-submit');
-  btn.textContent = lang === 'es' ? 'Enviando…' : 'Sending…';
-  btn.disabled = true;
-  try {
-    const res = await fetch(this.action, { method: 'POST', body: new FormData(this), headers: { Accept: 'application/json' } });
-    if (res.ok) {
-      this.reset();
-      document.getElementById('form-success').style.display = 'block';
-      btn.style.display = 'none';
-    } else { btn.textContent = lang === 'es' ? 'Error — intenta de nuevo' : 'Error — please try again'; btn.disabled = false; }
-  } catch { btn.textContent = lang === 'es' ? 'Error — intenta de nuevo' : 'Error — please try again'; btn.disabled = false; }
+// Keyboard nav
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(current - 1); }
+  if (e.key === 'n' || e.key === 'N') {
+    document.getElementById('notes').classList.toggle('show');
+  }
+  if (e.key === 'f' || e.key === 'F') {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  }
 });
 
-/* ─ Init ─ */
-renderProducts('all');
-applyLang();
+// Click on right panel
+document.getElementById('right').addEventListener('click', () => goTo(current + 1));
+
+// Init
+render(0);
+</script>
+</div><!-- /scale-root -->
+
+<script>
+function scaleDemo(){
+  const root=document.getElementById("scale-root");
+  const scaleX=window.innerWidth/1920;
+  const scaleY=window.innerHeight/1080;
+  const scale=Math.min(scaleX,scaleY);
+  const offsetX=(window.innerWidth-1920*scale)/2;
+  const offsetY=(window.innerHeight-1080*scale)/2;
+  root.style.transform=`translate(${offsetX}px,${offsetY}px) scale(${scale})`;
+}
+window.addEventListener("resize",scaleDemo);
+scaleDemo();
 </script>
 </body>
 </html>
