@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<!--
+╔══════════════════════════════════════════════════════════════╗
+║  TULY WEBSITE — Anleitung / Guide                           ║
+╠══════════════════════════════════════════════════════════════╣
+║  PREISE & PRODUKTE ÄNDERN:                                  ║
+║  → Suche "PRODUCTS CONFIG" weiter unten im <script>         ║
+║    Ändere name, price, image, badge direkt dort             ║
+║                                                             ║
+║  FOTOS HINZUFÜGEN:                                          ║
+║  1. Erstelle Ordner "images/" neben dieser Datei            ║
+║  2. Lade deine Fotos dort hoch (z.B. bag-grande.jpg)        ║
+║  3. Trage image: "images/bag-grande.jpg" im Produkt ein     ║
+║                                                             ║
+║  KOSTENLOS VERÖFFENTLICHEN:                                 ║
+║  A) GitHub Pages (gratis):                                  ║
+║     1. Repo auf github.com erstellen                        ║
+║     2. index.html + images/ hochladen                       ║
+║     3. Settings → Pages → Branch: main → Save               ║
+║     → URL: deinname.github.io/repo-name                    ║
+║  B) Vercel (gratis, eigene Domain möglich):                 ║
+║     1. github.com → Repo pushen                             ║
+║     2. vercel.com/new → Repo importieren → Deploy           ║
+║  C) Netlify (gratis, einfachste Option):                    ║
+║     1. netlify.com/drop aufrufen                            ║
+║     2. Ordner mit index.html + images/ reinziehen           ║
+║                                                             ║
+║  KONTAKTFORMULAR AKTIVIEREN:                                ║
+║  1. Konto auf formspree.io erstellen (gratis)               ║
+║  2. Neues Formular anlegen → Form-ID kopieren               ║
+║  3. FORMSPREE_ID unten durch deine ID ersetzen              ║
+╚══════════════════════════════════════════════════════════════╝
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TULY — Conscious Artisan Luxury · Guatemala</title>
+<meta name="description" content="Handcrafted luxury from Guatemala. Fashion, home décor and bespoke objects made by master women artisans from native natural fibers.">
+<meta property="og:title" content="TULY — Conscious Artisan Luxury">
+<meta property="og:description" content="Handcrafted in Guatemala by master women artisans. Natural fibers. Fashion & Home.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ivory:#FAF7F2;--sand:#E8DDD0;--oat:#EDE3D6;--camel:#C4A882;
+  --gold:#B89B6A;--sage:#8A9E8C;--terra:#C47A5A;--cacao:#3D2B1F;
+  --dark:#2A1A10;--white:#FFFFFF;
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'Inter',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--ivory);color:var(--dark);line-height:1.7;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{text-decoration:none;color:inherit}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:999;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 2.5rem;transition:all .35s}
+nav.solid{background:rgba(250,247,242,.97);backdrop-filter:blur(10px);box-shadow:0 1px 0 var(--sand)}
+.nav-logo{font-family:var(--serif);font-size:1.5rem;letter-spacing:.18em;color:var(--dark)}
+.nav-menu{display:flex;align-items:center;gap:2rem}
+.nav-menu a{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dark);opacity:.6;transition:opacity .2s}
+.nav-menu a:hover{opacity:1}
+.nav-lang{background:none;border:1px solid var(--camel);color:var(--gold);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;padding:.35rem .8rem;cursor:pointer;font-family:var(--sans);transition:all .2s}
+.nav-lang:hover{background:var(--gold);color:var(--white)}
+.nav-burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:.25rem;background:none;border:none}
+.nav-burger span{display:block;width:22px;height:1.5px;background:var(--dark);transition:all .3s}
+.mobile-menu{display:none;position:fixed;inset:0;background:var(--ivory);z-index:998;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-family:var(--serif);font-size:2rem;color:var(--dark);opacity:.8}
+.mobile-menu a:hover{opacity:1;color:var(--gold)}
+
+/* ── HERO ── */
+.hero{min-height:100vh;background:var(--cacao);display:flex;align-items:flex-end;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:linear-gradient(150deg,#2A1810 0%,#3D2B1F 50%,#4A3228 100%)}
+.hero-fibers{position:absolute;right:0;top:0;width:50%;height:100%;opacity:.12}
+.hero-fibers svg{width:100%;height:100%}
+.hero-content{position:relative;z-index:2;padding:2rem 2.5rem 5rem;max-width:680px}
+.hero-eyebrow{font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem}
+.hero-title{font-family:var(--serif);font-size:clamp(2.6rem,7vw,5.5rem);line-height:1.02;color:var(--ivory);font-weight:400;margin-bottom:1.5rem}
+.hero-title em{font-style:italic;color:var(--camel)}
+.hero-sub{font-size:.95rem;color:rgba(250,247,242,.55);line-height:1.9;max-width:440px;font-weight:300;margin-bottom:2.5rem}
+.hero-btns{display:flex;flex-wrap:wrap;gap:.9rem}
+.btn{display:inline-block;padding:.85rem 2rem;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;font-family:var(--sans);cursor:pointer;border:none;transition:all .25s}
+.btn-primary{background:var(--gold);color:var(--dark)}
+.btn-primary:hover{background:var(--camel)}
+.btn-outline{background:transparent;border:1px solid rgba(250,247,242,.35);color:rgba(250,247,242,.8)}
+.btn-outline:hover{border-color:rgba(250,247,242,.7);color:var(--ivory)}
+.hero-scroll-hint{position:absolute;bottom:2.5rem;right:2.5rem;display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:.3}
+.hero-scroll-hint span{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ivory);writing-mode:vertical-rl}
+.scroll-bar{width:1px;height:45px;background:linear-gradient(to bottom,var(--ivory),transparent);animation:scrollFade 2s ease infinite}
+@keyframes scrollFade{0%{opacity:0;transform:scaleY(0);transform-origin:top}40%{opacity:1}100%{opacity:0;transform:scaleY(1);transform-origin:top}}
+
+/* ── TICKER ── */
+.ticker{background:var(--gold);overflow:hidden;padding:.65rem 0;white-space:nowrap}
+.ticker-inner{display:inline-block;animation:ticker 25s linear infinite}
+.ticker-inner span{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--dark);padding:0 1.8rem}
+.ticker-inner .sep{opacity:.45}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ── SECTIONS ── */
+.section{padding:5.5rem 2.5rem}
+.section-inner{max-width:1160px;margin:0 auto}
+.eyebrow{font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:.9rem}
+.heading{font-family:var(--serif);font-size:clamp(1.9rem,4vw,3rem);line-height:1.1;font-weight:400;margin-bottom:1.5rem}
+.heading em{font-style:italic}
+.body-text{font-size:.92rem;line-height:1.95;color:rgba(42,26,16,.65);font-weight:300;max-width:540px}
+
+/* ── SHOP ── */
+.shop{background:var(--ivory)}
+.shop-tabs{display:flex;gap:0;border-bottom:1px solid var(--sand);margin:2rem 0 3rem}
+.tab{padding:.7rem 1.8rem;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;font-family:var(--sans);color:rgba(42,26,16,.4);transition:all .2s}
+.tab.active{color:var(--dark);border-bottom-color:var(--gold)}
+.tab:hover{color:var(--dark)}
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:2rem}
+.product-card{cursor:pointer}
+.product-thumb{position:relative;aspect-ratio:4/5;background:var(--oat);overflow:hidden}
+.product-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.product-card:hover .product-thumb img{transform:scale(1.04)}
+.product-thumb .placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.5rem;background:linear-gradient(135deg,var(--oat),var(--sand))}
+.placeholder-icon{opacity:.2}
+.placeholder-label{font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--dark);opacity:.3}
+.product-badge{position:absolute;top:.85rem;left:.85rem;padding:.3rem .7rem;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;background:var(--gold);color:var(--dark)}
+.product-info{padding:1.1rem 0 .5rem}
+.product-name{font-family:var(--serif);font-size:1.05rem;margin-bottom:.3rem}
+.product-material{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(42,26,16,.4)}
+.product-price{font-size:.88rem;color:var(--gold);margin-top:.4rem;font-weight:500}
+.product-price span{font-size:.72rem;font-weight:300;color:rgba(42,26,16,.4);margin-left:.3rem}
+
+/* ── LIGHTBOX ── */
+.lightbox{display:none;position:fixed;inset:0;z-index:9999;background:rgba(42,26,16,.92);align-items:center;justify-content:center;padding:1.5rem}
+.lightbox.open{display:flex}
+.lightbox-inner{background:var(--ivory);max-width:820px;width:100%;display:grid;grid-template-columns:1fr 1fr;max-height:90vh;overflow:auto}
+.lightbox-img{aspect-ratio:1;background:var(--oat);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.lightbox-img img{width:100%;height:100%;object-fit:cover}
+.lightbox-info{padding:2.5rem 2rem;display:flex;flex-direction:column;justify-content:center}
+.lightbox-name{font-family:var(--serif);font-size:1.5rem;margin-bottom:.5rem}
+.lightbox-material{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(42,26,16,.45);margin-bottom:1.25rem}
+.lightbox-desc{font-size:.88rem;line-height:1.85;color:rgba(42,26,16,.65);font-weight:300;margin-bottom:1.5rem}
+.lightbox-price{font-size:1.4rem;font-family:var(--serif);color:var(--gold);margin-bottom:1.5rem}
+.lightbox-close{position:absolute;top:1.25rem;right:1.5rem;background:none;border:none;color:var(--ivory);font-size:1.8rem;cursor:pointer;line-height:1;opacity:.7;transition:opacity .2s}
+.lightbox-close:hover{opacity:1}
+
+/* ── STORY ── */
+.story{background:#F2EDE5}
+.story-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.story-visual{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:.75rem;height:420px}
+.story-block{border-radius:2px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.story-block-1{background:linear-gradient(135deg,var(--camel),var(--gold));grid-row:1/3}
+.story-block-2{background:linear-gradient(135deg,var(--terra),#A0624A)}
+.story-block-3{background:var(--sage)}
+.story-block p{font-family:var(--serif);font-style:italic;font-size:.85rem;color:rgba(250,247,242,.7);text-align:center;padding:1rem}
+.story-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2.5rem;padding-top:2.5rem;border-top:1px solid var(--sand)}
+.stat-num{font-family:var(--serif);font-size:2.2rem;color:var(--gold);display:block;line-height:1}
+.stat-label{font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(42,26,16,.45);margin-top:.35rem;display:block}
+
+/* ── BESPOKE FORM ── */
+.bespoke{background:var(--cacao)}
+.bespoke-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
+.bespoke .eyebrow{color:var(--gold)}
+.bespoke .heading{color:var(--ivory)}
+.bespoke .body-text{color:rgba(250,247,242,.5)}
+.bespoke-list{margin-top:2rem;display:flex;flex-direction:column;gap:.9rem}
+.bespoke-item{display:flex;gap:.9rem;align-items:flex-start;padding:1.1rem;border:1px solid rgba(255,255,255,.07);transition:border-color .25s}
+.bespoke-item:hover{border-color:rgba(196,168,130,.3)}
+.bespoke-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);margin-top:.55rem;flex-shrink:0}
+.bespoke-item-title{font-size:.82rem;color:var(--ivory);margin-bottom:.2rem;letter-spacing:.04em}
+.bespoke-item-desc{font-size:.76rem;color:rgba(250,247,242,.38);line-height:1.6;font-weight:300}
+.form-box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:2.25rem}
+.form-box h3{font-family:var(--serif);font-size:1.25rem;color:var(--ivory);margin-bottom:1.75rem;font-weight:400}
+.form-group{margin-bottom:1.1rem}
+.form-group label{display:block;font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(250,247,242,.35);margin-bottom:.45rem}
+.form-group input,.form-group select,.form-group textarea{
+  width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  color:var(--ivory);padding:.75rem 1rem;font-family:var(--sans);font-size:.85rem;
+  outline:none;transition:border-color .2s;border-radius:0;appearance:none;-webkit-appearance:none
+}
+.form-group input::placeholder,.form-group textarea::placeholder{color:rgba(250,247,242,.22)}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:rgba(196,168,130,.5)}
+.form-group select option{background:var(--cacao)}
+.form-group textarea{resize:vertical;min-height:90px}
+.btn-submit{width:100%;padding:1rem;background:var(--gold);color:var(--dark);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;border:none;cursor:pointer;font-family:var(--sans);margin-top:.5rem;transition:background .2s}
+.btn-submit:hover{background:var(--camel)}
+.form-success{display:none;text-align:center;padding:2rem;color:var(--camel);font-family:var(--serif);font-style:italic}
+
+/* ── IMPACT ── */
+.impact{background:var(--dark)}
+.impact .heading{color:var(--ivory)}
+.impact .body-text{color:rgba(250,247,242,.45)}
+.impact-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;margin-top:3rem}
+.impact-card{padding:2rem 1.5rem;border:1px solid rgba(255,255,255,.07)}
+.impact-num{font-family:var(--serif);font-size:2.8rem;color:var(--gold);line-height:1;margin-bottom:.5rem}
+.impact-label{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(250,247,242,.35);line-height:1.5}
+.bilingual-quote{margin-top:3rem;padding:2.25rem;border:1px solid rgba(255,255,255,.07);display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+.bilingual-quote p{font-family:var(--serif);font-style:italic;font-size:1rem;line-height:1.75;color:rgba(250,247,242,.45)}
+.bilingual-quote p.es{color:rgba(196,168,130,.65)}
+
+/* ── FOOTER ── */
+footer{background:#1A100A;padding:4rem 2.5rem 2rem}
+.footer-inner{max-width:1160px;margin:0 auto}
+.footer-top{display:grid;grid-template-columns:2.5fr 1fr 1fr 1fr;gap:3rem;padding-bottom:3rem;border-bottom:1px solid rgba(255,255,255,.05)}
+.footer-logo{font-family:var(--serif);font-size:1.7rem;letter-spacing:.15em;color:var(--ivory);margin-bottom:.9rem}
+.footer-tagline{font-size:.8rem;line-height:1.75;color:rgba(250,247,242,.28);max-width:240px;font-weight:300}
+.footer-col h4{font-size:.63rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.7rem}
+.footer-col a{font-size:.8rem;color:rgba(250,247,242,.38);transition:color .2s}
+.footer-col a:hover{color:rgba(250,247,242,.75)}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:2rem;flex-wrap:wrap;gap:1rem}
+.footer-copy{font-size:.68rem;color:rgba(250,247,242,.2);letter-spacing:.06em}
+.footer-social{display:flex;gap:1.5rem}
+.footer-social a{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(250,247,242,.28);transition:color .2s}
+.footer-social a:hover{color:var(--gold)}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .75s ease,transform .75s ease}
+.reveal.in{opacity:1;transform:none}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  nav{padding:1rem 1.5rem}
+  .nav-menu{display:none}
+  .nav-burger{display:flex}
+  .section{padding:4rem 1.5rem}
+  .hero-content{padding:2rem 1.5rem 4.5rem}
+  .story-grid,.bespoke-grid{grid-template-columns:1fr;gap:3rem}
+  .story-visual{height:280px}
+  .impact-grid{grid-template-columns:1fr 1fr}
+  .bilingual-quote{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr 1fr;gap:2rem}
+  .lightbox-inner{grid-template-columns:1fr;max-height:95vh}
+  .lightbox-img{aspect-ratio:4/3}
+}
+@media(max-width:600px){
+  .products-grid{grid-template-columns:1fr 1fr}
+  .impact-grid{grid-template-columns:1fr 1fr}
+  .footer-top{grid-template-columns:1fr}
+  .hero-btns{flex-direction:column}
+  .hero-btns .btn{text-align:center}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════ NAV ══════════════════════════ -->
+<nav id="nav">
+  <a href="#" class="nav-logo" data-en="TULY" data-es="TULY">TULY</a>
+  <div class="nav-menu" id="nav-menu">
+    <a href="#shop" data-en="Shop" data-es="Tienda">Shop</a>
+    <a href="#story" data-en="Story" data-es="Historia">Story</a>
+    <a href="#bespoke" data-en="Bespoke" data-es="A Medida">Bespoke</a>
+    <a href="#impact" data-en="Impact" data-es="Impacto">Impact</a>
+    <a href="#contact" data-en="Contact" data-es="Contacto">Contact</a>
+    <button class="nav-lang" id="lang-btn" onclick="toggleLang()">ES</button>
+  </div>
+  <button class="nav-burger" id="burger" onclick="toggleMobile()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#shop" onclick="closeMobile()" data-en="Shop" data-es="Tienda">Shop</a>
+  <a href="#story" onclick="closeMobile()" data-en="Story" data-es="Historia">Story</a>
+  <a href="#bespoke" onclick="closeMobile()" data-en="Bespoke" data-es="A Medida">Bespoke</a>
+  <a href="#impact" onclick="closeMobile()" data-en="Impact" data-es="Impacto">Impact</a>
+  <a href="#contact" onclick="closeMobile()" data-en="Contact" data-es="Contacto">Contact</a>
+</div>
+
+<!-- ══════════════════════════ HERO ══════════════════════════ -->
+<section class="hero" id="top">
+  <div class="hero-bg"></div>
+  <div class="hero-fibers" aria-hidden="true">
+    <svg viewBox="0 0 500 800" xmlns="http://www.w3.org/2000/svg">
+      <path d="M60 0 Q140 200 60 400 Q-20 600 60 800" stroke="#C4A882" stroke-width="1.5" fill="none"/>
+      <path d="M130 0 Q210 200 130 400 Q50 600 130 800" stroke="#B89B6A" stroke-width="1" fill="none"/>
+      <path d="M200 0 Q280 200 200 400 Q120 600 200 800" stroke="#C4A882" stroke-width="2" fill="none"/>
+      <path d="M270 0 Q350 200 270 400 Q190 600 270 800" stroke="#8A9E8C" stroke-width="1" fill="none"/>
+      <path d="M340 0 Q420 200 340 400 Q260 600 340 800" stroke="#C47A5A" stroke-width="1.5" fill="none"/>
+      <path d="M410 0 Q490 200 410 400 Q330 600 410 800" stroke="#B89B6A" stroke-width="1" fill="none"/>
+      <path d="M480 0 Q560 200 480 400 Q400 600 480 800" stroke="#C4A882" stroke-width="1" fill="none"/>
+      <path d="M0 120 Q250 80 500 120" stroke="#FAF7F2" stroke-width=".7" fill="none" opacity=".35"/>
+      <path d="M0 240 Q250 280 500 240" stroke="#FAF7F2" stroke-width=".7" fill="none" opacity=".25"/>
+      <path d="M0 360 Q250 320 500 360" stroke="#C4A882" stroke-width=".7" fill="none" opacity=".35"/>
+      <path d="M0 480 Q250 520 500 480" stroke="#FAF7F2" stroke-width=".7" fill="none" opacity=".2"/>
+      <path d="M0 600 Q250 560 500 600" stroke="#C4A882" stroke-width=".7" fill="none" opacity=".3"/>
+      <path d="M0 720 Q250 760 500 720" stroke="#FAF7F2" stroke-width=".7" fill="none" opacity=".2"/>
+    </svg>
+  </div>
+  <div class="hero-content">
+    <p class="hero-eyebrow" data-en="Guatemala · Handcrafted Luxury" data-es="Guatemala · Lujo Artesanal">Guatemala · Handcrafted Luxury</p>
+    <h1 class="hero-title" data-en="Conscious<br><em>Artisan</em><br>Luxury" data-es="Lujo<br><em>Artesanal</em><br>Consciente">Conscious<br><em>Artisan</em><br>Luxury</h1>
+    <p class="hero-sub" data-en="Natural Fibers · Fashion · Home. Handcrafted by master women artisans from rural Guatemala — carrying heritage, culture, and story into contemporary luxury." data-es="Fibras naturales · Moda · Hogar. Hecho a mano por maestras artesanas de Guatemala rural — llevando herencia, cultura e historia al lujo contemporáneo.">Natural Fibers · Fashion · Home. Handcrafted by master women artisans from rural Guatemala — carrying heritage, culture, and story into contemporary luxury.</p>
+    <div class="hero-btns">
+      <a href="#shop" class="btn btn-primary" data-en="Discover Collections" data-es="Ver Colecciones">Discover Collections</a>
+      <a href="#bespoke" class="btn btn-outline" data-en="Bespoke Projects" data-es="Proyectos a Medida">Bespoke Projects</a>
+      <a href="#story" class="btn btn-outline" data-en="Our Story" data-es="Nuestra Historia">Our Story</a>
+    </div>
+  </div>
+  <div class="hero-scroll-hint" aria-hidden="true">
+    <span>Scroll</span>
+    <div class="scroll-bar"></div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-inner">
+    <span>Banana Fiber</span><span class="sep">✦</span><span>Pineapple Fiber</span><span class="sep">✦</span>
+    <span>Tule</span><span class="sep">✦</span><span>Maguey</span><span class="sep">✦</span>
+    <span data-en="Women-Led" data-es="Liderado por Mujeres">Women-Led</span><span class="sep">✦</span>
+    <span>Guatemala</span><span class="sep">✦</span>
+    <span data-en="Heritage Luxury" data-es="Lujo Patrimonial">Heritage Luxury</span><span class="sep">✦</span>
+    <span>Bespoke</span><span class="sep">✦</span>
+    <span data-en="Ethical · Sustainable" data-es="Ético · Sostenible">Ethical · Sustainable</span><span class="sep">✦</span>
+    <span>Banana Fiber</span><span class="sep">✦</span><span>Pineapple Fiber</span><span class="sep">✦</span>
+    <span>Tule</span><span class="sep">✦</span><span>Maguey</span><span class="sep">✦</span>
+    <span>Women-Led</span><span class="sep">✦</span><span>Guatemala</span><span class="sep">✦</span>
+    <span>Heritage Luxury</span><span class="sep">✦</span><span>Bespoke</span><span class="sep">✦</span>
+    <span>Ethical · Sustainable</span><span class="sep">✦</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════ SHOP ══════════════════════════ -->
+<section class="section shop" id="shop">
+  <div class="section-inner">
+    <span class="eyebrow reveal" data-en="Collections" data-es="Colecciones">Collections</span>
+    <h2 class="heading reveal" data-en="Crafted to be<br><em>collected</em>" data-es="Hecho para ser<br><em>coleccionado</em>">Crafted to be<br><em>collected</em></h2>
+    <div class="shop-tabs reveal">
+      <button class="tab active" onclick="filterProducts('all',this)" data-en="All" data-es="Todo">All</button>
+      <button class="tab" onclick="filterProducts('fashion',this)" data-en="Fashion" data-es="Moda">Fashion</button>
+      <button class="tab" onclick="filterProducts('home',this)" data-en="Home" data-es="Hogar">Home</button>
+      <button class="tab" onclick="filterProducts('bespoke',this)" data-en="Bespoke" data-es="A Medida">Bespoke</button>
+    </div>
+    <div class="products-grid" id="products-grid"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ STORY ══════════════════════════ -->
+<section class="section story" id="story">
+  <div class="section-inner">
+    <div class="story-grid">
+      <div>
+        <span class="eyebrow reveal" data-en="Brand Heritage" data-es="Herencia de Marca">Brand Heritage</span>
+        <h2 class="heading reveal" data-en="Where ancient<br><em>hands</em> meet<br>contemporary vision" data-es="Donde las manos<br><em>ancestrales</em><br>se encuentran con la visión contemporánea">Where ancient<br><em>hands</em> meet<br>contemporary vision</h2>
+        <p class="body-text reveal" data-en="TULY was born in Guatemala, where women from rural communities transform native fibers into extraordinary objects of luxury. Each piece is woven with generations of ancestral knowledge — creating something that cannot be replicated by machines, only by hands that carry memory." data-es="TULY nació en Guatemala, donde mujeres de comunidades rurales transforman fibras nativas en extraordinarios objetos de lujo. Cada pieza está tejida con generaciones de conocimiento ancestral, creando algo que las máquinas no pueden replicar, solo las manos que portan la memoria.">TULY was born in Guatemala, where women from rural communities transform native fibers into extraordinary objects of luxury. Each piece is woven with generations of ancestral knowledge — creating something that cannot be replicated by machines, only by hands that carry memory.</p>
+        <div class="story-stats reveal">
+          <div>
+            <span class="stat-num" data-count="85">85+</span>
+            <span class="stat-label" data-en="Women Artisans" data-es="Artesanas">Women Artisans</span>
+          </div>
+          <div>
+            <span class="stat-num" data-count="12">12</span>
+            <span class="stat-label" data-en="Communities" data-es="Comunidades">Communities</span>
+          </div>
+          <div>
+            <span class="stat-num" data-count="5">5</span>
+            <span class="stat-label" data-en="Native Fibers" data-es="Fibras Nativas">Native Fibers</span>
+          </div>
+        </div>
+      </div>
+      <div class="story-visual reveal reveal-delay-2">
+        <div class="story-block story-block-1"><p data-en="Fashion" data-es="Moda">Fashion</p></div>
+        <div class="story-block story-block-2"><p data-en="Home" data-es="Hogar">Home</p></div>
+        <div class="story-block story-block-3"><p data-en="Bespoke" data-es="A Medida">Bespoke</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ BESPOKE ══════════════════════════ -->
+<section class="section bespoke" id="bespoke">
+  <div class="section-inner">
+    <div class="bespoke-grid">
+      <div>
+        <span class="eyebrow reveal" data-en="Bespoke Studio" data-es="Estudio a Medida">Bespoke Studio</span>
+        <h2 class="heading reveal" data-en="Design your<br><em>vision</em>" data-es="Diseña tu<br><em>visión</em>">Design your<br><em>vision</em></h2>
+        <p class="body-text reveal" data-en="TULY operates as a design house for collectors, interior designers, hotels, and fashion houses seeking rare, one-of-a-kind objects that cannot be purchased — only commissioned." data-es="TULY opera como una maison de diseño para coleccionistas, diseñadores de interiores, hoteles y casas de moda que buscan objetos únicos que no se compran, solo se encargan.">TULY operates as a design house for collectors, interior designers, hotels, and fashion houses seeking rare, one-of-a-kind objects that cannot be purchased — only commissioned.</p>
+        <div class="bespoke-list reveal">
+          <div class="bespoke-item">
+            <div class="bespoke-dot"></div>
+            <div>
+              <div class="bespoke-item-title" data-en="Custom Colors & Materials" data-es="Colores y Materiales Personalizados">Custom Colors & Materials</div>
+              <div class="bespoke-item-desc" data-en="Select from our fiber archive or propose your own palette. Every thread is dyed by hand." data-es="Elige de nuestro archivo de fibras o propón tu propia paleta. Cada hilo se tiñe a mano.">Select from our fiber archive or propose your own palette. Every thread is dyed by hand.</div>
+            </div>
+          </div>
+          <div class="bespoke-item">
+            <div class="bespoke-dot"></div>
+            <div>
+              <div class="bespoke-item-title" data-en="One-of-One Commissions" data-es="Encargos Únicos">One-of-One Commissions</div>
+              <div class="bespoke-item-desc" data-en="Heirloom accessories, sculptural lamps, woven chandeliers — designed once, forever yours." data-es="Accesorios de herencia, lámparas escultóricas, candelabros tejidos — diseñados una vez, tuyos para siempre.">Heirloom accessories, sculptural lamps, woven chandeliers — designed once, forever yours.</div>
+            </div>
+          </div>
+          <div class="bespoke-item">
+            <div class="bespoke-dot"></div>
+            <div>
+              <div class="bespoke-item-title" data-en="Interior & Hotel Projects" data-es="Proyectos de Interiores y Hoteles">Interior & Hotel Projects</div>
+              <div class="bespoke-item-desc" data-en="Large-scale installations for hospitality, residential, and commercial spaces worldwide." data-es="Instalaciones a gran escala para hostelería, espacios residenciales y comerciales en todo el mundo.">Large-scale installations for hospitality, residential, and commercial spaces worldwide.</div>
+            </div>
+          </div>
+          <div class="bespoke-item">
+            <div class="bespoke-dot"></div>
+            <div>
+              <div class="bespoke-item-title" data-en="Fashion Collaborations" data-es="Colaboraciones de Moda">Fashion Collaborations</div>
+              <div class="bespoke-item-desc" data-en="Co-creation with designers and fashion houses seeking authentic artisan craftsmanship." data-es="Co-creación con diseñadores y casas de moda que buscan artesanía auténtica.">Co-creation with designers and fashion houses seeking authentic artisan craftsmanship.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FORM — replace YOUR_FORM_ID with your Formspree ID -->
+      <div class="reveal reveal-delay-1">
+        <form class="form-box" id="bespoke-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+          <h3 data-en="Begin Your Commission" data-es="Comienza Tu Encargo">Begin Your Commission</h3>
+          <div class="form-group">
+            <label data-en="Your Name" data-es="Tu Nombre">Your Name</label>
+            <input type="text" name="name" placeholder="Full name" required>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" placeholder="your@email.com" required>
+          </div>
+          <div class="form-group">
+            <label data-en="Project Type" data-es="Tipo de Proyecto">Project Type</label>
+            <select name="project_type" required>
+              <option value="" data-en="Select…" data-es="Selecciona…">Select…</option>
+              <option data-en="Fashion — Bag or Accessory" data-es="Moda — Bolso o Accesorio">Fashion — Bag or Accessory</option>
+              <option data-en="Home — Lamp or Object" data-es="Hogar — Lámpara u Objeto">Home — Lamp or Object</option>
+              <option data-en="Interior Installation" data-es="Instalación Interior">Interior Installation</option>
+              <option data-en="Hotel or Hospitality" data-es="Hotel u Hostelería">Hotel or Hospitality</option>
+              <option data-en="Fashion Collaboration" data-es="Colaboración de Moda">Fashion Collaboration</option>
+              <option data-en="Other" data-es="Otro">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label data-en="Your Vision" data-es="Tu Visión">Your Vision</label>
+            <textarea name="message" placeholder="Describe your project, scale, inspiration…" required></textarea>
+          </div>
+          <button type="submit" class="btn-submit" data-en="Design Your Vision →" data-es="Diseña Tu Visión →">Design Your Vision →</button>
+          <div class="form-success" id="form-success">
+            <p data-en="Thank you. We'll be in touch within 48 hours." data-es="Gracias. Te contactaremos en 48 horas.">Thank you. We'll be in touch within 48 hours.</p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ IMPACT ══════════════════════════ -->
+<section class="section impact" id="impact">
+  <div class="section-inner">
+    <span class="eyebrow reveal" data-en="Community Impact" data-es="Impacto Comunitario">Community Impact</span>
+    <h2 class="heading reveal" data-en="Every weave is<br><em>economic freedom</em>" data-es="Cada tejido es<br><em>libertad económica</em>">Every weave is<br><em>economic freedom</em></h2>
+    <p class="body-text reveal" data-en="TULY is not a charity. It is a dignity economy — where ancestral skill is treated as the luxury expertise it has always been. Women weave from their homes, on their own schedules, for global markets." data-es="TULY no es una ONG. Es una economía de dignidad, donde la habilidad ancestral se trata como la experiencia de lujo que siempre ha sido. Las mujeres tejen desde sus hogares, en sus propios horarios, para mercados globales.">TULY is not a charity. It is a dignity economy — where ancestral skill is treated as the luxury expertise it has always been. Women weave from their homes, on their own schedules, for global markets.</p>
+    <div class="impact-grid reveal">
+      <div class="impact-card">
+        <div class="impact-num" data-count="85">85+</div>
+        <div class="impact-label" data-en="Women artisans employed" data-es="Artesanas empleadas">Women artisans employed</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num" data-count="12">12</div>
+        <div class="impact-label" data-en="Rural communities reached" data-es="Comunidades rurales alcanzadas">Rural communities reached</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num">100%</div>
+        <div class="impact-label" data-en="Fair trade commitment" data-es="Compromiso de comercio justo">Fair trade commitment</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num">0</div>
+        <div class="impact-label" data-en="Chemical dyes used" data-es="Tintes químicos usados">Chemical dyes used</div>
+      </div>
+    </div>
+    <div class="bilingual-quote reveal">
+      <p class="es" data-es="En 2025, TULY creció donde más importa: en la conexión.">En 2025, TULY creció donde más importa: en la conexión.</p>
+      <p data-en="In 2025, TULY grew where it matters most: in connection, in community, in the dignity of ancestral craft meeting global demand.">In 2025, TULY grew where it matters most: in connection, in community, in the dignity of ancestral craft meeting global demand.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ FOOTER ══════════════════════════ -->
+<footer id="contact">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">TULY</div>
+        <p class="footer-tagline" data-en="Conscious artisan luxury from Guatemala. Handcrafted by master women artisans from native natural fibers." data-es="Lujo artesanal consciente de Guatemala. Hecho a mano por maestras artesanas con fibras naturales nativas.">Conscious artisan luxury from Guatemala. Handcrafted by master women artisans from native natural fibers.</p>
+      </div>
+      <div class="footer-col">
+        <h4 data-en="Shop" data-es="Tienda">Shop</h4>
+        <ul>
+          <li><a href="#shop" data-en="Fashion" data-es="Moda">Fashion</a></li>
+          <li><a href="#shop" data-en="Home & Décor" data-es="Hogar y Decoración">Home & Décor</a></li>
+          <li><a href="#bespoke" data-en="Bespoke" data-es="A Medida">Bespoke</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-en="Brand" data-es="Marca">Brand</h4>
+        <ul>
+          <li><a href="#story" data-en="Our Story" data-es="Nuestra Historia">Our Story</a></li>
+          <li><a href="#impact" data-en="Artisans" data-es="Artesanas">Artisans</a></li>
+          <li><a href="#impact" data-en="Sustainability" data-es="Sostenibilidad">Sustainability</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-en="Connect" data-es="Conectar">Connect</h4>
+        <ul>
+          <!-- ← Replace # with your actual links -->
+          <li><a href="https://instagram.com/YOURHANDLE" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://pinterest.com/YOURHANDLE" target="_blank" rel="noopener">Pinterest</a></li>
+          <li><a href="mailto:hello@tuly.com" data-en="Email Us" data-es="Escríbenos">Email Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy" data-en="© 2025 TULY. All rights reserved. Handcrafted in Guatemala." data-es="© 2025 TULY. Todos los derechos reservados. Hecho a mano en Guatemala.">© 2025 TULY. All rights reserved. Handcrafted in Guatemala.</span>
+      <div class="footer-social">
+        <a href="https://instagram.com/YOURHANDLE" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://pinterest.com/YOURHANDLE" target="_blank" rel="noopener">Pinterest</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+  <div class="lightbox-inner" id="lightbox-inner"></div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   PRODUCTS CONFIG
+   ── Edit prices, names, descriptions, and image paths here ──
+   To add a photo: put it in images/ folder, e.g. images/my-bag.jpg
+   Then set  image: "images/my-bag.jpg"  in the product below.
+   ═══════════════════════════════════════════════════════════════ */
+const PRODUCTS = [
+  {
+    id: "tejido-grande",
+    category: "fashion",
+    name: "Tejido Bag — Grande",
+    nameEs: "Bolso Tejido — Grande",
+    material: "Banana Fiber · Natural Dye",
+    materialEs: "Fibra de Banana · Tinte Natural",
+    price: 380,          // ← change price here
+    currency: "USD",
+    badge: "New",        // set to "" for no badge
+    desc: "A statement woven bag crafted from sun-dried banana fiber by master artisans in Sololá. Each pattern is unique, each piece one-of-a-kind.",
+    descEs: "Un bolso tejido icónico hecho de fibra de banana secada al sol por maestras artesanas en Sololá. Cada patrón es único, cada pieza irrepetible.",
+    image: "images/tejido-grande.jpg"   // ← put your photo here
+  },
+  {
+    id: "tejido-mini",
+    category: "fashion",
+    name: "Tejido Bag — Mini",
+    nameEs: "Bolso Tejido — Mini",
+    material: "Banana Fiber · Natural Dye",
+    materialEs: "Fibra de Banana · Tinte Natural",
+    price: 220,
+    currency: "USD",
+    badge: "",
+    desc: "The compact version of our signature bag — wearable as a crossbody or clutch. Same quality, same story, perfectly scaled.",
+    descEs: "La versión compacta de nuestro bolso insignia. Se usa como bandolera o clutch. La misma calidad, la misma historia, perfectamente proporcional.",
+    image: "images/tejido-mini.jpg"
+  },
+  {
+    id: "cargador",
+    category: "fashion",
+    name: "Cargador — Baby Carrier",
+    nameEs: "Cargador — Portabebé",
+    material: "Maguey & Cotton Blend",
+    materialEs: "Mezcla de Maguey y Algodón",
+    price: 290,
+    currency: "USD",
+    badge: "",
+    desc: "Handwoven with maguey and cotton in the Guatemalan highlands tradition. Ergonomic, breathable, and utterly beautiful.",
+    descEs: "Tejido a mano con maguey y algodón en la tradición del altiplano guatemalteco. Ergonómico, transpirable y absolutamente hermoso.",
+    image: "images/cargador.jpg"
+  },
+  {
+    id: "amuleto",
+    category: "fashion",
+    name: "Amuleto Charm Collection",
+    nameEs: "Colección Amuleto",
+    material: "Pineapple Fiber · Gold Detail",
+    materialEs: "Fibra de Piña · Detalle Dorado",
+    price: 120,
+    currency: "USD",
+    badge: "Bestseller",
+    desc: "Wearable objects of intention. Each charm is handwoven in pineapple fiber with gold metallic thread accents.",
+    descEs: "Objetos portables de intención. Cada amuleto está tejido a mano en fibra de piña con detalles en hilo metálico dorado.",
+    image: "images/amuleto.jpg"
+  },
+  {
+    id: "lampara",
+    category: "home",
+    name: "Lámpara Escultural",
+    nameEs: "Lámpara Escultural",
+    material: "Tule & Banana Fiber",
+    materialEs: "Tule y Fibra de Banana",
+    price: 680,
+    currency: "USD",
+    badge: "",
+    desc: "A sculptural lamp woven from tule reeds of Lake Atitlán. Casts a warm, patterned light that transforms any interior.",
+    descEs: "Lámpara escultórica tejida con juncos de tule del Lago Atitlán. Proyecta una luz cálida y con patrones que transforma cualquier interior.",
+    image: "images/lampara.jpg"
+  },
+  {
+    id: "cesto-bicicleta",
+    category: "home",
+    name: "Cesto Bicicleta",
+    nameEs: "Cesto Bicicleta",
+    material: "Maguey — Handwoven",
+    materialEs: "Maguey — Tejido a Mano",
+    price: 220,
+    currency: "USD",
+    badge: "Bestseller",
+    desc: "A handwoven bicycle basket in raw maguey fiber. Designed to be functional, durable, and beautiful for everyday use.",
+    descEs: "Cesto de bicicleta tejido a mano en fibra de maguey cruda. Diseñado para ser funcional, duradero y bello para el uso diario.",
+    image: "images/cesto-bicicleta.jpg"
+  },
+  {
+    id: "instalacion",
+    category: "bespoke",
+    name: "Interior Installation",
+    nameEs: "Instalación Interior",
+    material: "Custom Fiber Blend",
+    materialEs: "Mezcla de Fibra Personalizada",
+    price: 0,   // 0 = shows "Bespoke Inquiry"
+    currency: "USD",
+    badge: "Commission",
+    desc: "Large-scale woven installations for hotels, residences, and commercial spaces. Each project is unique, conceived in close dialogue with the client.",
+    descEs: "Instalaciones tejidas a gran escala para hoteles, residencias y espacios comerciales. Cada proyecto es único, concebido en estrecho diálogo con el cliente.",
+    image: "images/instalacion.jpg"
+  },
+  {
+    id: "accesorio-bespoke",
+    category: "bespoke",
+    name: "Bespoke Accessory",
+    nameEs: "Accesorio a Medida",
+    material: "Your choice of fiber & color",
+    materialEs: "Tu elección de fibra y color",
+    price: 0,
+    currency: "USD",
+    badge: "One of One",
+    desc: "A completely personalized bag or accessory — your choice of fiber, color, size, and pattern. A heirloom made just for you.",
+    descEs: "Un bolso o accesorio completamente personalizado: tu elección de fibra, color, tamaño y patrón. Una reliquia hecha solo para ti.",
+    image: "images/accesorio-bespoke.jpg"
+  }
+];
+/* ═══════════════════════════════════════════════════════════════ */
+
+/* ─ Language ─ */
+let lang = 'en';
+
+function toggleLang() {
+  lang = lang === 'en' ? 'es' : 'en';
+  document.getElementById('lang-btn').textContent = lang === 'en' ? 'ES' : 'EN';
+  applyLang();
+  renderProducts(currentFilter);
+}
+
+function applyLang() {
+  document.querySelectorAll(`[data-${lang}]`).forEach(el => {
+    const txt = el.getAttribute(`data-${lang}`);
+    if (txt) el.innerHTML = txt;
+  });
+}
+
+/* ─ Nav ─ */
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('solid', window.scrollY > 60);
+});
+
+function toggleMobile() {
+  document.getElementById('mobile-menu').classList.toggle('open');
+}
+function closeMobile() {
+  document.getElementById('mobile-menu').classList.remove('open');
+}
+
+/* ─ Products ─ */
+let currentFilter = 'all';
+
+function filterProducts(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderProducts(filter);
+}
+
+// Placeholder SVG shown when image is missing
+const PLACEHOLDER = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23EDE3D6'/%3E%3Ctext x='50%25' y='44%25' font-family='Georgia,serif' font-style='italic' font-size='18' fill='%23C4A882' text-anchor='middle' dominant-baseline='middle'%3ETULY%3C/text%3E%3Ctext x='50%25' y='56%25' font-family='system-ui,sans-serif' font-size='11' fill='%23C4A882' text-anchor='middle' dominant-baseline='middle' letter-spacing='2'%3EAdd photo%3C/text%3E%3C/svg%3E`;
+
+function renderProducts(filter) {
+  const grid = document.getElementById('products-grid');
+  const items = filter === 'all' ? PRODUCTS : PRODUCTS.filter(p => p.category === filter);
+  grid.innerHTML = items.map(p => {
+    const n = lang === 'es' ? p.nameEs : p.name;
+    const m = lang === 'es' ? p.materialEs : p.material;
+    const priceLabel = p.price === 0
+      ? (lang === 'es' ? 'Consulta Bespoke' : 'Bespoke Inquiry')
+      : `from $${p.price} <span>USD</span>`;
+    return `
+      <div class="product-card" onclick="openLightbox('${p.id}')">
+        <div class="product-thumb">
+          ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
+          <img src="${p.image}" alt="${n}" onerror="this.src='${PLACEHOLDER}'">
+        </div>
+        <div class="product-info">
+          <div class="product-name">${n}</div>
+          <div class="product-material">${m}</div>
+          <div class="product-price">${priceLabel}</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+/* ─ Lightbox ─ */
+function openLightbox(id) {
+  const p = PRODUCTS.find(x => x.id === id);
+  if (!p) return;
+  const n = lang === 'es' ? p.nameEs : p.name;
+  const m = lang === 'es' ? p.materialEs : p.material;
+  const d = lang === 'es' ? p.descEs : p.desc;
+  const priceLabel = p.price === 0
+    ? (lang === 'es' ? 'Consulta Bespoke →' : 'Bespoke Inquiry →')
+    : `from $${p.price} USD`;
+  document.getElementById('lightbox-inner').innerHTML = `
+    <div class="lightbox-img">
+      <img src="${p.image}" alt="${n}" onerror="this.src='${PLACEHOLDER}'" style="width:100%;height:100%;object-fit:cover">
+    </div>
+    <div class="lightbox-info">
+      ${p.badge ? `<span style="font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;background:var(--gold);color:var(--dark);padding:.3rem .7rem;display:inline-block;margin-bottom:1rem">${p.badge}</span>` : ''}
+      <h2 class="lightbox-name">${n}</h2>
+      <p class="lightbox-material">${m}</p>
+      <p class="lightbox-desc">${d}</p>
+      <p class="lightbox-price">${priceLabel}</p>
+      <a href="#bespoke" onclick="closeLightbox()" style="display:inline-block;padding:.8rem 1.8rem;background:var(--gold);color:var(--dark);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;transition:background .2s"
+        onmouseover="this.style.background='var(--camel)'" onmouseout="this.style.background='var(--gold)'">
+        ${p.price === 0 ? (lang === 'es' ? 'Hacer Encargo →' : 'Commission This →') : (lang === 'es' ? 'Consultar →' : 'Enquire →')}
+      </a>
+    </div>`;
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox(e) {
+  if (e && e.target !== document.getElementById('lightbox') && !e.target.classList.contains('lightbox-close')) return;
+  if (!e) {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  } else {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+/* ─ Reveal on scroll ─ */
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); revealObs.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+/* ─ Formspree AJAX ─ */
+document.getElementById('bespoke-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = this.querySelector('.btn-submit');
+  btn.textContent = lang === 'es' ? 'Enviando…' : 'Sending…';
+  btn.disabled = true;
+  try {
+    const res = await fetch(this.action, { method: 'POST', body: new FormData(this), headers: { Accept: 'application/json' } });
+    if (res.ok) {
+      this.reset();
+      document.getElementById('form-success').style.display = 'block';
+      btn.style.display = 'none';
+    } else { btn.textContent = lang === 'es' ? 'Error — intenta de nuevo' : 'Error — please try again'; btn.disabled = false; }
+  } catch { btn.textContent = lang === 'es' ? 'Error — intenta de nuevo' : 'Error — please try again'; btn.disabled = false; }
+});
+
+/* ─ Init ─ */
+renderProducts('all');
+applyLang();
+</script>
+</body>
+</html>
