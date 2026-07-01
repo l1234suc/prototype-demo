@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>flowly — Prototyp Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300&family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0C0B09;--s0:#0F0E0C;--s1:#141210;--s2:#1C1A16;--s3:#252320;--s4:#2E2B27;
+  --t1:#EDE5CF;--t2:#8A8070;--t3:#4A4538;
+  --am:#C8861E;--aml:rgba(200,134,30,.14);--amh:#E8A840;--amb:rgba(200,134,30,.3);
+  --sg:#4E8858;--sgl:rgba(78,136,88,.13);--sgh:#72B87C;
+  --lv:#7060A8;--lvl:rgba(112,96,168,.13);
+  --rd:#B84040;--rdl:rgba(184,64,64,.13);
+  --bd:rgba(237,229,207,.06);--bd2:rgba(237,229,207,.11);--bd3:rgba(237,229,207,.2);
+  --ff:'Fraunces',serif;--fb:'Figtree',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;margin:0;padding:0}
+#scale-root{
+  width:1920px;height:1080px;
+  position:absolute;top:0;left:0;
+  transform-origin:top left;
+  font-family:var(--fb);background:var(--bg);color:var(--t1);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+}
+
+/* ── GRAIN OVERLAY ── */
+body::before{
+  content:'';position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:9000;opacity:.6;
+}
+
+/* ── AMBIENT GLOW ── */
+#glow{position:absolute;inset:0;pointer-events:none;z-index:0;transition:all 1s ease}
+#glow::before{content:'';position:absolute;width:900px;height:700px;border-radius:50%;background:radial-gradient(ellipse, rgba(200,134,30,.09),transparent 70%);top:-200px;right:-100px;transition:all 1.2s ease}
+#glow::after{content:'';position:absolute;width:700px;height:500px;border-radius:50%;background:radial-gradient(ellipse, rgba(78,136,88,.07),transparent 70%);bottom:-100px;left:-100px;transition:all 1.2s ease}
+
+/* ── MAIN LAYOUT ── */
+#stage{flex:1;display:flex;align-items:center;justify-content:center;position:relative;z-index:10;gap:0;padding:0 80px}
+
+/* ── LEFT PANEL ── */
+#left{width:420px;flex-shrink:0;display:flex;flex-direction:column;justify-content:center;padding-right:60px;position:relative}
+.part-tag{display:inline-flex;align-items:center;gap:10px;margin-bottom:20px;opacity:0;animation:fadeUp .5s .1s ease forwards}
+.part-dot{width:8px;height:8px;border-radius:50%;background:var(--am)}
+.part-lbl{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--amh);font-weight:700}
+#left h1{font-family:var(--ff);font-size:42px;font-weight:300;line-height:1.18;letter-spacing:-.01em;margin-bottom:20px;color:var(--t1)}
+#left h1 em{font-style:italic;color:var(--amh)}
+#left .sub{font-size:16.5px;line-height:1.68;color:var(--t2);margin-bottom:28px}
+#left .sub strong{color:var(--t1);font-weight:600}
+
+.callout{background:var(--s1);border:1px solid var(--bd2);border-left:3px solid var(--am);border-radius:0 12px 12px 0;padding:16px 20px;margin-bottom:14px;opacity:0;transform:translateX(-12px);transition:all .5s ease}
+.callout.show{opacity:1;transform:none}
+.callout .cl{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--amh);font-weight:700;margin-bottom:6px}
+.callout p{font-size:14px;line-height:1.62;color:var(--t2)}
+.callout p strong{color:var(--t1)}
+
+.evidence{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;background:var(--sgl);border-radius:10px;border:1px solid rgba(78,136,88,.2);margin-top:6px;opacity:0;transform:translateY(8px);transition:all .5s .3s ease}
+.evidence.show{opacity:1;transform:none}
+.evidence-ico{width:28px;height:28px;border-radius:50%;background:var(--sg);color:#0D1A0F;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;margin-top:1px;font-weight:700}
+.evidence p{font-size:12.5px;color:var(--sgh);line-height:1.55}
+
+/* ── RIGHT: BROWSER MOCKUP ── */
+#right{flex:1;display:flex;align-items:center;justify-content:center;position:relative}
+.browser{width:1200px;height:800px;background:var(--s1);border:1px solid var(--bd2);border-radius:16px;overflow:hidden;box-shadow:0 40px 120px rgba(0,0,0,.7),0 0 0 1px rgba(237,229,207,.04);display:flex;flex-direction:column;position:relative}
+
+.bbar{height:40px;background:var(--s2);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 18px;gap:10px;flex-shrink:0}
+.bdot{width:11px;height:11px;border-radius:50%}
+.bdot.r{background:#D86B5A}.bdot.y{background:#D8B25A}.bdot.g{background:#6BB87A}
+.burl{flex:1;height:24px;background:var(--s3);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11.5px;color:var(--t3);margin:0 12px;font-family:var(--fb)}
+
+/* App Nav */
+.anav{height:52px;background:var(--bg);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 24px;gap:16px;flex-shrink:0;z-index:10}
+.abrand{font-family:var(--ff);font-size:18px;color:var(--amh);display:flex;align-items:center;gap:9px;font-weight:300}
+.alogo{width:26px;height:26px;background:linear-gradient(135deg,var(--am),var(--amh));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px}
+.atabs{display:flex;gap:4px}
+.atab{font-size:11.5px;font-weight:600;padding:5px 12px;border-radius:7px;color:var(--t3);letter-spacing:.04em;text-transform:uppercase}
+.atab.on{color:var(--amh);background:var(--aml)}
+.aright{margin-left:auto;display:flex;align-items:center;gap:8px}
+.pill{background:var(--s2);border:1px solid var(--bd2);border-radius:16px;padding:4px 12px;font-size:11.5px;color:var(--t2);font-weight:500}
+.pill.gold{background:var(--aml);color:var(--amh);border-color:var(--amb)}
+.pill.orange{background:var(--am);color:#1A0E00;border-color:var(--am)}
+
+/* App Content Area */
+.acontent{flex:1;overflow:hidden;position:relative}
+
+/* ── SCENES ── */
+.scene{position:absolute;inset:0;opacity:0;transition:opacity .6s ease;pointer-events:none;display:flex;flex-direction:column}
+.scene.active{opacity:1;pointer-events:auto}
+
+/* SCENE 1 — Dashboard */
+#s1 .dash-w{padding:24px 30px;overflow-y:auto;height:100%}
+.hero-band{background:linear-gradient(140deg,var(--s2),var(--s3));border:1px solid var(--bd2);border-radius:16px;padding:24px 32px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden}
+.hero-band::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(rgba(200,134,30,.1),transparent 70%)}
+.hero-band h2{font-family:var(--ff);font-size:28px;font-weight:300;margin-bottom:4px}
+.hero-band h2 em{font-style:italic;color:var(--amh)}
+.hero-band p{font-size:12.5px;color:var(--t2)}
+.hero-xp{min-width:220px;text-align:right}
+.xp-row{display:flex;justify-content:space-between;font-size:11px;color:var(--t2);margin-bottom:8px}
+.xp-row strong{color:var(--amh)}
+.xp-track{height:7px;background:var(--s1);border-radius:4px;overflow:hidden;margin-bottom:10px}
+.xp-fill{height:100%;width:92%;background:linear-gradient(90deg,var(--am),var(--amh));border-radius:4px;animation:fillBar 1.2s .3s ease both}
+@keyframes fillBar{from{width:0}to{width:92%}}
+.badges{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.badge{padding:4px 10px;border-radius:12px;font-size:10.5px;font-weight:600}
+.badge.gold{background:var(--aml);color:var(--amh);border:1px solid var(--amb)}
+.badge.green{background:var(--sgl);color:var(--sgh);border:1px solid rgba(78,136,88,.25)}
+.badge.gray{background:var(--s3);color:var(--t3);border:1px solid var(--bd)}
+
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.stat-box{background:var(--s1);border:1px solid var(--bd);border-radius:13px;padding:16px 18px}
+.stat-n{font-family:var(--ff);font-size:30px;font-weight:300;line-height:1;margin-bottom:4px;color:var(--amh)}
+.stat-l{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--t3)}
+
+.live-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.live-chip{background:var(--s2);border:1px solid var(--bd);border-radius:20px;padding:6px 14px;display:flex;align-items:center;gap:8px;font-size:11.5px}
+.ldot{width:7px;height:7px;border-radius:50%;background:#52B868;box-shadow:0 0 5px #52B868;animation:lp 2s infinite}
+@keyframes lp{0%,100%{opacity:1}50%{opacity:.35}}
+
+.subj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.scard{background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:16px;cursor:pointer;position:relative;overflow:hidden;transition:all .2s}
+.scard::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px}
+.scard.am::after{background:linear-gradient(90deg,var(--am),var(--amh))}
+.scard.sg::after{background:linear-gradient(90deg,var(--sg),var(--sgh))}
+.scard-ico{font-size:22px;margin-bottom:8px;display:block}
+.scard-t{font-family:var(--ff);font-size:14px;font-weight:400;margin-bottom:2px}
+.scard-s{font-size:10.5px;color:var(--t3);margin-bottom:12px}
+.scard-bar{width:100%;height:3px;background:var(--s3);border-radius:2px;overflow:hidden}
+.scard-fill{height:100%;border-radius:2px}
+.scard.am .scard-fill{background:var(--am)}
+.scard.sg .scard-fill{background:var(--sg)}
+.scard-info{display:flex;justify-content:space-between;font-size:10.5px;color:var(--t2);margin-top:5px}
+
+/* SCENE 2 — Material Hub */
+#s2 .app-hd{height:52px;background:var(--s1);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 24px;gap:14px}
+.cico{width:34px;height:34px;border-radius:9px;background:var(--rdl);color:var(--rd);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px}
+.cico.ok{background:var(--sgl);color:var(--sgh)}
+.ctit{font-family:var(--ff);font-size:17px}
+.csub{font-size:11px;color:var(--t3);margin-top:2px}
+.ctabs-row{display:flex;border-bottom:1px solid var(--bd);background:var(--s1);padding:0 24px;flex-shrink:0}
+.ctab{font-size:12px;font-weight:600;color:var(--t3);padding:11px 15px;border-bottom:2px solid transparent;cursor:pointer;transition:all .2s}
+.ctab.on{color:var(--amh);border-bottom-color:var(--am)}
+.ctab:hover:not(.on){color:var(--t2)}
+.body-area{flex:1;padding:28px 30px;overflow-y:auto;background:var(--bg)}
+
+.dz{border:1.5px dashed var(--amb);border-radius:12px;background:var(--aml);padding:32px;text-align:center;margin-bottom:18px;position:relative;overflow:hidden}
+.dz-shine{position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(200,134,30,.07),transparent);transform:translateX(-100%);animation:shine 2.5s 1s infinite}
+@keyframes shine{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.dz-ico{font-size:28px;opacity:.8;margin-bottom:8px}
+.dz-t{font-size:14px;color:var(--amh);font-weight:600;margin-bottom:4px}
+.dz-s{font-size:11px;color:var(--t3)}
+
+/* SCENE 3 — KI Extraction */
+#s3 .ki-wrap{flex:1;display:flex;align-items:center;justify-content:center;background:var(--bg);position:relative}
+.ki-flow{display:flex;align-items:center;gap:30px}
+.ki-box{background:var(--s2);border:1px solid var(--bd2);border-radius:16px;padding:24px 30px;text-align:center;min-width:180px}
+.ki-box .ico{font-size:36px;margin-bottom:10px}
+.ki-box .lbl{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:4px}
+.ki-box .sub{font-size:11px;color:var(--t3)}
+.ki-arrow{font-size:24px;color:var(--amh);animation:arrowPulse 1s infinite}
+@keyframes arrowPulse{0%,100%{opacity:.4;transform:translateX(0)}50%{opacity:1;transform:translateX(4px)}}
+.ki-box.active{border-color:var(--am);background:var(--aml);animation:boxPulse .8s ease infinite alternate}
+@keyframes boxPulse{from{box-shadow:0 0 0 rgba(200,134,30,0)}to{box-shadow:0 0 20px rgba(200,134,30,.25)}}
+.ki-concepts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:20px;min-width:320px}
+.ki-concept{background:var(--s1);border:1px solid var(--bd2);border-radius:9px;padding:10px 14px;display:flex;align-items:center;gap:10px;animation:conceptPop .4s ease both}
+@keyframes conceptPop{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+.ki-concept:nth-child(1){animation-delay:.1s}.ki-concept:nth-child(2){animation-delay:.3s}
+.ki-concept:nth-child(3){animation-delay:.5s}.ki-concept:nth-child(4){animation-delay:.7s}
+.ki-concept:nth-child(5){animation-delay:.9s}.ki-concept:nth-child(6){animation-delay:1.1s}
+.kc-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.kc-t{font-size:12.5px;font-weight:500;color:var(--t1)}
+.kc-s{font-size:10.5px;color:var(--t3)}
+
+/* SCENE 4 — Mindmap */
+#s4 .map-wrap{flex:1;display:flex;align-items:center;justify-content:center;background:var(--bg);position:relative}
+.map-svg-container{position:relative;width:700px;height:620px}
+.map-label{position:absolute;text-align:center;transform:translate(-50%,-50%);pointer-events:none}
+.map-label .mlt{font-size:12px;font-weight:600;fill:var(--t1)}
+.map-label .mlp{font-size:10.5px;fill:var(--t2)}
+.node-callout{position:absolute;background:var(--s2);border:1px solid var(--bd3);border-radius:9px;padding:6px 12px;font-size:11px;white-space:nowrap;animation:fadeUp .4s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* SCENE 5 — Learning Modes */
+#s5 .mode-grid{flex:1;background:var(--bg);display:grid;grid-template-columns:1fr 1fr;gap:0}
+.mode-left{padding:28px 30px;border-right:1px solid var(--bd)}
+.mode-right{padding:28px 30px;background:var(--s1);display:flex;flex-direction:column}
+.mode-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.mode-tab{padding:7px 14px;border-radius:9px;font-size:12px;font-weight:600;border:1px solid var(--bd2);color:var(--t3);cursor:pointer;transition:all .2s}
+.mode-tab.on{background:var(--am);color:#1A0E00;border-color:var(--am)}
+.mode-tab:hover:not(.on){border-color:var(--amh);color:var(--amh)}
+.mode-content{flex:1}
+.fc-card{background:var(--s2);border:1px solid var(--bd2);border-radius:14px;padding:32px;text-align:center;margin-bottom:16px;min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.fc-card .fc-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:12px;font-weight:700}
+.fc-card .fc-q{font-size:17px;color:var(--t1);line-height:1.5;font-weight:500}
+.fc-card .fc-hint{font-size:11.5px;color:var(--t3);margin-top:10px}
+.fc-actions{display:flex;gap:12px;justify-content:center}
+.fc-no{flex:1;max-width:180px;padding:10px;border-radius:10px;background:var(--rdl);border:none;color:var(--rd);font-family:var(--fb);font-size:13px;font-weight:600;cursor:pointer}
+.fc-yes{flex:1;max-width:180px;padding:10px;border-radius:10px;background:var(--sgl);border:none;color:var(--sgh);font-family:var(--fb);font-size:13px;font-weight:600;cursor:pointer}
+.pomo-circle{width:180px;height:180px;margin:0 auto 20px;position:relative}
+.pomo-circle svg{transform:rotate(-90deg)}
+.pomo-cen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.pomo-time{font-family:var(--ff);font-size:32px;font-weight:300;color:var(--t1)}
+.pomo-ph{font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--t3);margin-top:4px}
+.pomo-start{background:var(--am);color:#1A0E00;border:none;border-radius:10px;padding:10px 30px;font-family:var(--fb);font-size:13px;font-weight:600;cursor:pointer;display:block;margin:0 auto}
+
+.chat-side{padding:20px;display:flex;flex-direction:column;height:100%}
+.chat-hd{display:flex;align-items:center;gap:8px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--bd)}
+.chat-online{width:8px;height:8px;border-radius:50%;background:#52B868;box-shadow:0 0 6px #52B868}
+.chat-hd span{font-size:13px;font-weight:600}
+.chat-msgs{flex:1;display:flex;flex-direction:column;gap:10px;overflow-y:auto}
+.chat-msg{max-width:90%}
+.chat-msg.u{align-self:flex-end}
+.chat-bbl{padding:10px 14px;border-radius:11px;font-size:12.5px;line-height:1.6}
+.chat-msg.u .chat-bbl{background:var(--am);color:#1A0800;border-bottom-right-radius:3px}
+.chat-msg.a .chat-bbl{background:var(--s2);border:1px solid var(--bd);color:var(--t1);border-bottom-left-radius:3px}
+
+/* SCENE 6 — Gamification */
+#s6 .gami-wrap{flex:1;padding:28px 30px;background:var(--bg);overflow-y:auto}
+.gami-hero{background:linear-gradient(140deg,var(--s2),var(--s3));border:1px solid var(--bd2);border-radius:18px;padding:30px 36px;margin-bottom:22px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden}
+.gami-hero::after{content:'';position:absolute;top:-40px;right:-40px;width:220px;height:220px;background:radial-gradient(rgba(200,134,30,.12),transparent 70%)}
+.gami-hero h2{font-family:var(--ff);font-size:32px;font-weight:300}
+.gami-hero h2 em{font-style:italic;color:var(--amh)}
+.gami-hero p{font-size:13px;color:var(--t2);margin-top:4px}
+.lvl-badge{background:var(--am);color:#1A0E00;padding:8px 16px;border-radius:8px;font-size:14px;font-weight:700;font-family:var(--ff)}
+.xp-big{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--t2)}
+.xp-big strong{color:var(--amh);font-size:22px}
+.xp-bigbar{width:200px;height:8px;background:var(--s1);border-radius:4px;overflow:hidden}
+.xp-bigfill{height:100%;width:92%;background:linear-gradient(90deg,var(--am),var(--amh));border-radius:4px;animation:fillBar 1.4s ease both}
+
+.gami-badges{display:flex;gap:10px;margin-bottom:22px}
+.gbadge{background:var(--s1);border:1px solid var(--bd2);border-radius:12px;padding:14px 20px;display:flex;flex-direction:column;align-items:center;gap:5px;flex:1}
+.gbadge .gico{font-size:22px}
+.gbadge .gtitle{font-size:12px;font-weight:600;color:var(--t1)}
+.gbadge .gsub{font-size:10.5px;color:var(--t3)}
+
+.live-full{background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:20px 24px}
+.live-full-hd{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.live-full-hd h4{font-family:var(--ff);font-size:16px;font-weight:300}
+.live-full-hd span{font-size:12px;color:var(--t3)}
+.avatars{display:flex;flex-wrap:wrap;gap:8px}
+.avatar{width:42px;height:42px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;position:relative}
+.avatar::after{content:'';position:absolute;width:9px;height:9px;background:#52B868;border-radius:50%;bottom:-2px;right:-2px;border:2px solid var(--bg);box-shadow:0 0 5px #52B868}
+
+/* SCENE 7 — Panic Mode */
+#s7 .panic-wrap{flex:1;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;position:relative}
+#s7 .panic-wrap::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 600px 400px at center,rgba(184,64,64,.07),transparent 70%)}
+.panic-timer{font-family:var(--ff);font-size:90px;font-weight:300;line-height:1;color:var(--rd);animation:timerPulse 1s infinite}
+@keyframes timerPulse{0%,100%{text-shadow:0 0 0 rgba(184,64,64,0)}50%{text-shadow:0 0 30px rgba(184,64,64,.5)}}
+.panic-sub{font-size:13px;color:var(--t3);margin-bottom:24px;letter-spacing:.04em}
+.panic-card{width:560px;background:var(--s2);border:2px solid var(--rd);border-radius:18px;padding:36px;text-align:center;animation:cardGlow 1s infinite alternate;margin-bottom:20px}
+@keyframes cardGlow{from{box-shadow:0 0 0 rgba(184,64,64,0)}to{box-shadow:0 0 25px rgba(184,64,64,.3)}}
+.panic-card .pk-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:14px;font-weight:700}
+.panic-card .pk-q{font-size:20px;font-weight:600;color:var(--t1);line-height:1.4}
+.panic-acts{display:flex;gap:14px}
+.pk-no{flex:1;max-width:200px;padding:12px;border-radius:11px;background:var(--rdl);border:1.5px solid var(--rd);color:var(--rd);font-family:var(--fb);font-size:14px;font-weight:600;cursor:pointer}
+.pk-yes{flex:1;max-width:200px;padding:12px;border-radius:11px;background:var(--sgl);border:1.5px solid var(--sg);color:var(--sgh);font-family:var(--fb);font-size:14px;font-weight:600;cursor:pointer}
+.panic-hint{font-size:12px;color:var(--t3);margin-top:12px}
+
+/* ── CALLOUT ANNOTATIONS ── */
+.annotation{position:absolute;z-index:100;animation:annotate .5s ease both;pointer-events:none}
+@keyframes annotate{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
+.ann-card{background:rgba(14,13,10,.92);border:1px solid var(--amh);border-radius:11px;padding:10px 16px;display:flex;align-items:center;gap:10px;backdrop-filter:blur(10px)}
+.ann-dot{width:10px;height:10px;border-radius:50%;background:var(--amh);box-shadow:0 0 10px rgba(232,168,64,.7);flex-shrink:0}
+.ann-t{font-size:13px;font-weight:600;color:var(--t1);white-space:nowrap}
+.ann-s{font-size:11px;color:var(--t3);margin-top:1px}
+.ann-line{position:absolute;pointer-events:none}
+
+/* ── BOTTOM BAR ── */
+#bottom{height:64px;display:flex;align-items:center;padding:0 80px;position:relative;z-index:20;justify-content:space-between;flex-shrink:0;border-top:1px solid var(--bd)}
+.progress{display:flex;align-items:center;gap:12px}
+.prog-dots{display:flex;gap:8px}
+.prog-dot{width:8px;height:8px;border-radius:50%;background:var(--s3);transition:all .3s}
+.prog-dot.active{width:24px;border-radius:4px;background:var(--am)}
+.prog-dot.done{background:var(--t3)}
+.prog-label{font-size:11.5px;color:var(--t3);letter-spacing:.04em}
+.nav-hint{font-size:12px;color:var(--t3);display:flex;align-items:center;gap:18px}
+.hint-key{background:var(--s2);border:1px solid var(--bd2);border-radius:6px;padding:3px 10px;font-size:11px;color:var(--t2);font-family:monospace}
+.flowly-mark{font-family:var(--ff);font-size:16px;color:var(--t3);font-weight:300;display:flex;align-items:center;gap:8px}
+.flowly-mark .lgo{width:20px;height:20px;background:linear-gradient(135deg,var(--am),var(--amh));border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px}
+
+/* ── SPEAKER NOTES ── */
+#notes{position:fixed;bottom:0;left:0;right:0;background:rgba(10,9,7,.96);border-top:1px solid var(--am);padding:20px 80px;z-index:9999;transform:translateY(100%);transition:transform .35s ease;max-height:240px;overflow-y:auto}
+#notes.show{transform:none}
+#notes h3{font-family:var(--ff);font-size:15px;color:var(--amh);margin-bottom:8px;font-weight:300}
+#notes p{font-size:13.5px;color:var(--t2);line-height:1.72}
+#notes p strong{color:var(--t1)}
+
+/* ── TRANSITIONS ── */
+.scene-enter{animation:sceneIn .6s ease both}
+.scene-exit{animation:sceneOut .4s ease both}
+@keyframes sceneIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes sceneOut{from{opacity:1}to{opacity:0}}
+</style>
+</head>
+<body>
+
+<div id="scale-root">
+<!-- AMBIENT -->
+<div id="glow"></div>
+
+<!-- STAGE -->
+<div id="stage">
+
+  <!-- LEFT PANEL (changes per scene) -->
+  <div id="left"></div>
+
+  <!-- RIGHT: BROWSER -->
+  <div id="right">
+    <div class="browser">
+      <!-- Browser chrome -->
+      <div class="bbar">
+        <div class="bdot r"></div><div class="bdot y"></div><div class="bdot g"></div>
+        <div class="burl" id="burl">flowly-projekt.vercel.app</div>
+      </div>
+      <!-- App Nav (always visible) -->
+      <div class="anav">
+        <div class="abrand" style="gap:10px"><div class="alogo" style="background:none;padding:0"><svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" stop-color="#C8921A"/>
+<stop offset="45%" stop-color="#F0CC5A"/>
+<stop offset="100%" stop-color="#B07814"/>
+</linearGradient>
+</defs>
+<rect width="28" height="28" rx="6" fill="#0C0B09"/>
+<path d="M5 18 C5 14 8 10 12 10 C14 10 15 11.5 14.5 13 C14 14.5 12 15 11 16 C9.5 17.5 9.5 20 12 20 C14.5 20 16 18 17 16" stroke="url(#lg)" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+<path d="M13 13 C15 10.5 18 9.5 20 10.5 C22 11.5 22.5 14 21 15.5" stroke="url(#lg)" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+<path d="M17 15 L19.5 17.5 L24 12" stroke="url(#lg)" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div>flowly</div>
+        <div class="atabs">
+          <div class="atab" id="nav-dash">DASHBOARD</div>
+          <div class="atab" id="nav-plan">LERNPLAN</div>
+        </div>
+        <div class="aright">
+          <div class="pill gold">🔥 3 Tage</div>
+          <div class="pill" id="nav-xp">Lv 1 · 460 XP</div>
+          <div class="pill orange">+ Fach</div>
+        </div>
+      </div>
+      <!-- App Content -->
+      <div class="acontent" id="acontent">
+
+        <!-- S1: Dashboard -->
+        <div class="scene" id="s1">
+          <div class="dash-w">
+            <div class="hero-band">
+              <div>
+                <h2>Guten Morgen, <em>Lernende.</em></h2>
+                <p>Heute schon 172 Minuten gelernt.</p>
+              </div>
+              <div class="hero-xp">
+                <div class="xp-row"><span>Level <strong>1</strong></span><span><strong>460</strong> / 500 XP</span></div>
+                <div class="xp-track"><div class="xp-fill"></div></div>
+                <div class="badges">
+                  <div class="badge gold">🔥 3d Streak</div>
+                  <div class="badge green">🃏 50 Karten</div>
+                  <div class="badge green">⏱ 100 Min</div>
+                </div>
+              </div>
+            </div>
+            <div class="stat-grid">
+              <div class="stat-box"><div class="stat-n" style="color:var(--amh)">172</div><div class="stat-l">Lernminuten</div></div>
+              <div class="stat-box"><div class="stat-n">89</div><div class="stat-l">Karten geübt</div></div>
+              <div class="stat-box"><div class="stat-n">7</div><div class="stat-l">Konzepte</div></div>
+              <div class="stat-box"><div class="stat-n">2</div><div class="stat-l">Fächer</div></div>
+            </div>
+            <div style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-weight:700">🟢 Online — 23 Kommilitonen lernen gerade</div>
+            <div class="live-row">
+              <div class="live-chip"><div class="ldot"></div><div><div style="font-weight:600;font-size:11.5px">Jan I.</div><div style="font-size:10px;color:var(--t3)">KuL</div></div></div>
+              <div class="live-chip"><div class="ldot"></div><div><div style="font-weight:600;font-size:11.5px">Emily E.</div><div style="font-size:10px;color:var(--t3)">WINF</div></div></div>
+              <div class="live-chip"><div class="ldot"></div><div><div style="font-weight:600;font-size:11.5px">Matteo J.</div><div style="font-size:10px;color:var(--t3)">Statistik</div></div></div>
+              <div class="live-chip"><div class="ldot"></div><div><div style="font-weight:600;font-size:11.5px">Julia I.</div><div style="font-size:10px;color:var(--t3)">WiMa</div></div></div>
+            </div>
+            <div style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-weight:700">⚠ Dringend wiederholen</div>
+            <div style="background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:12px 18px;margin-bottom:16px;display:flex;align-items:center;gap:12px">
+              <div style="width:8px;height:8px;border-radius:50%;background:var(--rd)"></div>
+              <div style="flex:1;font-size:12.5px;font-weight:500">Digitale Transformation</div>
+              <div style="font-size:11px;color:var(--t3)">Wirtschaftsinformatik</div>
+              <div style="width:60px;height:3px;background:var(--s3);border-radius:2px;overflow:hidden"><div style="width:18%;height:100%;background:var(--rd);border-radius:2px"></div></div>
+            </div>
+            <div style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-weight:700">Meine Fächer</div>
+            <div class="subj-grid">
+              <div class="scard am"><span class="scard-ico">💻</span><div class="scard-t">Wirtschaftsinformatik</div><div class="scard-s">Informatik · 5 Konzepte</div><div class="scard-bar"><div class="scard-fill" style="width:49%"></div></div><div class="scard-info"><span>127 Min</span><span>49%</span></div></div>
+              <div class="scard sg"><span class="scard-ico">📊</span><div class="scard-t">Kosten- & Leistungsrechnung</div><div class="scard-s">BWL · 2 Konzepte</div><div class="scard-bar"><div class="scard-fill" style="width:56%"></div></div><div class="scard-info"><span>45 Min</span><span>56%</span></div></div>
+              <div class="scard" style="border-style:dashed;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--t3);font-size:12px;cursor:pointer"><span style="font-size:28px">+</span>Neues Fach</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- S2: Material Hub -->
+        <div class="scene" id="s2" style="flex-direction:column">
+          <div class="app-hd">
+            <div class="cico">!</div>
+            <div><div class="ctit">ERP-Systeme</div><div class="csub">Systeme · ●●●○○ · ← Zurück zur Mindmap</div></div>
+          </div>
+          <div class="ctabs-row">
+            <div class="ctab on">📁 Dateien</div>
+            <div class="ctab">📄 Zusammenfassung</div>
+            <div class="ctab">🃏 Karteikarten</div>
+            <div class="ctab">⚡ Panik-Modus</div>
+            <div class="ctab">⏱ Pomodoro</div>
+          </div>
+          <div class="body-area" style="display:flex;gap:20px;flex:1">
+            <div style="flex:1">
+              <div class="dz">
+                <div class="dz-shine"></div>
+                <div class="dz-ico">📁</div>
+                <div class="dz-t">PDF, TXT, MD hochladen oder hierhin ziehen</div>
+                <div class="dz-s">Direkt im KI-Tutor nutzbar</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="background:var(--s2);border:1px solid var(--bd2);border-radius:9px;padding:11px 16px;display:flex;align-items:center;gap:12px">
+                  <span style="font-size:18px">📄</span>
+                  <div style="flex:1"><div style="font-size:12.5px;font-weight:500">ERP_Skript_WiSe24.pdf</div><div style="font-size:10.5px;color:var(--t3)">245 KB · gerade hochgeladen</div></div>
+                  <button style="background:var(--aml);border:none;border-radius:6px;padding:5px 12px;font-family:var(--fb);font-size:11.5px;color:var(--amh);cursor:pointer;font-weight:600">Im Chat nutzen</button>
+                </div>
+              </div>
+            </div>
+            <div style="width:300px;background:var(--s1);border-left:1px solid var(--bd);padding:20px;display:flex;flex-direction:column">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--bd)"><div style="width:8px;height:8px;border-radius:50%;background:#52B868;box-shadow:0 0 6px #52B868"></div><span style="font-size:12.5px;font-weight:600">KI-Tutor</span><small style="margin-left:auto;font-size:10.5px;color:var(--t3)">ERP-Systeme</small></div>
+              <div style="flex:1;font-size:12.5px;color:var(--t3);line-height:1.7">Ich bin immer hier.<br>Stell mir eine Frage zu <strong style="color:var(--t1)">ERP-Systeme</strong>. 🤖</div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
+                <button style="background:var(--s2);border:none;border-radius:7px;padding:4px 9px;font-family:var(--fb);font-size:11px;color:var(--t2);cursor:pointer">Erkläre ERP einfach</button>
+                <button style="background:var(--s2);border:none;border-radius:7px;padding:4px 9px;font-family:var(--fb);font-size:11px;color:var(--t2);cursor:pointer">🚨 Klausurfragen</button>
+              </div>
+              <div style="display:flex;gap:8px"><input style="flex:1;background:var(--s2);border:1px solid var(--bd2);border-radius:8px;padding:8px 12px;font-family:var(--fb);font-size:12px;color:var(--t1);outline:none" placeholder="Frage stellen…"/><button style="background:var(--am);color:#1A0800;border:none;border-radius:8px;padding:8px 14px;font-family:var(--fb);font-size:12px;cursor:pointer;font-weight:600">→</button></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- S3: KI Extraction -->
+        <div class="scene" id="s3" style="flex-direction:column">
+          <div style="padding:20px 30px;background:var(--s1);border-bottom:1px solid var(--bd);font-size:12px;color:var(--t3)">KI-Strukturierung · Automatische Konzept-Extraktion</div>
+          <div class="ki-wrap">
+            <div style="text-align:center">
+              <div style="font-family:var(--ff);font-size:22px;font-weight:300;color:var(--t1);margin-bottom:6px">KI analysiert Inhalt <span style="color:var(--amh)">ERP_Skript.pdf</span></div>
+              <div style="font-size:13px;color:var(--t2);margin-bottom:36px">Extrahiere 6–12 Schlüsselkonzepte · Generiere Zusammenfassungen &amp; Karteikarten</div>
+              <div class="ki-flow">
+                <div class="ki-box">
+                  <div class="ico">📄</div>
+                  <div class="lbl">PDF-Upload</div>
+                  <div class="sub">245 KB · 48 Seiten</div>
+                </div>
+                <div class="ki-arrow">→</div>
+                <div class="ki-box active">
+                  <div class="ico" style="animation:spin 1s linear infinite">⚙️</div>
+                  <div class="lbl">KI verarbeitet</div>
+                  <div class="sub">claude-sonnet-4</div>
+                </div>
+                <div class="ki-arrow">→</div>
+                <div>
+                  <div style="font-size:12px;color:var(--amh);font-weight:600;margin-bottom:12px;text-align:center">8 Konzepte erkannt</div>
+                  <div class="ki-concepts">
+                    <div class="ki-concept"><div class="kc-dot" style="background:var(--am)"></div><div><div class="kc-t">ERP-Systeme</div><div class="kc-s">+ Zusammenfassung + 3 Karten</div></div></div>
+                    <div class="ki-concept"><div class="kc-dot" style="background:var(--sg)"></div><div><div class="kc-t">CRM-Integration</div><div class="kc-s">+ Zusammenfassung + 3 Karten</div></div></div>
+                    <div class="ki-concept"><div class="kc-dot" style="background:var(--rd)"></div><div><div class="kc-t">Supply Chain</div><div class="kc-s">+ Zusammenfassung + 3 Karten</div></div></div>
+                    <div class="ki-concept"><div class="kc-dot" style="background:var(--lv)"></div><div><div class="kc-t">BPMN &amp; Prozesse</div><div class="kc-s">+ Zusammenfassung + 3 Karten</div></div></div>
+                    <div class="ki-concept"><div class="kc-dot" style="background:var(--am)"></div><div><div class="kc-t">Digitale Transf.</div><div class="kc-s">+ Zusammenfassung + 3 Karten</div></div></div>
+                    <div class="ki-concept"><div class="kc-dot" style="background:var(--sg)"></div><div><div class="kc-t">SAP S/4HANA</div><div class="kc-s">+ Zusammenfassung + 3 Karten</div></div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- S4: Mindmap -->
+        <div class="scene" id="s4" style="flex-direction:column">
+          <div style="padding:14px 24px;background:var(--s1);border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:14px">
+            <span style="font-size:20px">💻</span>
+            <div><div style="font-family:var(--ff);font-size:17px">Wirtschaftsinformatik</div><div style="font-size:11px;color:var(--t3)">Informatik · 5 Konzepte — Konzept anklicken</div></div>
+            <div style="margin-left:auto;background:var(--s2);border:1px solid var(--bd2);border-radius:8px;padding:5px 12px;font-size:11px;color:var(--t2)">← Dashboard</div>
+          </div>
+          <div class="ki-wrap" style="position:relative">
+            <svg width="700" height="540" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 540">
+              <defs>
+                <filter id="glow-sg"><feGaussianBlur stdDeviation="3" result="blur"/><feComposite in="SourceGraphic" in2="blur" operator="over"/></filter>
+                <filter id="glow-rd"><feGaussianBlur stdDeviation="4" result="blur"/><feComposite in="SourceGraphic" in2="blur" operator="over"/></filter>
+              </defs>
+              <!-- Lines -->
+              <line x1="350" y1="270" x2="350" y2="100" stroke="rgba(237,229,207,.15)" stroke-width="1.5"/>
+              <line x1="350" y1="270" x2="560" y2="170" stroke="rgba(237,229,207,.15)" stroke-width="1.5"/>
+              <line x1="350" y1="270" x2="560" y2="380" stroke="rgba(237,229,207,.15)" stroke-width="1.5"/>
+              <line x1="350" y1="270" x2="140" y2="380" stroke="rgba(237,229,207,.15)" stroke-width="1.5"/>
+              <line x1="350" y1="270" x2="250" y2="430" stroke="rgba(237,229,207,.15)" stroke-width="1.5"/>
+              <!-- Center -->
+              <ellipse cx="350" cy="270" rx="72" ry="32" fill="#1C1A16" stroke="rgba(232,168,64,.5)" stroke-width="1.5"/>
+              <text x="350" y="274" text-anchor="middle" font-family="Fraunces,serif" font-size="13" fill="#E8A840" font-weight="300">Wirtschafts-</text>
+              <text x="350" y="288" text-anchor="middle" font-family="Fraunces,serif" font-size="13" fill="#E8A840" font-weight="300">informatik</text>
+              <!-- ERP 100% green ring -->
+              <circle cx="350" cy="100" r="48" fill="#131210" stroke="rgba(114,184,124,.2)" stroke-width="2"/>
+              <circle cx="350" cy="100" r="44" fill="none" stroke="#72B87C" stroke-width="4" stroke-linecap="round" stroke-dasharray="276.5 0" transform="rotate(-90 350 100)" filter="url(#glow-sg)"/>
+              <text x="350" y="97" text-anchor="middle" font-family="Figtree,sans-serif" font-size="13" fill="#EDE5CF" font-weight="600">ERP</text>
+              <text x="350" y="112" text-anchor="middle" font-family="Figtree,sans-serif" font-size="11" fill="#72B87C">100%</text>
+              <!-- CRM 85% -->
+              <circle cx="560" cy="170" r="48" fill="#131210" stroke="rgba(114,184,124,.2)" stroke-width="2"/>
+              <circle cx="560" cy="170" r="44" fill="none" stroke="#72B87C" stroke-width="4" stroke-linecap="round" stroke-dasharray="234.4 41.9" transform="rotate(-90 560 170)"/>
+              <text x="560" y="167" text-anchor="middle" font-family="Figtree,sans-serif" font-size="12" fill="#EDE5CF" font-weight="600">CRM</text>
+              <text x="560" y="182" text-anchor="middle" font-family="Figtree,sans-serif" font-size="11" fill="#72B87C">85%</text>
+              <!-- BPMN 52% amber -->
+              <circle cx="560" cy="380" r="48" fill="#131210" stroke="rgba(200,134,30,.2)" stroke-width="2"/>
+              <circle cx="560" cy="380" r="44" fill="none" stroke="#E8A840" stroke-width="4" stroke-linecap="round" stroke-dasharray="143.8 132.5" transform="rotate(-90 560 380)"/>
+              <text x="560" y="377" text-anchor="middle" font-family="Figtree,sans-serif" font-size="12" fill="#EDE5CF" font-weight="600">BPMN</text>
+              <text x="560" y="392" text-anchor="middle" font-family="Figtree,sans-serif" font-size="11" fill="#E8A840">52%</text>
+              <!-- Digitale Transf 18% red -->
+              <circle cx="140" cy="380" r="48" fill="#131210" stroke="rgba(184,64,64,.25)" stroke-width="2"/>
+              <circle cx="140" cy="380" r="44" fill="none" stroke="#B84040" stroke-width="4" stroke-linecap="round" stroke-dasharray="49.7 226.6" transform="rotate(-90 140 380)" filter="url(#glow-rd)"/>
+              <text x="140" y="374" text-anchor="middle" font-family="Figtree,sans-serif" font-size="11" fill="#EDE5CF" font-weight="600">Digitale</text>
+              <text x="140" y="387" text-anchor="middle" font-family="Figtree,sans-serif" font-size="11" fill="#EDE5CF" font-weight="600">Transf.</text>
+              <text x="140" y="400" text-anchor="middle" font-family="Figtree,sans-serif" font-size="11" fill="#B84040">18%</text>
+              <!-- SCM 29% red -->
+              <circle cx="250" cy="430" r="48" fill="#131210" stroke="rgba(184,64,64,.2)" stroke-width="2"/>
+              <circle cx="250" cy="430" r="44" fill="none" stroke="#B84040" stroke-width="4" stroke-linecap="round" stroke-dasharray="80.1 196.2" transform="rotate(-90 250 430)"/>
+              <text x="250" y="425" text-anchor="middle" font-family="Figtree,sans-serif" font-size="12" fill="#EDE5CF" font-weight="600">Supply</text>
+              <text x="250" y="438" text-anchor="middle" font-family="Figtree,sans-serif" font-size="11" fill="#EDE5CF" font-weight="600">Chain</text>
+              <text x="250" y="453" text-anchor="middle" font-family="Figtree,sans-serif" font-size="11" fill="#B84040">29%</text>
+            </svg>
+            <!-- Legend -->
+            <div style="position:absolute;bottom:20px;left:30px;display:flex;gap:16px">
+              <div style="display:flex;align-items:center;gap:6px"><div style="width:10px;height:10px;border-radius:50%;background:#72B87C"></div><span style="font-size:11.5px;color:var(--t3)">Sicher &gt;70%</span></div>
+              <div style="display:flex;align-items:center;gap:6px"><div style="width:10px;height:10px;border-radius:50%;background:#E8A840"></div><span style="font-size:11.5px;color:var(--t3)">Üben 40–70%</span></div>
+              <div style="display:flex;align-items:center;gap:6px"><div style="width:10px;height:10px;border-radius:50%;background:#B84040"></div><span style="font-size:11.5px;color:var(--t3)">Kritisch &lt;40%</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- S5: Learning Modes / Karteikarten -->
+        <div class="scene" id="s5" style="flex-direction:column">
+          <div class="app-hd">
+            <div class="cico ok">✓</div>
+            <div><div class="ctit">ERP-Systeme</div><div class="csub">Systeme · ●●●○○</div></div>
+          </div>
+          <div class="ctabs-row">
+            <div class="ctab">📁 Dateien</div>
+            <div class="ctab">📄 Zusammenfassung</div>
+            <div class="ctab on">🃏 Karteikarten</div>
+            <div class="ctab">⚡ Panik-Modus</div>
+            <div class="ctab">⏱ Pomodoro</div>
+          </div>
+          <div style="flex:1;display:flex">
+            <div style="flex:1;padding:28px 30px;border-right:1px solid var(--bd)">
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;font-size:12px;color:var(--t2)">
+                <span style="font-weight:600;color:var(--t1)">1 / 3</span>
+                <div style="flex:1;height:4px;background:var(--s3);border-radius:2px;overflow:hidden"><div style="width:0%;height:100%;background:linear-gradient(90deg,var(--am),var(--amh));border-radius:2px"></div></div>
+                <span>—</span>
+              </div>
+              <div class="fc-card">
+                <div class="fc-lbl">Frage</div>
+                <div class="fc-q">Was bedeutet ERP?</div>
+                <div class="fc-hint">Tippen zum Aufdecken</div>
+              </div>
+              <div class="fc-actions">
+                <button class="fc-no">✗ Nicht gewusst</button>
+                <button class="fc-yes">✓ Gewusst</button>
+              </div>
+            </div>
+            <!-- Pomo preview -->
+            <div style="width:320px;padding:28px 24px;background:var(--s1);display:flex;flex-direction:column;align-items:center;border-right:1px solid var(--bd)">
+              <div style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--t3);font-weight:700;margin-bottom:18px">⏱ Pomodoro</div>
+              <div class="pomo-circle">
+                <svg width="180" height="180" viewBox="0 0 180 180">
+                  <circle cx="90" cy="90" r="72" stroke-width="7" stroke="#252320" fill="none"/>
+                  <circle cx="90" cy="90" r="72" stroke-width="7" stroke="#C8861E" fill="none" stroke-linecap="round" stroke-dasharray="452.4" stroke-dashoffset="0" style="transition:stroke-dashoffset .8s linear"/>
+                </svg>
+                <div class="pomo-cen"><div class="pomo-time">25:00</div><div class="pomo-ph">Fokus</div></div>
+              </div>
+              <div style="display:flex;gap:8px;margin-bottom:14px">
+                <button style="background:var(--s2);border:1px solid var(--bd2);border-radius:8px;padding:5px 12px;font-family:var(--fb);font-size:11.5px;color:var(--amh);cursor:pointer;background:var(--aml)">25 Min</button>
+                <button style="background:var(--s2);border:1px solid var(--bd2);border-radius:8px;padding:5px 12px;font-family:var(--fb);font-size:11.5px;color:var(--t2);cursor:pointer">45 Min</button>
+                <button style="background:var(--s2);border:1px solid var(--bd2);border-radius:8px;padding:5px 12px;font-family:var(--fb);font-size:11.5px;color:var(--t2);cursor:pointer">50 Min</button>
+              </div>
+              <button class="pomo-start">▶ Start</button>
+            </div>
+            <!-- Chat -->
+            <div style="width:280px;padding:18px 20px;display:flex;flex-direction:column;background:var(--bg)">
+              <div class="chat-hd"><div class="chat-online"></div><span>KI-Tutor</span></div>
+              <div class="chat-msgs" style="flex:1;gap:10px;display:flex;flex-direction:column">
+                <div class="chat-msg u"><div class="chat-bbl">Erkläre ERP einfach</div></div>
+                <div class="chat-msg a"><div class="chat-bbl">⭐ <strong>ERP</strong> = dein Unternehmens-Betriebssystem.<br>Statt 5 Insellösungen: ein System für Finanzen, HR, Logistik &amp; Vertrieb. Alles in einer Datenbank.</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- S6: Gamification -->
+        <div class="scene" id="s6" style="flex-direction:column">
+          <div class="gami-wrap">
+            <div class="gami-hero">
+              <div>
+                <h2 style="font-family:var(--ff);font-size:26px;font-weight:300;margin-bottom:4px">Guten Morgen, <em style="color:var(--amh)">Lernende.</em></h2>
+                <p style="font-size:13px;color:var(--t2)">Heute schon 172 Minuten gelernt.</p>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:10px">
+                <div style="display:flex;align-items:center;gap:12px">
+                  <div class="lvl-badge">Lv 1</div>
+                  <div class="xp-big">
+                    <div class="xp-bigbar"><div class="xp-bigfill"></div></div>
+                    <strong>460</strong> / 500 XP
+                  </div>
+                </div>
+                <div class="badges" style="gap:8px;display:flex">
+                  <div class="badge gold">🔥 3d Streak</div>
+                  <div class="badge green">🃏 50 Karten</div>
+                  <div class="badge green">⏱ 100 Min</div>
+                </div>
+              </div>
+            </div>
+            <div class="stat-grid" style="margin-bottom:18px">
+              <div class="stat-box"><div class="stat-n" style="color:var(--amh)">172</div><div class="stat-l">Lernminuten</div></div>
+              <div class="stat-box"><div class="stat-n">89</div><div class="stat-l">Karten geübt</div></div>
+              <div class="stat-box"><div class="stat-n">7</div><div class="stat-l">Konzepte</div></div>
+              <div class="stat-box"><div class="stat-n" style="color:var(--rd)">2</div><div class="stat-l">Dringend üben</div></div>
+            </div>
+            <div class="gami-badges" style="gap:12px;margin-bottom:20px">
+              <div class="gbadge"><div class="gico">🏆</div><div class="gtitle">Top-Learner</div><div class="gsub">3 Tage in Folge</div></div>
+              <div class="gbadge"><div class="gico">🃏</div><div class="gtitle">Card Master</div><div class="gsub">50+ Karten gelernt</div></div>
+              <div class="gbadge"><div class="gico">⏱</div><div class="gtitle">100-Min Club</div><div class="gsub">100 Minuten gesamt</div></div>
+              <div class="gbadge" style="border-color:var(--am);background:var(--aml)"><div class="gico">⭐</div><div class="gtitle" style="color:var(--amh)">Level 2</div><div class="gsub" style="color:var(--amh)">40 XP bis dahin</div></div>
+            </div>
+            <div class="live-full">
+              <div class="live-full-hd"><div class="ldot"></div><h4>Live-Lernraum</h4><span>23 gerade online</span></div>
+              <div class="avatars">
+                <div class="avatar" style="background:#4B7BE5">JV</div>
+                <div class="avatar" style="background:#4CAF50">JI</div>
+                <div class="avatar" style="background:#E8543A">JF</div>
+                <div class="avatar" style="background:#9C27B0">EE</div>
+                <div class="avatar" style="background:#FF9800">MJ</div>
+                <div class="avatar" style="background:#00BCD4">KS</div>
+                <div class="avatar" style="background:#E91E63">NV</div>
+                <div class="avatar" style="background:#795548">EA</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- S7: Panik Mode -->
+        <div class="scene" id="s7" style="flex-direction:column">
+          <div class="app-hd">
+            <div class="cico">!</div>
+            <div><div class="ctit">ERP-Systeme — Panik-Modus</div><div class="csub">30 Sek. pro Karte · Echter Klausur-Stress-Test</div></div>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--t3)">Score: <strong style="color:var(--amh);font-size:16px">2</strong> / 3</div>
+          </div>
+          <div class="panic-wrap">
+            <div class="panic-timer" id="panicTimer">00:12</div>
+            <div class="panic-sub">KARTE 3 VON 3 · Restzeit</div>
+            <div class="panic-card">
+              <div class="pk-lbl">Frage</div>
+              <div class="pk-q">Was ist der Unterschied zwischen ERP und CRM?</div>
+            </div>
+            <div class="panic-acts">
+              <button class="pk-no">✗ Falsch</button>
+              <button class="pk-yes">✓ Richtig</button>
+            </div>
+            <div class="panic-hint">Tippen zum Aufdecken</div>
+          </div>
+        </div>
+
+      </div><!-- /acontent -->
+    </div><!-- /browser -->
+  </div><!-- /right -->
+</div><!-- /stage -->
+
+<!-- BOTTOM BAR -->
+<div id="bottom">
+  <div class="progress">
+    <div class="prog-dots" id="progDots"></div>
+    <div class="prog-label" id="progLabel">1 / 7</div>
+  </div>
+  <div class="flowly-mark"><div class="lgo" style="background:none;padding:0;width:22px;height:22px"><svg width="22" height="22" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="lg2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#C8921A"/><stop offset="45%" stop-color="#F0CC5A"/><stop offset="100%" stop-color="#B07814"/></linearGradient></defs><rect width="28" height="28" rx="6" fill="#141210"/><path d="M5 18 C5 14 8 10 12 10 C14 10 15 11.5 14.5 13 C14 14.5 12 15 11 16 C9.5 17.5 9.5 20 12 20 C14.5 20 16 18 17 16" stroke="url(#lg2)" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M13 13 C15 10.5 18 9.5 20 10.5 C22 11.5 22.5 14 21 15.5" stroke="url(#lg2)" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M17 15 L19.5 17.5 L24 12" stroke="url(#lg2)" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>flowly Prototyp Demo</div>
+  <div class="nav-hint">
+    <span><span class="hint-key">Space</span> oder <span class="hint-key">→</span> weiter</span>
+    <span><span class="hint-key">←</span> zurück</span>
+    <span><span class="hint-key">N</span> Sprechernotizen</span>
+    <span><span class="hint-key">F</span> Vollbild</span>
+  </div>
+</div>
+
+<!-- SPEAKER NOTES -->
+<div id="notes">
+  <h3 id="notes-title">Sprechernotizen</h3>
+  <p id="notes-text"></p>
+</div>
+
+<script>
+const SCENES = [
+  {
+    id:'s1',
+    navDash:'on',
+    burl:'flowly-projekt.vercel.app — Dashboard',
+    title:'Überblick: Das flowly-Dashboard',
+    sub:'Alles auf einen Blick — Lernstand, Live-Community, Fächer und was dringend wartet.',
+    callouts:[
+      {cl:'Startpunkt',text:'Das Dashboard begrüßt mit dem Lernstand — <strong>172 Minuten heute</strong>, 89 Karten, 7 Konzepte.'},
+      {cl:'Gamification',text:'XP-Balken, Level und Streak — sichtbares Feedback, das das Belohnungssystem aktiviert.'},
+    ],
+    evidence:'Live-Lernraum: 23 Kommilitonen gerade online — das reale Social-Feature, das exekutives Initiieren unterstützt.',
+    notes:'Vicky sagt: "Das ist unsere App — flowly. Alles startet hier, im Dashboard. Du siehst sofort: wie lange du schon gelernt hast, wie viele Karten du geübt hast, wer gerade mit dir lernt. Und was du dringend wiederholen musst. Kein Suchen mehr, kein Wechseln zwischen fünf Tabs."',
+  },
+  {
+    id:'s2',
+    navDash:'on',
+    burl:'flowly-projekt.vercel.app — Material Hub',
+    title:'Material-Hub & KI-Strukturierung',
+    sub:'Alles zu einem Konzept an einem Ort. PDF hochladen — KI übernimmt den Rest.',
+    callouts:[
+      {cl:'Ein Ort, null Kontextwechsel',text:'Dateien, Zusammenfassung, Karteikarten, Panik-Modus und Pomodoro — <strong>alles in einer Ansicht</strong>.'},
+      {cl:'Split-Attention eliminiert',text:'Wenn Lerninhalt und Hilfsmittel räumlich getrennt sind, bindet das Gehirn Kapazität allein fürs Suchen.'},
+    ],
+    evidence:'Split-Attention-Effekt: kognitionspsychologisch belegtes Lernhindernis (Sweller, Cognitive Load Theory, 1988).',
+    notes:'Vicky sagt: "Schauen wir rein. Ich klicke auf ERP-Systeme — und lande direkt im Material-Hub. Hier liegt alles. Ich kann mein PDF hochladen, es einfach reinziehen. Im nächsten Schritt sieht ihr was dann passiert."',
+  },
+  {
+    id:'s3',
+    navDash:'on',
+    burl:'flowly-projekt.vercel.app — KI-Analyse',
+    title:'Automatische Konzept-Extraktion',
+    sub:'Sobald das PDF hochgeladen ist, extrahiert die KI 6–12 Schlüsselkonzepte und generiert Zusammenfassungen und Karteikarten.',
+    callouts:[
+      {cl:'KI-Strukturierung',text:'<strong>Keine Handarbeit mehr</strong>: Zusammenfassungen, Erklärungen und Karteikarten werden automatisch generiert.'},
+      {cl:'Vollständig im Hintergrund',text:'In unter 30 Sekunden ist alles bereit — Konzepte, Karten, Zusammenfassungen.'},
+    ],
+    evidence:'Working Memory Entlastung: Das Exzerpieren von PDFs bindet 30–40% der kognitiven Kapazität — flowly eliminiert diesen Aufwand.',
+    notes:'Vicky sagt: "Das ist die Magie. Sobald ich das PDF hochlade, arbeitet die KI sofort. Sie extrahiert automatisch die 6 bis 12 wichtigsten Schlüsselkonzepte und generiert dazu Zusammenfassungen und Karteikarten. Ich muss nichts tippen, nichts strukturieren."',
+  },
+  {
+    id:'s4',
+    burl:'flowly-projekt.vercel.app — Synaptic Map',
+    title:'Navigation via Synaptic Map',
+    sub:'Die radiale Mindmap visualisiert Gedächtnisstärke pro Konzept. Grün = sicher. Rot = kritisch.',
+    callouts:[
+      {cl:'Gedächtnisstärke sichtbar',text:'Jeder Ring zeigt wie gut ein Konzept sitzt — <strong>rot signalisiert sofort</strong> was dringend ist.'},
+      {cl:'Visuelles Lernen',text:'Gerade neurodivergente Gehirne profitieren massiv von dieser Vernetzung impliziter Zusammenhänge.'},
+    ],
+    evidence:'Visuelle Kognition: Räumliche Darstellungen von Wissensstruktur verbessern Retrieval-Leistung um bis zu 25% (Mayer, 2009).',
+    notes:'Vicky sagt: "Die Navigation erfolgt visuell — über diese radiale Synapsen-Map. Die Ringe zeigen die Gedächtnisstärke. Grün heißt: sitzt. Rot heißt: kritisch, dringend üben. Man sieht in einer Sekunde wo man steht — ohne eine einzige Statistik lesen zu müssen."',
+  },
+  {
+    id:'s5',
+    burl:'flowly-projekt.vercel.app — Lernmodi',
+    title:'5 integrierte Lernmodi',
+    sub:'Karteikarten, Zusammenfassung, Panik-Modus, Pomodoro, Dateien — alles in einem Tab, kein Systemwechsel.',
+    callouts:[
+      {cl:'3D-Flip Karteikarten',text:'Mit sofortigem Feedback: <strong>Gewusst oder nicht</strong>. Gedächtnisstärke passt sich automatisch an.'},
+      {cl:'Pomodoro integriert',text:'Zeitstrukturierung für Time Blindness — direkt neben den Inhalten, kein extra Tool nötig.'},
+    ],
+    evidence:'Spacing-Effekt: Interleaved Practice mit sofortigem Feedback erhöht die Langzeit-Retention um bis zu 50% (Kornell & Bjork, 2008).',
+    notes:'Vicky sagt: "Wenn ich ein Konzept anklicke, lande ich im Split-View. Links die 5 Lernmodi — Karteikarten, Zusammenfassung, Panik-Modus, Pomodoro — rechts immer der KI-Tutor. Kein Tab-Wechsel, kein Kontextverlust."',
+  },
+  {
+    id:'s6',
+    navDash:'on',
+    burl:'flowly-projekt.vercel.app — Gamification',
+    title:'Gamification & Live-Lernraum',
+    sub:'XP, Level, Streaks und Achievements aktivieren das Belohnungssystem direkt. 23 Kommilitonen lernen gerade parallel.',
+    callouts:[
+      {cl:'Dopamin-Loop',text:'Sofortiges XP-Feedback nach jeder Karte — <strong>externe Konsequenz</strong> ersetzt fehlende interne Motivation.'},
+      {cl:'Body Doubling',text:'23 Personen sichtbar online — belegter ADHS-Effekt: Anwesenheit anderer aktiviert exekutive Funktionen.'},
+    ],
+    evidence:'Body Doubling (Accountability): Paralleles Lernen mit sichtbaren Anderen erhöht Fokus-Dauer signifikant (Pera, 2008).',
+    notes:'Vicky sagt: "Gamification ist kein Nice-to-Have. Sofortiges XP-Feedback nach jeder Karte, Streak-Counter, Level-Aufstieg — das sind externe Konsequenzen die das Belohnungssystem aktivieren. Und der Live-Lernraum ist unser Social-Feature: man sieht wer gerade lernt. Das ist Body Doubling, digital."',
+  },
+  {
+    id:'s7',
+    burl:'flowly-projekt.vercel.app — Panik-Modus',
+    title:'⚡ Der Panik-Modus',
+    sub:'30 Sekunden pro Karte. Externer Zeitdruck erzeugt Dopamin-Ausschüttung und ermöglicht Hyperfokus on demand.',
+    callouts:[
+      {cl:'Highlight aus dem User-Testing',text:'Im Testing war Panik-Modus das <strong>stärkste Feature</strong>. Alle 4 Testpersonen wollten es wieder nutzen.'},
+      {cl:'Wissenschaftlich validiert',text:'Zeitdruck aktiviert exekutive Funktionen genau dann wenn es zählt — reduziert subjektiven Stress.'},
+    ],
+    evidence:'External urgency & executive function: Kurzfristiger Zeitdruck mit klarem Outcome aktiviert das dorsale Aufmerksamkeitsnetzwerk (Barkley, 2012).',
+    notes:'Vicky sagt: "Und jetzt mein absolutes Highlight aus dem User-Testing: der Panik-Modus. 30 Sekunden pro Karte, der Timer läuft, die Uhr tickt rot runter. Was kontraintuitiv klingt war im Testing das stärkste Feature. Warum? Externe Dringlichkeit setzt Dopamin frei und ermöglicht Hyperfokus genau dann, wenn es zählt. Alle vier Testpersonen wollten es wieder nutzen."',
+  },
+];
+
+let current = 0;
+
+function render(idx, dir=1) {
+  const scene = SCENES[idx];
+
+  // Left panel
+  const left = document.getElementById('left');
+  left.style.opacity = '0';
+  left.style.transform = 'translateX(-16px)';
+  setTimeout(() => {
+    left.innerHTML = `
+      <div class="part-tag" style="animation:fadeUp .5s .05s ease both">
+        <div class="part-dot"></div>
+        <div class="part-lbl">Demo · ${idx+1} / ${SCENES.length}</div>
+      </div>
+      <h1 style="opacity:0;animation:fadeUp .5s .15s ease both">${scene.title.replace(/\n/g,'<br>')}</h1>
+      <p class="sub" style="opacity:0;animation:fadeUp .5s .22s ease both">${scene.sub}</p>
+      ${(scene.callouts||[]).map((c,i)=>`
+        <div class="callout" style="animation:fadeUp .5s ${.28+i*.1}s ease both;opacity:0">
+          <div class="cl">${c.cl}</div>
+          <p>${c.text}</p>
+        </div>
+      `).join('')}
+      ${scene.evidence ? `
+        <div class="evidence" style="animation:fadeUp .5s .48s ease both;opacity:0">
+          <div class="evidence-ico">⚡</div>
+          <p>${scene.evidence}</p>
+        </div>
+      ` : ''}
+    `;
+    left.style.transition = 'all .5s ease';
+    left.style.opacity = '1';
+    left.style.transform = 'none';
+  }, 220);
+
+  // Scenes
+  document.querySelectorAll('.scene').forEach(el => {
+    if (el.id === scene.id) {
+      el.classList.add('active');
+      el.style.animation = 'sceneIn .6s ease both';
+    } else {
+      el.classList.remove('active');
+      el.style.animation = '';
+    }
+  });
+
+  // Nav state
+  document.getElementById('nav-dash').className = 'atab' + (scene.navDash === 'on' ? ' on' : '');
+  document.getElementById('burl').textContent = scene.burl || 'flowly-projekt.vercel.app';
+
+  // Progress dots
+  const dots = document.getElementById('progDots');
+  dots.innerHTML = SCENES.map((_,i) => `<div class="prog-dot ${i===idx?'active':i<idx?'done':''}"></div>`).join('');
+  document.getElementById('progLabel').textContent = `${idx+1} / ${SCENES.length}`;
+
+  // Notes
+  document.getElementById('notes-title').textContent = `Sprechernotizen — ${scene.title}`;
+  document.getElementById('notes-text').innerHTML = scene.notes || '';
+
+  // Panic timer animation
+  if (scene.id === 's7') {
+    let t = 12;
+    clearInterval(window._panicInterval);
+    window._panicInterval = setInterval(() => {
+      if (t <= 0) { t = 12; }
+      t--;
+      const el = document.getElementById('panicTimer');
+      if (el) {
+        el.textContent = '00:' + String(t).padStart(2,'0');
+        el.style.color = t <= 10 ? 'var(--rd)' : t <= 20 ? 'var(--amh)' : 'var(--sgh)';
+      }
+    }, 1000);
+  } else {
+    clearInterval(window._panicInterval);
+  }
+}
+
+function goTo(idx) {
+  if (idx < 0 || idx >= SCENES.length) return;
+  current = idx;
+  render(idx);
+}
+
+// Keyboard nav
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(current - 1); }
+  if (e.key === 'n' || e.key === 'N') {
+    document.getElementById('notes').classList.toggle('show');
+  }
+  if (e.key === 'f' || e.key === 'F') {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  }
+});
+
+// Click on right panel
+document.getElementById('right').addEventListener('click', () => goTo(current + 1));
+
+// Init
+render(0);
+</script>
+</div><!-- /scale-root -->
+
+<script>
+function scaleDemo(){
+  const root=document.getElementById("scale-root");
+  const scaleX=window.innerWidth/1920;
+  const scaleY=window.innerHeight/1080;
+  const scale=Math.min(scaleX,scaleY);
+  const offsetX=(window.innerWidth-1920*scale)/2;
+  const offsetY=(window.innerHeight-1080*scale)/2;
+  root.style.transform=`translate(${offsetX}px,${offsetY}px) scale(${scale})`;
+}
+window.addEventListener("resize",scaleDemo);
+scaleDemo();
+</script>
+</body>
+</html>
